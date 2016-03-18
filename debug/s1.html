@@ -1,0 +1,56 @@
+{% load static %}
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript" src= "{% static 'js/angular.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angular-timeago.js' %}"></script>
+<body ng-app='ngApp' ng-controller="demoController">
+  <h1>angular-timeago Examples</h1>
+
+  <div>
+    Current time: {[{ nowTime() }]}
+  </div>
+  <div>
+    Page load time: {[{ pageLoadTime }]}
+  </div>
+
+  <hr>
+
+  <div>
+    <h2>Directive Example</h2>
+    You opened this demo page <time-ago from-time='{[{ pageLoadTime }]}'></time-ago>
+  </div>
+
+  <div>
+    <h2>Filter Example</h2>
+    You opened this demo page {[{ pageLoadTime | timeAgo }]}.
+  </div>
+
+  <div>
+    This repo was created <span time-ago from-time="2014-03-11T05:25:00Z"></span>
+  </div>
+
+  <script>
+
+/* globals angular */
+'use strict';
+
+var app = angular.module('ngApp', [
+  'yaru22.angular-timeago'
+]);
+
+app.controller('demoController', function ($scope, nowTime) {
+  $scope.pageLoadTime = (new Date()).toISOString();
+  $scope.nowTime = nowTime;
+});
+
+
+
+
+
+
+app.config(function($interpolateProvider) {
+  			$interpolateProvider.startSymbol('{[{');
+  			$interpolateProvider.endSymbol('}]}');
+     });
+  </script>
+</body>
+</html>

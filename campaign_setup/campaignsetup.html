@@ -1,0 +1,874 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="images/favicon.png">
+
+  <title>Dealer Funnel aaa</title>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Raleway:100' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
+      
+  
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'js/bootstrap/dist/css/bootstrap.css' %}" rel="stylesheet" />
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery.gritter/css/jquery.gritter.css' %}" />
+
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.nanoscroller/nanoscroller.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.easypiechart/jquery.easy-pie-chart.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.switch/bootstrap-switch.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery.select2/select2.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.slider/css/slider.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/intro.js/introjs.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.datatables/bootstrap-adapter/css/datatables.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.multiselect/css/bootstrap-multiselect.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.multiselect/css/multi-select.css' %}" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/dealerminer.css' %}" />
+
+</head>
+<body>
+
+  <!-- Fixed navbar -->
+  <div id="head-nav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="fa fa-gear"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><strong>Dealer</strong>Funnel</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">ABC Dealership<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li> 
+            </ul>
+          </li>
+          
+        </ul>
+        <ul class="nav navbar-nav navbar-right user-nav">
+          <li class="dropdown profile_menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img alt="Avatar" src="images/avatar2.jpg" /><span>John Doe</span> <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="setting-page.html"><i class="fa fa-cog"></i> Settings</a></li>
+              <li><a href="customer-profile-page.html"><i class="fa fa-user"></i> Profile</a></li>
+              <li class="divider"></li>
+              <li><a href="#"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+            </ul>
+          </li>
+        </ul>     
+
+      </div><!--/.nav-collapse animate-collapse -->
+    </div>
+  </div>
+
+	<div id="cl-wrapper" class="fixed-menu sb-collapsed">
+		<div class="cl-sidebar" data-position="right" data-step="1" data-intro="<strong>Fixed Sidebar</strong> <br/> It adjust to your needs." >
+			<div class="cl-toggle"><i class="fa fa-bars"></i></div>
+			<div class="cl-navblock">
+        <div class="menu-space">
+          <div class="content">
+            <ul class="cl-vnavigation">
+              <li><a href="index.html"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+              <li><a href="campaign-page.html"><i class="fa fa-bullhorn"></i><span>Campaigns</span></a></li>
+              <li><a href="customer-page.html"><i class="fa fa-user"></i><span>Customers</span></a></li>
+              <li class="active"><a href="lead-page.html"><i class="fa fa-star"></i><span>Leads</span> <span class="label label-primary pull-right">22</span></a></li>
+              <li><a href="#">
+                <i class="fa fa-file-text"></i><span>Reports</span></a>
+                <ul class="sub-menu">
+                  <li><a href="historical-report-page.html">Historical</a></li>
+                  <li><a href="market-analysis-page.html">Market Analysis</a></li>
+                  <li><a href="roi-report-page.html">ROI</a></li>
+                </ul>
+              </li>
+              <li><a href="#">
+                <i class="fa fa-cog"></i><span>Admin</span></a>
+                <ul class="sub-menu">
+                  <li><a href="dealership-page.html">Dealerships</a></li>
+                  <li><a href="user-page.html">Users</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="text-right collapse-button" style="padding:7px 9px;">
+          <button id="sidebar-collapse" class="btn btn-default" style=""><i style="color:#fff;" class="fa fa-angle-right"></i></button>
+        </div>
+			</div>
+		</div>
+    <div class="page-aside email">
+      <div class="fixed nano nscroller">
+        <div class="content">
+            <div class="campaign-builder-sidebar">
+              <p class="sidebar-row clearfix"><img src="images/state_online.png" alt="" class="sidebar-row-status"><i class="fa fa-line-chart"></i> Total Cusomers :  <span class="label label-gray pull-right">{{analysis.total_customer}}</span></p>
+              <form class="form sidebar-row">
+                <p><a href="#collapse-warranty" data-toggle="collapse">
+                  <img src="images/state_online.png" alt="" class="sidebar-row-status">
+                  <i class="fa fa-life-bouy"></i> Warranty Expiration<span class="label label-gray pull-right">{{analysis.warrantyexpiration}}</span>
+                  </a>
+                </p>
+                <div class="row collapse" id="collapse-warranty">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Expirating in</label>
+                      <select class="form-control multiselect"  multiple="multiple">
+                        <option value="1" selected>6-12 months</option>
+                        <option value="2">6-12 months</option>
+                        <option value="3">6-12 months</option>
+                        <option value="4">6-12 months</option>
+                        <option value="5">6-12 months</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <p class="sidebar-row">
+              <img src="images/state_offline.png" alt="" class="sidebar-row-status">
+                <i class="fa fa-clock-o"></i> Crossover Conquest<span class="label label-gray pull-right">{{analysis.warrantyexpiration}}</span>
+              </p>
+              <form class="form sidebar-row">
+                <p><a href="#collapse-lease" data-toggle="collapse">
+                  <img src="images/state_online.png" alt="" class="sidebar-row-status">
+                  <i class="fa fa-refresh"></i> Lease Expiration<span class="label label-gray pull-right">{{analysis.leaseexpiration}}</span>
+                  </a>
+                </p>
+                <div class="row collapse" id="collapse-lease">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Expirating in</label>
+                      <select class="form-control multiselect"  multiple="multiple">
+                        <option value="1" selected>6-12 months</option>
+                        <option value="2">6-12 months</option>
+                        <option value="3">6-12 months</option>
+                        <option value="4">6-12 months</option>
+                        <option value="5">6-12 months</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <form class="form sidebar-row">
+                <p class="clearfix"><a href="#birthday-collapse" data-toggle="collapse">
+                <img src="images/state_offline.png" alt="" class="sidebar-row-status"><i class="fa fa-calendar"></i> Birthday:</a> <span class="label label-gray pull-right">25,000</span></p>
+                <div class="row collapse" id="birthday-collapse">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Month</label>
+                      <select class="form-control">
+                        <option>All</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <p class="sidebar-row">
+                <img src="images/state_offline.png" alt="" class="sidebar-row-status">
+                <i class="fa fa-bar-list"></i> Equity Position: <span class="label label-gray pull-right">{{analysis.leaseexpiration}}</span>
+              </p>
+              <p class="sidebar-row">
+                <img src="images/state_offline.png" alt="" class="sidebar-row-status">
+                <i class="fa fa-bar-chart"></i> Trade Cycle: <span class="label label-gray pull-right">12,000</span>
+              </p>
+              <p class="sidebar-row">
+              <img src="images/state_online.png" alt="" class="sidebar-row-status">
+                <i class="fa fa-level-up"></i> Make Conquest:  <span class="label label-gray pull-right">5,000</span>
+              </p>
+              <p class="sidebar-row">
+                <img src="images/state_offline.png" alt="" class="sidebar-row-status">
+                <i class="fa fa-clock-o"></i> Late Service: <span class="label label-gray pull-right">66</span>
+              </p>
+            </div>  
+            <div class="sidebar-filter">
+              <h4>Filter</h4>
+              <form class="form">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Last Visited</label>
+                      <div class="reportrange">
+                        <i class="fa fa-calendar"></i>
+                        <span></span> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Last Notifications</label>
+                      <div class="reportrange">
+                        <i class="fa fa-calendar"></i>
+                        <span></span> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Distance</label><br>
+                      <select class="form-control multiselect"  multiple="multiple">
+                        <option value="1" selected>0-5 miles</option>
+                        <option value="2">5-10 miles</option>
+                        <option value="3">10-15 miles</option>
+                        <option value="4">15-20 miles</option>
+                        <option value="5">20 or more miles</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Notification Count</label><br>
+                      <select class="form-control multiselect"  multiple="multiple">
+                        <option value="1" selected>N/A</option>
+                        <option value="2">1</option>
+                        <option value="3">2</option>
+                        <option value="4">3</option>
+                        <option value="5">4</option>
+                        <option value="6">5</option>
+                        <option value="7">6</option>
+                        <option value="8">7</option>
+                        <option value="9">8</option>
+                        <option value="10">9</option>
+                        <option value="11">10+</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Customer Type</label><br>
+                      <select class="form-control multiselect"  multiple="multiple">
+                        <option value="6" selected>All Customers</option>
+                        <option value="7">Active</option>
+                        <option value="8">Less Active</option>
+                        <option value="9">Loss</option>
+                        <option value="10">20 or more miles</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>   
+        </div>
+      </div>
+    </div>    
+
+	   <div class="container-fluid" id="pcont">
+
+      <div class="page-head ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Campaign Builder</h2>
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li class="active">Campaign Builder aaa</li>
+            </ol>
+          </div>
+          <div class="col-sm-6 text-right">
+            <a href="#modal-create-campaign" class="btn btn-primary btn-create-campaign" data-toggle="modal">Create Campaign</a>
+          </div>
+        </div>
+      </div>
+		  <div class="cl-mcont">
+
+      <div class="leads-data-tbl">
+      	<div class="row stat-item-group style-1">
+	  <div class="col-sm-3">
+	  	<div class="block">
+	  		<div class="content">
+	  			<div class="stat-item">
+		  			<i class="stat-icon icon-envelope"></i>
+			  		<span class="stat-title">Total Matches</span>
+			  		<span class="stat-descr">{{local.total_customer|intcomma}}</span>
+		  		</div>
+		  	</div>
+		  </div>
+	  </div>
+	  <div class="col-sm-3">
+		  <div class="block">
+		  	<div class="content">
+		  		<div class="stat-item">
+		  			<i class="stat-icon icon-envelope"></i>
+					  <span class="stat-title">Selected Total</span>
+					  <span id="select_count_id" class="stat-descr">{{local.selected_count|intcomma}}</span>
+			  	</div>
+			  </div>
+		  </div>
+	  </div>
+	  <div class="col-sm-3">
+		  <div class="block">
+		  	<div class="content">
+		  		<div class="stat-item">
+		  			<i class="stat-icon icon-envelope"></i>
+					  <span class="stat-title">Selected Email</span>
+					  <span id="select_email_id" class="stat-descr">{{local.selected_email|intcomma}}</span>
+					</div>
+				</div>
+		  </div>
+	  </div>
+	  <div class="col-sm-3">
+		  <div class="block">
+		  	<div class="content">
+		  		<div class="stat-item">
+		  			<i class="stat-icon flaticon-money-1"></i>
+			  		<span class="stat-title">Cost</span>
+			  		<span class="stat-descr">$<span id="costid" >{{local.cost|intcomma}}</span></span>
+			  	</div>
+		  	</div>
+			</div>
+		</div>
+	</div>
+
+        <div class="block">
+          <div class="header">
+            <div class="btn-group">
+              <a href="javascript:selectAll()" class="btn btn-sm btn-default">Select All</a>
+              <button class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="javascript:toggleSelection()" data-original-title="" title="">Toggle Selection</a>
+                </li>
+                <li><a href="#modal-selection-range" data-toggle="modal">Selection Range</a></li>
+                <li class="divider"></li>
+                <li>
+                  <a href="javascript:unselectAll()" data-original-title="" title="">Unselect All</a>
+                </li>
+              </ul>
+            </div>  
+            
+          </div>
+          <div class="content">
+            <div class="row">
+              <table class="no-border datatable table-striped table-hover dataTable">
+              <thead class="no-border">
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Last Visit</th>
+                  <th>Last Contacted</th>
+                  <th>Location</th>
+                  <th>Distance</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody class="no-border-x no-border-y">
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td><a href="#modal-weblead" data-toggle="modal">Geoffrey Wise</a></td>
+                  <td>2 hours ago</td>
+                  <td>John</td>
+                  <td>New York</td>
+                  <td>1.0</td>
+                  <td><label class="label label-warning">Active</label></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td><a href="#modal-weblead" data-toggle="modal">John Doe</a></td>
+                  <td>2 hours ago</td>
+                  <td>Mary</td>
+                  <td>New York</td>
+                  <td>3.5</td>
+                  <td><label class="label label-danger">Less Active</label></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td><a href="#modal-weblead" data-toggle="modal">Geoffrey Wise</a></td>
+                  <td>2 hours ago</td>
+                  <td>Phil</td>
+                  <td>New York</td>
+                  <td>2.34</td>
+                  <td><label class="label label-black">Lost</label></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+      </div>
+		
+		  </div>
+		</div> 
+		
+	</div>
+
+  <div class="modal fade" id="modal-status">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Lead Status</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Select Status</label>
+                <select class="form-control">
+                  <option>Hot</option>
+                  <option>Warm</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modal-type">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Lead Type</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Select Type</label>
+                <select class="form-control">
+                  <option>Call</option>
+                  <option>Web Lead</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+  <div class="modal fade" id="modal-weblead">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Web Leads<br><small>Sub lines</small></h4>
+        </div>
+        <div class="modal-body">
+          <form class="form">
+            <div class="row">
+              <div class="col-sm-6">
+                <h4>John Doe</h4>
+                <p><i class="fa fa-location-arrow"></i> 123 5th Ave FL Troy NY 12380</p>
+                <p><i class="fa fa-phone"></i> 518 720 7119</p>
+                <p><i class="fa fa-envelope"></i> <a href="#">jdoe@gmail.com</a></p>
+              </div>
+              <div class="col-sm-6">
+                <p><strong>Source : </strong> <a href="#">CAPInvite.com</a></p>
+                <p><strong>Date : </strong> 01/01/2015</p>
+                <p><strong>Time : </strong> 9:00 AM</p>
+                <p><strong>Owner : </strong> Unassigned</p>
+                <p><strong>Status : </strong> <button type="button" class="btn btn-xs btn-danger">Hot</button></p>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Customer Summary</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade" id="modal-phonelead">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Phone Leads
+        <small class="pull-right" style="margin-right: 20px;"><a href="#"><i class="fa fa-download"></i> Download</a></small>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form class="form">
+          <div class="row">
+            <div class="col-sm-12">
+              <audio src="images/sample_ring.mp3" preload="auto"/>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>John Doe</h4>
+              <p><i class="fa fa-location-arrow"></i> 123 5th Ave FL Troy NY 12380</p>
+              <p><i class="fa fa-phone"></i> 518 720 7119</p>
+              <p><i class="fa fa-envelope"></i> <a href="#">jdoe@gmail.com</a></p>
+            </div>
+            <div class="col-sm-6">
+              <p><strong>Source : </strong> <a href="#">CAPInvite.com</a></p>
+              <p><strong>Date : </strong> 01/01/2015</p>
+              <p><strong>Time : </strong> 9:00 AM</p>
+              <p><strong>Owner : </strong> Unassigned</p>
+              <p><strong>Status : </strong> <span class="label label-danger">Hot</span></p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Customer Summary</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modal-selection-range">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Selection Range</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form">
+          <div class="row">
+            <div class="col-sm-4">
+              <label>Start Range</label>
+              <input type="number" class="form-control">
+            </div>
+            <div class="col-sm-4">
+              <label>End Range</label>
+              <input type="number" class="form-control">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modal-create-campaign">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">New Campaign</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <p><strong>Trigger Selection: Lease Expiration</strong></p>
+          <div class="row">
+            <label class="col-sm-3 control-label">Mail Total:</label>
+            <div class="col-sm-3"><p class="form-control-static">4,000</p></div>
+            <label class="col-sm-3 control-label">Mail Style</label>
+            <div class="col-sm-3">
+              <select class="form-control">
+                <option>Style 2</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="col-sm-3 control-label">Email Total:</label>
+            <div class="col-sm-3"><p class="form-control-static">5,000</p></div>
+            <label class="col-sm-3 control-label">Email Style</label>
+            <div class="col-sm-3">
+              <select class="form-control">
+                <option>Style 1</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="col-sm-3 control-label">Cost Total:</label>
+              <div class="col-sm-3"> <p class="form-control-static">$4,000</p></div>
+            <label class="col-sm-3 control-label">Mail Date</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control datepicker">
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="col-sm-3 control-label">Campaign Start</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control datepicker">
+            </div>
+            
+
+            <label class="col-sm-3 control-label">Email Date</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control datepicker">
+            </div>
+          </div>
+
+          <div class="row">
+            
+            <label class="col-sm-3 control-label">Campaign End</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control datepicker">
+            </div>
+            <label class="col-sm-3 control-label">Budget Month</label>
+            <div class="col-sm-3">
+              <select class="form-control">
+                <option>Style 1</option>
+              </select>
+            </div>
+            <label class="col-sm-3 control-label">link</label>
+            <div class="col-sm-3">
+              <a href='#'>Cloud One</a>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Create Campaign</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="cloudonemodal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">New Campaign</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <p><strong>Trigger Selection: Lease Expiration</strong></p>
+          <div class="row">
+            <label class="col-sm-3 control-label">Mail Total:</label>
+            <div class="col-sm-3"><p class="form-control-static">4,000</p></div>
+            <label class="col-sm-3 control-label">Mail Style</label>
+            <div class="col-sm-3">
+              <select class="form-control">
+                <option>Style 2</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="col-sm-3 control-label">Email Total:</label>
+            <div class="col-sm-3"><p class="form-control-static">5,000</p></div>
+            <label class="col-sm-3 control-label">Email Style</label>
+            <div class="col-sm-3">
+              <select class="form-control">
+                <option>Style 1</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="col-sm-3 control-label">Cost Total:</label>
+              <div class="col-sm-3"> <p class="form-control-static">$4,000</p></div>
+            <label class="col-sm-3 control-label">Mail Date</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control datepicker">
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="col-sm-3 control-label">Campaign Start</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control datepicker">
+            </div>
+            
+
+            <label class="col-sm-3 control-label">Email Date</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control datepicker">
+            </div>
+          </div>
+
+          <div class="row">
+            
+            <label class="col-sm-3 control-label">Campaign End</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control datepicker">
+            </div>
+            <label class="col-sm-3 control-label">Budget Month</label>
+            <div class="col-sm-3">
+              <select class="form-control">
+                <option>Style 1</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Create Campaign</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.gritter/js/jquery.gritter.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.nanoscroller/jquery.nanoscroller.js' %}"></script>
+  <script src="{% static 'js/jquery.ui/jquery-ui.js" type="text/javascript' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.sparkline/jquery.sparkline.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.easypiechart/jquery.easy-pie-chart.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.nestable/jquery.nestable.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.switch/bootstrap-switch.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+  <script src="{% static 'js/jquery.select2/select2.min.js' %}" type="text/javascript"></script>
+  <script src="{% static 'js/skycons/skycons.js' %}" type="text/javascript"></script>
+  <script src="{% static 'js/bootstrap.slider/js/bootstrap-slider.js' %}" type="text/javascript"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.datatables/jquery.datatables.min.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'js/jquery.flot/jquery.flot.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.flot/jquery.flot.pie.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.flot/jquery.flot.time.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.flot/jquery.flot.resize.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.flot/jquery.flot.labels.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/daterangepicker/moment.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/daterangepicker/daterangepicker.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'js/bootstrap.multiselect/js/bootstrap-multiselect.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.multiselect/js/jquery.multi-select.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/behaviour/general.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/audiojs/audio.min.js' %}"></script>
+ <script type="text/javascript">
+    $(document).ready(function(){
+      $('.multiselect').multiselect();
+
+      var optionSet1 = {
+    startDate: moment().subtract(29, 'days'),
+    endDate: moment(),
+    minDate: '01/01/2012',
+    maxDate: '12/31/2014',
+    dateLimit: { days: 60 },
+    showDropdowns: true,
+    showWeekNumbers: true,
+    timePicker: false,
+    timePickerIncrement: 1,
+    timePicker12Hour: true,
+    ranges: {
+       'Today': [moment(), moment()],
+       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+       'This Month': [moment().startOf('month'), moment().endOf('month')],
+       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+       'This Year': [moment().startOf('year'), moment().endOf('year')],
+       'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+    },
+    opens: 'left',
+    buttonClasses: ['btn btn-default'],
+    applyClass: 'btn-small btn-primary',
+    cancelClass: 'btn-small',
+    format: 'MM/DD/YYYY',
+    separator: ' to ',
+    locale: {
+        applyLabel: 'Submit',
+        cancelLabel: 'Clear',
+        fromLabel: 'From',
+        toLabel: 'To',
+        customRangeLabel: 'Custom',
+        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+        monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        firstDay: 1
+    }
+  };
+
+      $('.datatable').DataTable( {
+        initComplete: function () {
+          var api = this.api();
+
+          api.columns().indexes().flatten().each( function ( i ) {
+            var column = api.column( i );
+            var select = $('<select><option value=""></option></select>')
+              .appendTo( $(column.footer()).empty() )
+              .on( 'change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                  $(this).val()
+                );
+
+                column
+                  .search( val ? '^'+val+'$' : '', true, false )
+                  .draw();
+              } );
+
+            column.data().unique().sort().each( function ( d, j ) {
+              select.append( '<option value="'+d+'">'+d+'</option>' )
+            } );
+          } );
+        }
+      } );
+
+        //Search input style
+      $('.dataTables_filter input').addClass('form-control').attr('placeholder','Search');
+      $('.dataTables_length select').addClass('form-control'); 
+      $('.dataTables_length').hide();  
+      //initialize the javascript
+
+      audiojs.events.ready(function() {
+        var as = audiojs.createAll();
+      });
+      // Datepicker
+      $('.datepicker').datepicker();
+    });
+  </script>
+  <script type="text/javascript">
+    var selectAll = function () {
+      $('.leads-list-data input:not(:checked)').click();
+
+    }, toggleSelection = function () {
+      $checked = $('.leads-list-data input:checked');
+      $('.leads-list-data input:not(:checked)').click();
+      $checked.click();
+
+    }, unselectAll = function () {
+      $('.leads-list-data input:checked').click();
+
+    }, markAsRead = function () {
+      $('.leads-list-data input:checked').parents('.message').removeClass('unread');
+
+    }, markAsUnread = function () {
+      $('.leads-list-data input:checked').parents('.message').addClass('unread');
+
+    }, deleteMessages = function () {
+      $('.leads-list-data input:checked').parents('.message').remove();
+      
+    };
+  </script>
+  <script src="js/bootstrap/dist/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

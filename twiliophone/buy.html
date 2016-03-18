@@ -1,0 +1,13 @@
+{% load dealerfunnel_filters %}
+<div class="row">
+                    <div class="col-sm-12">
+                    {{local.info.number|phone_formate:'0'}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    
+                    <div class="col-sm-12">
+                      <a onclick="releasenumber()" href="javascript:void(0)" class="btn btn-warning">Release Number</a>
+                    </div>
+                  </div>
+                  <input name="ktwilio" type="hidden" value="{{local.info.tid}}" id="twillioId"/>

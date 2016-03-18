@@ -1,0 +1,420 @@
+{% load humanize %}
+{% load static %}
+		<div class="row dash-cols">
+			
+				<div class="col-sm-6 col-md-6">
+					<div class="block">
+						<div class="header no-border">
+							<h4>Dealership Activity</h4>
+						</div>
+						<div class="content black-chart"  data-step="3" data-intro="<strong>Unique Styled Plugins</strong> <br/> We put love in every detail to give a great user experience!.">
+							<!-- <div id="site_statistics" style="height:180px;"></div> -->
+              <div id="site_statistics" style="height:180px;"></div>
+						</div>
+						
+						<div class="content clearfix">
+							<div class="stat-data ">
+								<div class="stat-orange">
+									<h2  >${{ local.roi.revenue|intcomma }}</h2>
+									<span>Total Revenue</span>
+								</div>
+							</div>
+							<div class="stat-data">
+								<div class="stat-number mycloak">
+									<div><h2 >{{ local.roi.total_sales|intcomma }}</h2></div>
+									<div>Cars Sold<br /><span>${{ local.roi.cashprice|intcomma }}</span></div>
+								</div>
+								<div class="stat-number mycloak">
+									<div><h2>{{ local.roi.total_service|intcomma }}</h2></div>
+									<div>Repair Orders<br /><span>${{ local.roi.roamount|intcomma }}</span></div>
+								</div>
+							</div>
+						</div>
+            <div class="ds-stats-boxs">
+              <li>
+                <span class="number">{{ local.roi.new|intcomma }}</span>
+                <span class="desc">New</span>
+              </li>
+              <li>
+                <span class="number">{{ local.roi.used|intcomma }}</span>
+                <span class="desc">Used</span>
+              </li>
+              <li>
+                <span class="number">{{ local.roi.purchases|intcomma }}</span>
+                <span class="desc">Purchases</span>
+              </li>
+              <li>
+                <span class="number">{{ local.roi.leases|intcomma }}</span>
+                <span class="desc">Leases</span>
+              </li>
+            </div>
+					</div>
+				</div>	
+				
+				<div class="col-sm-6 col-md-6">
+					<div class="block-flat pie-widget">
+            <div class="content no-padding">
+              <h4 class="no-margin border-bottom">Your Customers</h4>
+              <div class="row">
+                <div class="col-sm-5"><div id="ticket-chart" style="height:160px;"></div></div>
+                <div class="col-sm-7">
+                  <div class="customer-stats clearfix bg-success">
+                    <strong>Active</strong>
+                    <span class="pull-right text-right"><b>{{ local.customer.analysis.active|intcomma }}</b></span>
+                  </div>
+                  <div class="customer-stats clearfix bg-warning">
+                    <strong>Less Active</strong>
+                    <span class="text-right pull-right"><b>{{ local.customer.analysis.lessactive|intcomma }}</b></span>
+                  </div>
+                  <div class="customer-stats clearfix bg-danger">
+                    <strong>Lost</strong>
+                    <span class="text-right pull-right"><b>{{ local.customer.analysis.lost|intcomma }}</b></span>
+                  </div>
+                  <div class="customer-stats clearfix bg-border">
+                    <strong>Total Customer:</strong>
+                     <span class="pull-right text-bigger pull-right">{{ local.customer.analysis.total_customer|intcomma }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row stats ds-stats">
+                <div class="col-sm-6">
+                  <div class="stats-box butpro">
+                     {% if local.customer.newcustomer_per.flag == 1 %}
+                     <div class="pull-right">
+                       <span class="up"></span><br>{{ local.customer.savecustomer_per.val }}% 
+                     </div>
+                     {% endif %}
+                     {% if local.customer.newcustomer_per.flag == 0 %}
+                     <div  class="pull-right">
+                       <span class="down"></span><br>{{ local.customer.newcustomer_per.val }}% 
+                       
+                     </div>
+                     {% endif %}
+                     {% if local.customer.newcustomer_per.flag == 2 %}
+                     <div  class="pull-right">
+                       <span class="equal"></span><br>{{ local.customer.newcustomer_per.val }}% 
+                     </div>
+                     {% endif %}
+                     
+                    <p>New Customers</p>
+                    <h5>{{ local.customer.newcustomer }}</h5>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="stats-box butpro">
+                    {% if local.customer.savecustomer_per.flag == 1 %}
+                    <div class="pull-right">
+                       <span class="up"></span><br>{{ local.customer.savecustomer_per.val }}% 
+                     </div>
+                     {% endif %}
+                     {% if local.customer.savecustomer_per.flag == 0 %}
+                     <div ng-if="savecustomer_per_flag == 0" class="pull-right">
+                       <span class="down"></span><br>{{ local.customer.savecustomer_per.val }}% 
+                     </div>
+                     {% endif %}
+                     {% if local.customer.savecustomer_per.flag == 2 %}
+                     <div ng-if="savecustomer_per_flag == 2" class="pull-right stat">
+                       <span class="equal"></span><br>{{ local.customer.savecustomer_per.val }}% 
+                     </div>
+                     {% endif %}
+                    <p>Saved Customers</p>
+                    <h5>{{ local.customer.savecustomer }}</h5>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <h4>Leads</h4>
+              <div class="clearfix">
+                <div class="ds-stat">
+                  <span class="label label-danger"><i class="fa fa-laptop"></i></span>
+                  <span class="ds-stat-number">233</span>
+                  <span class="ds-stat-title">Web Leads</span>
+                </div>
+                <div class="ds-stat">
+                  <span class="label label-success"><i class="fa fa-phone"></i></span>
+                  <span class="ds-stat-number">233</span>
+                  <span class="ds-stat-title">Phone Calls</span>
+                </div>
+                <div class="ds-stat">
+                  <span class="label label-warning"><i class="fa fa-comment"></i></span>
+                  <span class="ds-stat-number">989</span>
+                  <span class="ds-stat-title">SMS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+				</div>
+			</div>
+      <div class="stats_bar clearfix">
+        <div class="item-col-6">
+          <div class="butpro butstyle" data-step="2" data-intro="<strong>Beautiful Elements</strong> <br/> If you are looking for a different UI, this is for you!.">
+            <div class="sub"><h2>Active Campaigns</h2><span id="total_clientes">{{local.top.cmp.val}}</span></div>
+            <div class="stat">
+            	<span class="{{local.top.cmp.flag}}">
+            		{{local.top.cmp.pval}}%
+            	</span>
+            </div>
+          </div>
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div class="sub"><h2>Cost</h2><span>${{local.top.cost.val|intcomma}}</span></div>
+            <div class="stat"><span class="{{local.top.cost.flag}}"> {{local.top.cost.pval|intcomma}}%</span></div>
+          </div>
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div class="sub"><h2>Car sold</h2><span>{{local.top.sales.val|intcomma}}</span></div>
+            <div class="stat"><span class="{{local.top.sales.flag}}"> {{local.top.sales.pval|intcomma}}%</span></div>
+          </div> 
+        </div>
+        <div class="item-col-6"> 
+          <div class="butpro butstyle">
+            <div class="sub"><h2>Gross Profit</h2><span>${{local.top.grossprofit.val|intcomma}}</span></div>
+            <div class="stat"><span class="{{local.top.grossprofit.flag}}"> {{local.top.grossprofit.pval|intcomma}}%</span></div>
+          </div>  
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div class="sub"><h2>Repair Orders</h2><span>{{local.top.service.val|intcomma}}</span></div>
+            <div class="stat"><span class="{{local.top.service.flag}}"> {{local.top.service.pval|intcomma}}%</span></div>
+          </div>
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div class="sub"><h2>RO Total</h2><span>${{local.top.invoiced.val|intcomma}}</span></div>
+            <div class="stat"><span class="{{local.top.invoiced.flag}}"> {{local.top.invoiced.pval|intcomma}}%</span></div>
+          </div>  
+        </div>
+
+      </div>
+      <div class="campaign-dashboard-tbl">
+        <div class="block-flat">
+          <h3 class="no-padding-top">Active Campaigns</h3>
+          <div class="">
+            <div class="content table-responsive clearfix">
+              <table class="no-border datatable table-striped">
+              <thead class="no-border">
+                <tr>
+                  <th>Campaign</th>
+                  <th>Type</th>
+                  <th>Mail Pieces</th>
+                  <th>Email</th>
+                  <th>Leads</th>
+                  <th>Cars Sold</th>
+                  <th>Gross Profit</th>
+                  <th>Repair Orders</th>
+                  <th>Total Invoiced</th>
+                  <th>Cost</th>
+                  <th>Days Active</th>
+                </tr>
+              </thead>
+              <tbody class="no-border-x no-border-y">
+                {% for n in local.cmp %}
+                <tr>
+                  <td><a href="campaign-detail-page.html">{{n.name}}</a></td>
+                  {% if n.type == 1 %}
+                          <td>
+                            <i class="fa fa-car"></i>
+                            
+                          </td>
+                          {% elif n.type == 2 %}
+                          <td>
+                            
+                            <i class="fa fa-wrench"></i>
+                          </td>
+                          {% elif n.type == 3 %}
+                          <td>
+                            <i class="fa fa-car"></i>
+                            <i class="fa fa-wrench"></i>
+                          </td>
+                   {% endif %}
+                  <td>{{n.totalmail|intcomma}}</td>
+                  <td>{{n.totalemail|intcomma}}</td>
+                  <td>{{n.lead|intcomma}}</td>
+                  <td>{{n.sales|intcomma}}</td>
+                  <td>${{n.grossprofit|intcomma}}</td>
+                  <td>{{n.service|intcomma}}</td>
+                  <td>${{n.invoiced|intcomma}}</td>
+                  <td>${{n.totalcost|intcomma}}</td>
+                  <td>{{n.delay}}/{{n.tdays}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+      </div>
+		  <script type="text/javascript">
+  $(function() {
+
+    
+    var  carsold     = {{ local.roi.chart_sales }}
+    var  repairorder = {{ local.roi.chart_service }}
+    var  arr         = {{ local.roi.chart_strdate|safe }} 
+    var plot = $.plot("#site_statistics", [
+      { data: carsold, label: "Cars Sold", color: "#009BEE"},
+      { data: repairorder, label: "Repair Orders", color: "#e07e63"}
+    ], {
+      series: {
+          lines: {
+            show: true,
+            lineWidth: 2, 
+            fill: false,
+            fillColor: {
+              colors: [{
+                opacity: 0.2
+              }, {
+                opacity: 0.01
+              }
+              ]
+            } 
+          },
+          points: {
+            show: true
+          },
+          shadowSize: 2
+        },
+        legend:{
+          show: false
+        },
+      grid: {
+        labelMargin: 10,
+           axisMargin: 500,
+          hoverable: true,
+          clickable: true,
+          tickColor: "rgba(255,255,255,0.22)",
+          borderWidth: 0
+      },
+      filledPoints: false,
+      xaxis:{ ticks:[[1,'{{ local.roi.start_date_str }}'],[{{ local.roi.numofchart }},'{{ local.roi.end_date_str }}']]},
+      yaxis: {
+                tickSize: {{ local.roi.ticketsize }}
+                    ,
+            min:0,tickDecimals:0                  
+      }
+    });
+
+    $("<div id='tooltip'></div>").css({
+      position: "absolute",
+      display: "none",
+      border: "1px solid #000",
+      padding: "2px 5px",
+      "background-color": "#000",
+      opacity: 1,
+      'color':'#fff',
+    }).appendTo("body");
+
+    $("#site_statistics").bind("plothover", function (event, pos, item) {
+
+      
+        var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
+        
+
+      
+        if (item) {
+          var x = item.datapoint[0].toFixed(2),
+          y = item.datapoint[1].toFixed(2);
+          x = parseInt(x);
+          y = parseInt(y);
+          x = arr[x];
+          $("#tooltip").html(y +" "+ item.series.label + " on " + x)
+            .css({top: item.pageY+5, left: item.pageX+5})
+            .fadeIn(200);
+        } else {
+          $("#tooltip").hide();
+        }
+     
+    });
+
+    $("#site_statistics").bind("plotclick", function (event, pos, item) {
+      if (item) {
+        $("#clickdata").text(" - click point " + item.dataIndex + " in " + item.series.label);
+        plot.highlight(item.series, item.datapoint);
+      }
+    });
+
+
+
+    $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+    
+    /*Pie Chart*/
+  var data = [
+  { label: "Less Active", data:{{ local.customer.analysis.lessactive }} },
+  { label: "Active", data:{{ local.customer.analysis.active }} },
+  { label: "Lost", data:{{ local.customer.analysis.lost }} }
+  ]; 
+
+  $.plot('#ticket-chart', data, {
+    series: {
+      pie: {
+        show: true,
+        innerRadius: 0.65,
+        shadow:{
+          top: 5,
+          left: 15,
+          alpha:0.3
+        },
+        stroke:{
+          width:0
+        },
+        label: {
+          show: true
+        },
+        highlight:{
+          opacity: 0.08
+        }
+      }
+    },
+    grid: {
+      hoverable: true,
+      clickable: true
+    },
+    colors: ["#FFC200", "#54B254","#FF582D","#fd9c35","#fec42c","#d4df5a","#5578c2"],
+    legend: {
+      show: false
+    }
+  });
+    
+  });
+</script>		
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('.datatable').DataTable( {
+        initComplete: function () {
+          var api = this.api();
+
+          api.columns().indexes().flatten().each( function ( i ) {
+            var column = api.column( i );
+            var select = $('<select><option value=""></option></select>')
+              .appendTo( $(column.footer()).empty() )
+              .on( 'change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                  $(this).val()
+                );
+
+                column
+                  .search( val ? '^'+val+'$' : '', true, false )
+                  .draw();
+              } );
+
+            column.data().unique().sort().each( function ( d, j ) {
+              select.append( '<option value="'+d+'">'+d+'</option>' )
+            } );
+          } );
+        }
+      } );
+
+        //Search input style
+      $('.dataTables_filter input').addClass('form-control').attr('placeholder','Search');
+      $('.dataTables_length select').addClass('form-control').val('25');  
+      //initialize the javascript
+
+    });
+  </script>
+  
+
+	 
+		
+	

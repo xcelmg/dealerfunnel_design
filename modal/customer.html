@@ -1,0 +1,55 @@
+{% load dealerfunnel_filters %}
+<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Customer Summary
+        
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form class="form">
+          <div class="row">
+            <div class="col-sm-12">
+              <audio src="images/sample_ring.mp3" preload="auto"/>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>{{local.customer.fname}} {{local.customer.lname}}</h4>
+              <p><i class="fa fa-location-arrow"></i>{{local.customer.address}} {{local.customer.state}} {{local.customer.fzip.code}}</p>
+              {% if local.isphone == 1 %}
+              <p><i class="fa fa-phone"></i>{{local.phone|phone_formate:'0'}}</p>
+              {% endif %}
+              <p><i class="fa fa-envelope"></i> <a href="#">{{local.customer.email}}</a></p>
+            </div>
+            <div class="col-sm-6">
+              <p><strong>Last Visit : </strong>{{local.customer.lastvisit|date:"d/m/Y"}}</p>
+              <p><strong>Car Sold : </strong> {{local.customer.sales}}</p>
+              <p><strong>Repair Order : </strong> {{local.customer.service}}</p>
+              <p><strong>Status : </strong> 
+              {% if local.customer.status == 1 %}
+              <label class="label label-warning">Active</label>
+              {% elif local.customer.status == 2 %}
+              <label class="label label-danger">Less Active</label>
+              {% elif local.customer.status == 3 %}
+              <label class="label label-black">Lost</label>
+              {% endif %} 
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button onclick="getsummary()" type="button" class="btn btn-primary">Customer Summary</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  <script>
+    function getsummary()
+    {
+       window.open('/customer/profile/?cid={{local.customer.keyid}}','_newtab');
+    } 
+  </script>

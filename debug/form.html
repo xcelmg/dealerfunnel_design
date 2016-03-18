@@ -1,0 +1,30 @@
+<script>
+         var app = angular.module('selectcampaignapp', []);
+         
+                  
+         app.controller("lead_leftpanel", function($scope,$http) {
+            $scope.responsetype     = [1,2,3,4,5,6];
+            $scope.Hiall  = function(elem)
+            {
+                alert(elem);
+            }
+         });
+         
+         
+         
+         app.config(function($interpolateProvider) {
+  			$interpolateProvider.startSymbol('{[{');
+  			$interpolateProvider.endSymbol('}]}');
+		 });
+         
+</script>
+
+<body ng-controller='lead_leftpanel' id='lead_leftpanel' ng-app='selectcampaignapp'>
+
+
+<a  href="javascript:void(0)" ng-repeat="artist in responsetype" id="{[{ artist }]}" ng-click="Hiall(artist)">{[{ artist }]}</a>
+
+
+
+
+</body>

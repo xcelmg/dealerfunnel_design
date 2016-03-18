@@ -1,0 +1,43 @@
+ {% load humanize %}
+            <div role="grid" class="dataTables_wrapper" id="DataTables_Table_0_wrapper">
+            <table class="table no-border datatable table-striped dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+              <thead class="no-border">
+                <tr role="row">
+                	<th>Zip</th>
+                	<th onclick="sorting('1')" class="{{local.filedorder.order1}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 70px;" aria-sort="descending" aria-label="Name: activate to sort column ascending">Radius</th>
+                	<th onclick="sorting('2')" class="{{local.filedorder.order2}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 90px;" aria-sort="descending" aria-label="Name: activate to sort column ascending">Customer</th>
+                	<th>Location</th>
+                	<th onclick="sorting('3')" class="{{local.filedorder.order3}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 60px;" aria-sort="descending" aria-label="Name: activate to sort column ascending">BNS</th>
+                	<th onclick="sorting('4')" class="{{local.filedorder.order4}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 60px;" aria-sort="descending" aria-label="Name: activate to sort column ascending">SNB</th>
+                	<th onclick="sorting('5')" class="{{local.filedorder.order5}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 60px;" aria-sort="descending" aria-label="Name: activate to sort column ascending">B&S</th>
+                	<th onclick="sorting('6')" class="{{local.filedorder.order6}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 80px;" aria-sort="descending" aria-label="Name: activate to sort column ascending">Make Conquest</th>
+                	<th>Sales Market Share</th>
+                	<th>Service Market Share</th>
+                	<th>Crossover Conquest</th>
+                 </tr>	
+              </thead>
+              
+            <tbody class="no-border-x no-border-y" role="alert" aria-live="polite" aria-relevant="all">
+                {% for n in local.market   %}
+                <tr class = "{% cycle 'odd' 'even' %}">
+                  <td class="  sorting_1">{{ n.fzipcode.code }}</td>
+                  <td class=" ">{{ n.radious }}</td>
+                  <td class=" ">{{ n.customer|intcomma }}</td>
+                  <td class=" ">{{ n.city }} {{ n.state }}</td>
+                  <td class=" ">{{ n.bns|intcomma }}</td>
+                  <td class=" ">{{ n.snb|intcomma }}</td>
+                  <td class=" ">{{ n.bs|intcomma }}</td>
+                  <td class=" ">0</td>
+                  <td class=" ">0</td>
+                  <td class=" ">0</td>
+                  <td class=" ">0</td>
+                </tr>
+                {% endfor %}
+                </tbody></table>
+                <div class="dataTables_info" id="DataTables_Table_0_info">Showing {{ local.pagin.limitplus  }} to {{ local.pagin.offset }} of {{ local.pagin.total_content|intcomma }} entries</div>
+                <div class="dataTables_paginate paging_two_button" id="datatable-tbl_paginate"><a onclick="pevpagin()" role="button" tabindex="0" class="paginate_disabled_previous" id="datatable-tbl_previous" aria-controls="datatable-tbl">Previous</a><a onclick="nexpagin()" role="button" tabindex="0" class="paginate_disabled_next" id="datatable-tbl_next" aria-controls="datatable-tbl">Next</a></div>
+                </div>
+                <input type="hidden" id="cpage" value="{{ local.pagin.current_page  }}"/>
+                <input type="hidden" id="tpage" value="{{ local.pagin.total_page  }}"/>
+                <input type="hidden" id="fieldid" value="{{local.filedid}}"/>
+                <input type="hidden" id="orderid" value="{{local.orderid}}"/>

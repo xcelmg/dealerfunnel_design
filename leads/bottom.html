@@ -1,0 +1,48 @@
+{% load static %}
+<script type="text/javascript">
+    $(document).ready(function(){
+      $("body").css({opacity:1,'margin-left':0});
+      $('.multiselect').multiselect();
+      
+
+        //Search input style
+      $('.dataTables_filter input').addClass('form-control').attr('placeholder','Search');
+      $('.dataTables_length select').addClass('form-control'); 
+      $('.dataTables_length').hide();  
+      //initialize the javascript
+
+      audiojs.events.ready(function() {
+        var as = audiojs.createAll();
+      });
+      // Datepicker
+      $('.datepicker').datepicker();
+    });
+  </script>
+  <script type="text/javascript">
+    var selectAll = function () {
+      $('.leads-list-data input:not(:checked)').click();
+
+    }, toggleSelection = function () {
+      $checked = $('.leads-list-data input:checked');
+      $('.leads-list-data input:not(:checked)').click();
+      $checked.click();
+
+    }, unselectAll = function () {
+      $('.leads-list-data input:checked').click();
+
+    }, markAsRead = function () {
+      $('.leads-list-data input:checked').parents('.message').removeClass('unread');
+
+    }, markAsUnread = function () {
+      $('.leads-list-data input:checked').parents('.message').addClass('unread');
+
+    }, deleteMessages = function () {
+      $('.leads-list-data input:checked').parents('.message').remove();
+      
+    };
+  </script>
+  
+  <script src="{% static 'js/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+  </body>
+</html>

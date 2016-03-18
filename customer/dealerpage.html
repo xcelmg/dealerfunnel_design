@@ -1,0 +1,203 @@
+{% load humanize %}
+{% load dealerfunnel_filters %}
+<div class="page-head ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Customers</h2>
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li class="active">Customers</li>
+            </ol>
+        </div>
+        </div>
+      </div>
+		  <div class="cl-mcont">
+  			<div class="row dash-cols">
+  				<div class="col-sm-6">
+  					<div class="block">
+              <div class="header bg-lightgray full-header">
+                <h4 class="clearfix title">
+                  <span class="pull-left">Total<br><small>Customers</small></span>
+                  <span class="pull-right">{{ local.analysis.total_customer|intcomma }}</span>
+                </h4>
+              </div>
+              <div class="chart-area">
+              	<div id="customer-chart" class="chart-area" style="height: 220px;"></div>
+              </div>
+            </div>
+  				</div>
+          <div class="col-sm-2">
+            <div class="block cus-block">
+              <div class="header bg-active full-header">
+                <h4 class="clearfix title">
+                  <span class="pull-left">Active<br><small>0-6 months</small></span>
+                  <span class="pull-right">{{ local.analysis.active|intcomma }}</span>
+                </h4>
+              </div>
+              <div class="content">
+                <table class="table">
+                  <tbody><tr>
+                    <td><strong>1-2 visits</strong></td>
+                    <td class="tex-right">{{ local.analysis.active_12|intcomma}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>3-4 visits</strong></td>
+                    <td class="tex-right">{{ local.analysis.active_34|intcomma}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>5+ visits</strong></td>
+                    <td class="tex-right">{{ local.analysis.active_5|intcomma}}</td>
+                  </tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="block cus-block">
+              <div class="header bg-less-active full-header">
+                <h4 class="clearfix title">
+                  <span class="pull-left">Less Active<br><small>6-12 months</small></span>
+                  <span class="pull-right">{{ local.analysis.lessactive|intcomma}}</span>
+                </h4>
+              </div>
+              <div class="content">
+                <table class="table">
+                  <tbody><tr>
+                    <td><strong>1-2 visits</strong></td>
+                    <td class="tex-right">{{ local.analysis.less_12|intcomma}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>3-4 visits</strong></td>
+                    <td class="tex-right">{{ local.analysis.less_34|intcomma}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>5+ visits</strong></td>
+                    <td class="tex-right">{{ local.analysis.less_5|intcomma}}</td>
+                  </tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="block cus-block">
+              <div class="header bg-lost full-header">
+                <h4 class="clearfix title">
+                  <span class="pull-left">Lost<br><small>12+ months</small></span>
+                  <span class="pull-right">{{ local.analysis.lost|intcomma}}</span>
+                </h4>
+              </div>
+              <div class="content">
+                <table class="table">
+                  <tbody><tr>
+                    <td><strong>1-2 visits</strong></td>
+                    <td class="tex-right">{{ local.analysis.lost_12|intcomma}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>3-4 visits</strong></td>
+                    <td class="tex-right">{{ local.analysis.lost_34|intcomma}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>5+ visits</strong></td>
+                    <td class="tex-right">{{ local.analysis.lost_5|intcomma}}</td>
+                  </tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+  			</div>
+
+        <div id="customer_ajax" class="customer-tbl">
+          
+        </div>
+		  </div>
+		</div> 
+	</div>
+<script type="text/javascript">
+    function changeselect()
+    {
+       var s = $('#mselect').val();
+       $('#mselected').val(s);
+    }
+    function paginfilter()
+    {
+	  var dealerid = $('#selectedid').val();
+	  var cpage    = 1;
+	  var ptype    = 1; 
+	  $('#customer_ajax').showLoading(); 
+	  $.get('/customer/paginfilter/',{dealerid:dealerid,cpage:cpage,ptype:ptype},function(data, status){
+         $('#customer_ajax').html(data);
+         $("abbr.timeago").timeago();
+         $('.multiselect').multiSelect();
+         $('#customer_ajax').hideLoading();
+      });
+	  
+    }
+    $(document).ready(function(){
+     paginfilter(); 
+     area1 = Morris.Area({
+	  element: 'customer-chart',
+	  data: [
+	      {period: '2014 Q1', active: 2666, less: null, lost: 1331},
+	      {period: '2014 Q2', active: 2778, less: 2294, lost: 1331},
+	      {period: '2014 Q3', active: 4912, less: 1969, lost: 1331},
+	      {period: '2014 Q4', active: 13767, less: 7597, lost: 1331},
+	      {period: '2015 Q1', active: 6810, less: 11914, lost: 1331},
+	      {period: '2015 Q2', active: 9670, less: 6293, lost: 1331},
+	      {period: '2015 Q3', active: 4820, less: 3795, lost: 1331},
+	      {period: '2015 Q4', active: 15073, less: 5967, lost: 1331},
+	      {period: '2016 Q1', active: 10687, less: 4460, lost: 1331},
+	      {period: '2016 Q2', active: 8432, less: 713, lost: 13311}
+	    ],
+	    xkey: 'period',
+	    ykeys: ['active', 'less', 'lost'],
+	    labels: ['Active', 'Less Active', 'Lost'],
+	    pointSize: 2,
+	    hideHover: 'auto',
+	    lineWidth: 2,
+	    behaveLikeLine: true,
+	    lineColors: ['#298CF9','#2671C5',"#565656"],
+	    fillOpacity: 1
+	});
+     $(window).on('resize', function() { area1.redraw() });
+      
+    });
+    function nexpagin()
+              {
+                 var cpage    = parseInt($('#cpage').val());
+                 var tpage    = parseInt($('#tpage').val());
+                 var dealerid = $('#selectedid').val();
+                 cpage++;
+                 if(cpage<=tpage)
+                 {
+                    
+      				$('#customer_ajax').showLoading(); 
+	  				$.get('/customer/paginfilter/',{dealerid:dealerid,cpage:cpage,ptype:tpage},function(data, status){
+         			$('#customer_ajax').html(data);
+         			$("abbr.timeago").timeago();
+         			$('.multiselect').multiselect();
+         			$('#customer_ajax').hideLoading();
+      			    });
+      				
+      				
+                 }
+              }
+  function pevpagin()
+              {
+                 var cpage = parseInt($('#cpage').val());
+                 var tpage = parseInt($('#tpage').val());
+                 var dealerid = $('#selectedid').val();
+                 cpage--;
+                 if(cpage>0)
+                 {
+                    
+      				$('#customer_ajax').showLoading(); 
+	  				$.get('/customer/paginfilter/',{dealerid:dealerid,cpage:cpage,ptype:tpage},function(data, status){
+         			$('#customer_ajax').html(data);
+         			$("abbr.timeago").timeago();
+         			$('.multiselect').multiselect();
+         			$('#customer_ajax').hideLoading();
+      				});
+                 }
+              }            
+
+  </script>		

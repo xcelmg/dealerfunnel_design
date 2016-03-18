@@ -1,0 +1,94 @@
+{% load humanize %}
+<div class="cl-mcont">
+
+      <div class="campaign-dashboard-tbl">
+        <div class="block-flat">
+          <div class="">
+            <div class="header text-right no-border">
+              <div class="btn-group">
+                <button onclick="downloadcsv()" class="btn btn-default" type="button"><i class="fa fa-file-excel-o"></i></button>
+                <button onclick="downloadpdf()" class="btn btn-default" type="button"><i class="fa fa-file-pdf-o"></i></button>
+                <button class="btn btn-default" type="button"><i class="icon-printer"></i></button>
+              </div>
+            </div>
+            <div class="content table-responsive clearfix">
+              <div role="grid" class="dataTables_wrapper" id="DataTables_Table_0_wrapper"><div id="DataTables_Table_0_length" class="dataTables_length hide"><label>Show <select name="DataTables_Table_0_length" size="1" aria-controls="DataTables_Table_0"><option value="10" selected="selected">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div class="dataTables_filter hide" id="DataTables_Table_0_filter"><label>Search: <input type="text" aria-controls="DataTables_Table_0"></label></div><table class="no-border datatable table-striped dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+              <thead class="no-border">
+                <tr role="row"><th class="text-right sorting_asc" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 122px;" aria-sort="ascending" aria-label="Trigger: activate to sort column descending">Trigger</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 67px;" aria-label="Campaigns: activate to sort column ascending">Campaigns</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 66px;" aria-label="Mail Pieces: activate to sort column ascending">Mail Pieces</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 35px;" aria-label="Email: activate to sort column ascending">Email</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 35px;" aria-label="Leads: activate to sort column ascending">Leads</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 56px;" aria-label="Cars Sold: activate to sort column ascending">Cars Sold</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 72px;" aria-label="Gross Profit: activate to sort column ascending">Gross Profit</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 83px;" aria-label="Repair Orders: activate to sort column ascending">Repair Orders</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 52px;" aria-label="RO Total: activate to sort column ascending">RO Total</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 40px;" aria-label="Cost: activate to sort column ascending">Cost</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 49px;" aria-label="ROI: activate to sort column ascending">ROI</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 71px;" aria-label="Days Active: activate to sort column ascending">Days Active</th></tr>
+              </thead>
+              
+              <tfoot>
+                <tr><th class="text-right" rowspan="1" colspan="1">{{local.total.Trigger}}</th><th rowspan="1" colspan="1">{{local.total.Campaigns|intcomma}}</th><th rowspan="1" colspan="1">{{local.total.MailPieces|intcomma}}</th><th rowspan="1" colspan="1">{{local.total.Email|intcomma}}</th><th rowspan="1" colspan="1">{{local.total.Leads|intcomma}}</th><th rowspan="1" colspan="1">{{local.total.CarsSold|intcomma}}</th><th rowspan="1" colspan="1">${{local.total.GrossProfit|intcomma}}</th><th rowspan="1" colspan="1">{{local.total.RepairOrders|intcomma}}</th>
+                <th rowspan="1" colspan="1">${{local.total.ROTotal|intcomma}}</th><th rowspan="1" colspan="1">${{local.total.Cost|intcomma}}</th><th rowspan="1" colspan="1">{{local.total.ROI|intcomma}}%</th><th rowspan="1" colspan="1"></th></tr>
+              </tfoot>
+            <tbody class="no-border-x no-border-y" role="alert" aria-live="polite" aria-relevant="all">
+                {% for n in local.report %}
+                <tr class="odd">
+                  <td class="text-right  sorting_1"><strong>{{n.Trigger}}</strong></td>
+                  <td class=" "><a href="#">{{n.Campaigns|intcomma}}</a></td>
+                  <td class=" ">{{n.MailPieces|intcomma}}</td>
+                  <td class=" ">{{n.Email|intcomma}}</td>
+                  <td class=" ">{{n.Leads|intcomma}}</td>
+                  <td class=" ">{{n.CarsSold|intcomma}}</td>
+                  <td class=" ">${{n.GrossProfit|intcomma}}</td>
+                  <td class=" ">{{n.RepairOrders|intcomma}}</td>
+                  <td class=" ">${{n.ROTotal|intcomma}}</td>
+                  <td class=" ">${{n.Cost|intcomma}}</td>
+                  <td class=" ">{{n.ROI|intcomma}}%</td>
+                  <td class=" ">
+                  	{% if n.DaysActive = 1 %}
+                  	<span class="label label-primary">In Progress</span>
+                  	{% endif %}
+                  	{% if n.DaysActive = 0 %}
+                  	<span class="label label-success">Complete</span>
+                  	{% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+                </tbody></table>
+            </div>
+          </div>
+        </div>
+      </div>
+		
+		  </div>
+		</div>
+<script type="text/javascript">
+    function downloadpdf()
+    {
+        location.href = "{{local.domain}}" + "reports/roi/downloadpdf?dealerid=" + "{{local.dealerid}}";
+    }
+    function downloadcsv()
+    {
+        location.href = "{{local.domain}}" + "reports/roi/downloadcsv?dealerid=" + "{{local.dealerid}}"; 
+    }
+    $(document).ready(function(){
+      
+      $('.datatable').DataTable( {
+        initComplete: function () {
+          var api = this.api();
+
+          api.columns().indexes().flatten().each( function ( i ) {
+            var column = api.column( i );
+            var select = $('<select><option value=""></option></select>')
+              .appendTo( $(column.footer()).empty() )
+              .on( 'change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                  $(this).val()
+                );
+
+                column
+                  .search( val ? '^'+val+'$' : '', true, false )
+                  .draw();
+              } );
+
+            
+          } );
+        }
+      } );
+
+        //Search input style
+      $('.dataTables_length,.dataTables_filter,.dataTables_info,.dataTables_paginate').addClass('hide');   
+      //initialize the javascript
+    });
+  </script>				

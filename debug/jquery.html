@@ -1,0 +1,13 @@
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+ 
+ 
+Hi all
+<input type="button" value="Click" onclick="urlchange()"/>
+
+<script>
+  function urlchange()
+  {
+     pageurl = 'http://127.0.0.1:8000/debugjquery/?k=200';
+     window.history.pushState({path:pageurl},'',pageurl);
+  }
+</script>

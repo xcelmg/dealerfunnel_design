@@ -1,0 +1,50 @@
+<div id="modal_container" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Search Phone Number</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="row">
+            <label class="col-sm-4 control-label">Phone Number Type:</label>
+            <div class="col-sm-5">
+              {% if local.type = '1' %}
+              <select id="ptype" class="form-control">
+                <option selected value="1" >Toll Free</option>
+                <option value="2">Local</option>
+              </select>
+              {%endif%}
+              {% if local.type = '2' %}
+              <select id="ptype" class="form-control">
+                 <option value="2">Local</option>
+              </select>
+              {%endif%}
+            </div>
+            
+          </div>
+          <div class="row">
+            <label class="col-sm-4 control-label">Matching This Pattern:</label>
+            <div class="col-sm-5">
+              <input id="pattern" type="text" class="form-control">
+            </div>
+            
+            
+          </div>
+          <div class="row">
+            <label class="col-sm-4 control-label">City</label>
+            <div class="col-sm-5">
+              <input id="searchcity" type="text" class="form-control">
+            </div>
+            
+            
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button onclick="searchphonenumber()" type="button" class="btn btn-primary">Search Number</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->

@@ -1,0 +1,30 @@
+{% load humanize %}
+{% load static %}
+</style>
+</head>
+<body>
+
+     
+<div class="container-fluid" id="ajaxcontainer">
+          
+</div>
+	
+  
+<script>
+function dealer_ajax_loading()
+{
+   var dealerid = $('#selectedid').val();
+   $('#ajaxcontainer').showLoading(); 
+	  $.get('/dashboard/dealerpage/',{dealerid:dealerid},function(data, status){
+         $('#ajaxcontainer').html(data);
+         $('#ajaxcontainer').hideLoading();
+      });
+}
+$(document).ready(function(){
+    dealer_ajax_loading();  
+});
+
+</script>    
+</body>
+  
+</html>

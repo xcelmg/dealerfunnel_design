@@ -1,0 +1,19 @@
+<div id="ajaxcontainer" class="container-fluid">
+
+</div>
+<script>
+function dealer_ajax_loading()
+{
+   var dealerid = $('#selectedid').val();
+   $('#ajaxcontainer').showLoading(); 
+	  $.get('/customer/dealerpage/',{dealerid:dealerid},function(data, status){
+         $('#ajaxcontainer').html(data);
+         $('#ajaxcontainer').hideLoading();
+      });
+}
+$(document).ready(function(){
+    dealer_ajax_loading();  
+});
+
+</script>    
+</body>

@@ -1,0 +1,146 @@
+ {% load static %}
+ {% load dealerfunnel_filters %}
+<link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.multiselect/css/bootstrap-multiselect.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'js/jquery.multiselect/css/multi-select.css' %}" />
+<div class="container-fluid" id="pcont">
+      <div class="page-head ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Users</h2>
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li class="active">Users</li>
+            </ol>
+          </div>
+          <div class="col-sm-6 text-right">
+            <button onclick="addusermodal()" class="btn btn-success"  type="button">Add User</button>
+          </div>
+        </div>
+      </div>
+    <div class="cl-mcont">
+      <div class="campaign-dashboard-tbl">
+        <div class="block">
+          <div class="content">
+          	<div class="row">
+            <table class="table table-hover datatable table-striped">
+              <thead class="no-border">
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Last Activity</th>
+                  <th>Client Reference</th>
+                  <th style="width: 150px" class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="no-border-x no-border-y">
+                {% for n in local.user %}
+                <tr>
+                  <td>
+                    <div class="media user-media">
+                    	<div class="dealership-logo media-object pull-left">
+                     		<img src="{{ n.fuserphoto.path|imagepath }}" alt="">
+                     	</div>
+                      <div class="media-body">
+                        <a href="#">{{n.name}}</a>
+                        <p>{{n.fusertype.user}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td><a href="mailto:{{n.email}}">{{n.email}}</a></td>
+                  <td>
+                  	{% if n.islogin < 2 %}
+                  	<abbr title="{{ n.lastlogin|date:"Y-m-d h:i:s" }}" class="timeago">{{ n.lastlogin|date:"Y-m-d h:i:s" }}</abbr>
+                  	{% endif %}
+                  </td>
+                  	
+                  <td></td>
+                  <td  class="text-center">
+                    <a onclick="edituser('{{n.id}}')" href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal">Edit</a>  
+                    <a onclick="deleteuser('{{n.keyid}}')" href="javascript:void(0)" class="btn btn-sm btn-inverse">Delete</a>  
+                  </td>
+                </tr>
+                {% endfor %}	
+                
+              </tbody>
+            </table>
+          </div>
+       	</div>
+        </div>
+      </div>
+		
+		  </div>
+		</div> 
+		
+	</div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modaladduser">
+    
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modaledituser">
+    
+    
+  </div>
+  <script type="text/javascript">
+    
+    function addusermodal()
+    {
+       $('#pcont').showLoading();
+       $.get("{% url 'user_create_modal' %}",{},function(data, status){
+         $('#modaladduser').html(data);
+         $('#pcont').hideLoading();
+         $('#modaladduser').modal();
+       });
+       
+    }
+    function adduser()
+    {
+       
+    }
+    function deleteuser(id)
+    {
+       bootbox.confirm("Are you sure to delete this user?", function(result) {
+           if(result)
+           {
+              location.href = '{{local.domin}}'+'user/deleteuser/?uid='+id;
+           }
+       });
+       
+    }
+    function edituser(id)
+    {
+       $('#pcont').showLoading();
+       $.get('/user/edituser/',{userid:id},function(data, status){
+         $('#modaledituser').html(data);
+         $('#pcont').hideLoading();
+         $('#modaledituser').modal();
+       });
+    }
+    function adminchange()
+    {
+       var clientid = $('#utypeid').val();
+       if (clientid == '1')
+       {
+          $('#dealerlist').show();
+       }
+       else
+       {
+          $('#dealerlist').hide();
+       } 
+    }
+    $('.confirm').click( function(e) {
+      bootbox.confirm("Are you sure to delete this user?", function(result) {});
+    });
+
+    $(document).ready(function(){
+      $("abbr.timeago").timeago();
+      $(".datatable").DataTable();
+      $('.dataTables_filter input').addClass('form-control').attr('placeholder','Search');
+      $('.dataTables_length select').addClass('form-control');   
+      $(".spk1").sparkline([2,4,3,6,7,5,8,9,4,2,6,8,8,9,10], { type: 'bar', width: '80px', barColor: '#F88727'});
+      
+      
+    });
+  </script>

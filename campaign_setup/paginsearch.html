@@ -1,0 +1,141 @@
+{% load humanize %}
+{% load dealerfunnel_filters %}
+
+
+<div class="leads-data-tbl">
+        <div class="block-flat" id="search_result">
+          <div class="create-campaign-actions">
+            <div class="create-campaign-stats">
+              <ul>
+                <li><span class="title">Total Matches</span><span class="counter">{{local.total_customer|intcomma}}</span></li>
+                <li><span class="title">Selected Total</span><span id="select_count_id" class="counter">{{local.selected_count|intcomma}}</span></li>
+                <li><span class="title">Selected Email</span><span id="select_email_id" class="counter">{{local.selected_email}}</span></li>
+                <li><span class="title">Cost</span><span class="counter">$<span id="costid" >{{local.cost|intcomma}}</span></li>
+              </ul>
+            </div>
+            <div class="btn-group create-campaign-action-btn">
+                <a class="btn btn-sm" href="javascript:selectAll()">Select All</a>
+                <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a title="" data-original-title="" href="javascript:toggleSelection()">Toggle Selection</a>
+                  </li>
+                  <li><a data-toggle="modal" href="#modal-selection-range">Selection Range</a></li>
+                  <li class="divider"></li>
+                  <li>
+                    <a title="" data-original-title="" href="javascript:unselectAll()">Unselect All</a>
+                  </li>
+                </ul>
+              </div>  
+            
+          </div>
+          <div class="leads-list-data">
+            <div id="ajaxpagincontainer" class="content table-responsive clearfix">
+              <div role="grid" class="dataTables_wrapper clearfix" id="DataTables_Table_0_wrapper"><div id="DataTables_Table_0_length" class="dataTables_length" style="display: none;"><label>Show <select name="DataTables_Table_0_length" size="1" aria-controls="DataTables_Table_0" class="form-control"><option value="10" selected="selected">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div class="dataTables_filter" id="DataTables_Table_0_filter"><label>Search: <input type="text" aria-controls="DataTables_Table_0" class="form-control" placeholder="Search"></label></div><table class="no-border datatable table-striped dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+               <thead class="no-border">
+                <tr role="row">
+                	<th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 34px;" aria-sort="ascending" aria-label=": activate to sort column descending"></th>
+                	<th onclick="sorting('1')" class="{{local.order.order1}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 90px;" aria-sort="descending" aria-label="Name: activate to sort column ascending">Name</th>
+                	<th onclick="sorting('2')" class="{{local.order.order2}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 116px;" aria-label="Last Visit: activate to sort column ascending">Last Visit</th>
+                	<th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 159px;" aria-label="Last Contacted: activate to sort column ascending">Last Contacted</th>
+                	<th onclick="sorting('3')" class="{{local.order.order3}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 97px;" aria-label="Location: activate to sort column ascending">Location</th>
+                	<th onclick="sorting('4')" class="{{local.order.order4}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 95px;" aria-label="Distance: activate to sort column ascending">Distance</th>
+                	<th onclick="sorting('5')" class="{{local.order.order5}}" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 126px;" aria-label="Type: activate to sort column ascending">Type</th></tr>
+              </thead>
+              
+            <tbody class="no-border-x no-border-y" role="alert" aria-live="polite" aria-relevant="all">
+            {% for n in local.customer %}
+            <tr class="odd">
+                  <td class="  sorting_1">
+                  	<input {% if n.select == 1 %} checked {% endif %}  onclick="setcustomer('{{n.id}}')" type="checkbox">
+                  	
+                  </td>
+                  <td class=" "><a data-toggle="modal" href="#modal-weblead">{{ n.fname }} {{ n.lname }}</a></td>
+                  <td class=" "><abbr title="{{ n.lastvisit|date:"Y-m-d" }}" class="timeago">{{ n.lastvisit|date:"Y-m-d" }}</abbr></td>
+                  <td class=" "></td>
+                  <td class=" ">{{ n.city }}</td>
+                  <td class=" ">{{ n.distance|float_formate }}</td>
+                  <td class=" "> 
+                      {% if n.status == 1 %}
+                      <label class="label label-warning">Active</label>
+                      {% elif n.status == 2 %}
+                      <label class="label label-danger">Less Active</label>
+                      {% elif n.status == 3 %}
+                      <label class="label label-black">Lost</label>
+                      {% endif %} 
+                  </td>
+                  <input value="{{n.select}}" type="hidden" id="id_{{n.id}}"/>
+                  <input value="{{n.isemail}}" type="hidden" id="email_{{n.id}}"/>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+            <div class="dataTables_info" id="DataTables_Table_0_info">Showing {{ local.pagin.limitplus  }} to {{ local.pagin.offset }} of {{ local.pagin.total_content|intcomma }} entries</div>
+            <div class="dataTables_paginate paging_two_button" id="DataTables_Table_0_paginate">
+            	<a onclick = "previouspagin()" role="button" tabindex="0" class="paginate_disabled_previous" id="DataTables_Table_0_previous" aria-controls="DataTables_Table_0">Previous</a>
+            	<a onclick="nexpagin()" role="button" tabindex="0" class="paginate_disabled_next" id="DataTables_Table_0_next" aria-controls="DataTables_Table_0">Next</a></div>
+            </div>
+            <input type="hidden" id="cpage" value="{{ local.pagin.current_page  }}"/>
+            <input type="hidden" id="tpage" value="{{ local.pagin.total_page  }}"/>
+            <input type="hidden" id="mselected" value=""/>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+<input value="{{local.selected_count}}" type="hidden" id="total_select_count_id"/>
+<input value="{{local.dealerid}}" type="hidden" id="dealerid"/>
+<input type="hidden" value="{{local.selected_email}}" id="totalemailselectedid"/>
+<input value="{{local.selected_count}}" type="hidden" id="totalcostid"/>
+<input value="{{local.cost_per_pieces}}" type="hidden" id="costperpiecesid"/>
+<input value="{{local.fieldid}}" type="hidden" id="fieldid"/>
+<input value="{{local.ordestatus}}" type="hidden" id="orderstatus"/>      
+<script>
+function setcustomer(val)
+{
+   var id = "id_"+val;
+   var isemail = parseInt($('#email_'+val).val());
+   var totalemailselected = parseInt($('#totalemailselectedid').val());
+   var costperpiece = $('#costperpiecesid').val();
+   var status = $('#'+id).val();
+   var scount = parseInt($('#total_select_count_id').val());
+   var tab    = $('#topnavid').val();
+   if(status == '0')
+   {
+      sentstatus = 1;
+      $('#'+id).val(sentstatus);
+      scount = scount + 1;
+      temailselect = totalemailselected + isemail; 
+      $('#totalemailselectedid').val(temailselect);
+      $('#select_email_id').html(temailselect);
+      $('#total_select_count_id').val(scount);
+   }
+   else
+   {
+      sentstatus = 0;
+      $('#'+id).val(sentstatus);
+      scount = scount - 1;
+      temailselect = totalemailselected - isemail;
+      $('#totalemailselectedid').val(temailselect);
+      $('#select_email_id').html(temailselect);
+      $('#total_select_count_id').val(scount);
+   }
+   totalcostid = scount * costperpiece;
+   $('#costid').html(totalcostid.toFixed(2));
+   $('#select_count_id').html(scount);
+   $('#searchfilter').showLoading();
+   $('#cmailtotalid').html(scount);
+   $('#cemailtotalid').html(temailselect);
+   $('#ccostid').html(totalcostid.toFixed(2));
+   $.get('/campaign/setup/select/customer/',
+	 {cid:val,scount:sentstatus,email:isemail,tab:tab},function(data, status)
+	 {
+         $('#searchfilter').hideLoading(); 
+    });
+   
+}
+
+</script>      
+      

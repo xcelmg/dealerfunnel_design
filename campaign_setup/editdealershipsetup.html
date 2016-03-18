@@ -1,0 +1,735 @@
+{% load dealerfunnel_filters %}
+<div class="container-fluid" id="pcont">
+      <div class="page-head ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Dealership Setup</h2>
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Dealership</a></li>
+              <li class="active">Dealership Setup</li>
+            </ol>
+        </div>
+        </div>
+      </div>
+    <div class="cl-mcont">
+
+      <div class="campaign-dashboard-tbl">
+        <div class="block-flat">
+          <div class="dealership-setup">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dealer-info" data-toggle="tab">Dealer Info</a></li>
+              <li><a href="#dealer-trigger" data-toggle="tab">Triggers</a></li>
+              <li><a href="{% url 'campaign_setup' %}?id={{local.info.keyid }}">Campaign Builder</a></li>
+              <li><a href="{% url 'dealership_setup_campaign' %}?id={{local.info.keyid }}">Campaign Planner</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="dealer-info">
+                <form enctype="multipart/form-data" id="form1" method="post" action="/dealership/setup/upload/" class="form">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Name</label>
+                            <input value="{{ local.info.name }}" name="name" type="text" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label>Address</label>
+                            <input value="{{ local.info.address }}" name="address" type="text" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>City</label>
+                            <input value="{{ local.info.city }}" name="city" type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <label>State</label>
+                            <select name="state" class="form-control">
+                            {% for state in local.state %}
+                            	<option {% if local.info.state == state.state_abbreviation   %} selected {% endif %} value="{{ state.state_abbreviation }}" >{{ state.state_abbreviation }}</option>
+                            {% endfor %}	
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <label>Zip</label>
+                            <input  value={{ local.info.fzip.code }} name="zip" type="text" class="form-control" data-mask="zipcode">
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>Logo</label>
+                        <input name="rlogo" type="file" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>Manufactor Logo</label>
+                        <input name="mlogo" type="file" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <label>Color</label>
+                        <div class="input-group colorpicker">
+                          <input name="color" type="text" value="{{ local.info.color }}" class="form-control"  />
+                          <span class="input-group-addon"><i class=""></i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h4 class="border-bottom">Contact</h4>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Contacts</label>
+                          <input value={{ local.info.sale_contact }} name="sale_contact" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Contacts</label>
+                          <input value={{ local.info.service_contact }} name="service_contact" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Contacts</label>
+                          <input value={{ local.info.trade_contact }} name="trade_contact" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Title</label>
+                          <input value={{ local.info.sale_title }} name="sale_title" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Title</label>
+                          <input value={{ local.info.service_title }} name="service_title" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Title</label>
+                          <input value={{ local.info.trade_title }} name="trade_title" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Phone</label>
+                          <input value="{{ local.info.fsale_phone.number|phone_formate:'2' }}" name="sale_phone" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Phone</label>
+                          <input value="{{ local.info.fservice_phone.number|phone_formate:'2' }}" name="service_phone" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Phone</label>
+                          <input value="{{ local.info.ftrade_phone.number|phone_formate:'2' }}" name="trade_phone" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h4>Sales Hours</h4>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h5>Monday - Friday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input value="{{ local.info.sales_regular_hour_from }}" name="sales_regular_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input value="{{ local.info.sales_regular_hour_to }}" name="sales_regular_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <h5 class="clearfix">Sunday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input value="{{ local.info.sales_sunday_hour_from }}" name="sales_sunday_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input value="{{ local.info.sales_sunday_hour_to }}" name="sales_sunday_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h5>Saturday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input value="{{ local.info.sales_saturday_hour_from }}" name="sales_saturday_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input value="{{ local.info.sales_saturday_hour_to }}" name="sales_saturday_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <h4>Services Hours</h4>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h5>Monday - Friday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input value="{{ local.info.service_regular_hour_from }}" name="service_regular_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input value="{{ local.info.service_regular_hour_to }}" name="service_regular_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <h5 class="clearfix">Sunday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input value="{{ local.info.service_sunday_hour_from }}" name="service_sunday_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input value="{{ local.info.service_sunday_hour_to }}" name="service_sunday_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h5>Saturday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input value="{{ local.info.service_saturday_hour_from }}" name="service_saturday_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input value="{{ local.info.service_saturday_hour_to }}" name="service_saturday_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h4 class="border-bottom">Tracking Number</h4>
+                  <div id="trakingnumberid" >
+                  {% if local.info.ftwillio.sid = "" %}
+                  
+                  <div class="row">
+                    
+                    <div class="col-sm-12">
+                      <a onclick="addnumbermodal()" href="javascript:void(0)" class="btn btn-warning">Add Number</a>
+                    </div>
+                  </div>
+                  
+                   {% endif %}
+                   {% if local.info.ftwillio.sid != "" %}
+                   <div class="row">
+                    <div class="col-sm-12">
+                    {{local.info.ftwillio.number|phone_formate:'0'}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    
+                    <div class="col-sm-12">
+                      <a onclick="releasenumber()" href="javascript:void(0)" class="btn btn-warning">Release Number</a>
+                    </div>
+                  </div>
+                  {% endif %}
+                  <input type="hidden" value="{{local.info.ftwillio.id}}" id="twillioId"/>
+                </div>
+              </div>
+              <div class="tab-pane" id="dealer-trigger">
+                
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Budget</label>
+                          <input value="{{ local.info.triggers_budget }}" type="text" name="triggers_budget" class="form-control" value="" placeholder="$1,000">
+                        </div>
+                        <div class="col-sm-4">
+                          <label># of Pieces</label>
+                          <input value="{{ local.info.triggers_pieces }}" type="text" name="triggers_pieces" class="form-control" value="" placeholder="4,500">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Cost Per Piece</label>
+                          <input value="{{ local.info.trigger_cost_per_pieces }}" type="text" name="trigger_cost_per_pieces" class="form-control" value="" placeholder=".95">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="switcher-list">
+                    <div class="switch-item">
+                      <div  class="row main-switch tradecycle_main_id">
+                        <label class="col-sm-3 text-right">Trade Cycle</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_trade_cycle  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                      <div  class="email_main_id sub-switch row hide">
+                        <label class="col-sm-3 text-right">Email</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.triggers_email  %} checked {% endif %}  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div  class="birthday_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Birthday</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_birthday  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="newpurchase_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">New Purchase</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_new_purchase  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="equityposition_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Equity Position</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_equity_position  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="fstservice_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">1st Service</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_fst_service  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="warrantyexpiration_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Warranty Expiration</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_warranty_expiration  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="overdueservices_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Overdue Services</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_overdue_services  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="makeconquest_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Make Conquest</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_make_conquest  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="crossoverconquest_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Crossover Conquest</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_crossover_conquest  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                <input type="hidden" value="{{ local.info.trigger_crossover_conquest }}" name="trigger_crossover_conquest" id="crossoverconquestid"/>
+                <input type="hidden" value="{{ local.info.trigger_make_conquest }}" name="trigger_make_conquest" id="makeconquestid"/>
+                <input type="hidden" value="{{ local.info.trigger_overdue_services }}" name="trigger_overdue_services" id="overdueservicesid"/>
+                <input type="hidden" value="{{ local.info.trigger_warranty_expiration }}" name="trigger_warranty_expiration" id="warrantyexpirationid"/>
+                <input type="hidden" value="{{ local.info.trigger_fst_service }}" name="trigger_fst_service" id="fstserviceid"/>
+                <input type="hidden" value="{{ local.info.trigger_equity_position }}" name="trigger_equity_position" id="equitypositionid"/>
+                <input type="hidden" value="{{ local.info.trigger_new_purchase }}" name="trigger_new_purchase" id="newpurchaseid"/>
+                <input type="hidden" value="{{ local.info.trigger_birthday }}" name="trigger_birthday" id="birthdayid"/>
+                <input type="hidden" value="{{ local.info.triggers_email }}" name="triggers_email" id="emailid"/>
+                <input type="hidden" value="{{ local.info.trigger_trade_cycle }}" name="trigger_trade_cycle" id="tradecycleid"/>
+                
+                <input type="hidden" value="{{ local.info.faddress.id }}" name="faddress"/>
+                <input type="hidden" value="{{ local.info.flogo.id }}" name="flogo"/>
+                <input type="hidden" value="{{ local.info.fmlogo.id }}" name="fmlogo"/>
+                <input type="hidden" value="{{ local.info.ftwillio.id }}" name="ftwillio"/>
+                
+                
+                </form>
+              </div>
+              <div class="tab-pane" id="campaign-planner">
+                <div class="stats_bar campaign_planner_bars row">
+                  <div class="item-col-6">
+                    <div class="butpro butstyle" data-step="2" data-intro="<strong>Beautiful Elements</strong> <br/> If you are looking for a different UI, this is for you!.">
+                      <div class="sub"><h2>Campaigns</h2><span id="total_clientes">170</span></div>
+                      <div class="stat"><span class="spk1"><canvas style="display: inline-block; width: 74px; height: 16px; vertical-align: top;" width="74" height="16"></canvas></span></div>
+                    </div>
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Cost</h2><span>$7,611</span></div>
+                      <div class="stat"><span class="up"> 13,5%</span></div>
+                    </div>
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Car sold</h2><span>70</span></div>
+                      <div class="stat"><span class="down"> 20,7%</span></div>
+                    </div> 
+                  </div>
+                  <div class="item-col-6"> 
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Gross Profit</h2><span>$69,133.00</span></div>
+                      <div class="stat"><span class="equal"> 0%</span></div>
+                    </div>  
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Repair Orders</h2><span>70</span></div>
+                      <div class="stat"><span class="down"> 21.3%</span></div>
+                    </div>
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>RO Total</h2><span>$39,001.33</span></div>
+                      <div class="stat"><span class="up"> 6.7%</span></div>
+                    </div>  
+                  </div>
+                </div>
+                <hr>
+                <div class="campaign-planner-table">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h4>Campaign Detail</h4>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="text-right">
+                        <div class="form-inline">
+                          <div class="form-group text-left">
+                            <label>Budget Month</label>
+                            <select class="form-control multiselect"  multiple="multiple">
+                              <option value="1" selected>January 2015</option>
+                              <option value="2">February 2015</option>
+                              <option value="3">March 2015</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content table-responsive clearfix">
+                    <table class="no-border datatable table-striped">
+                      <thead class="no-border">
+                        <tr>
+                          <th>Campaign</th>
+                          <th>Type</th>
+                          <th>Budget Month</th>
+                          <th>Mail Pieces</th>
+                          <th>Email</th>
+                          <th>Leads</th>
+                          <th>Cars Sold</th>
+                          <th>Gross Profit</th>
+                          <th>RO</th>
+                          <th>RO Total</th>
+                          <th>Cost</th>
+                          <th>Days Active</th>
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody class="no-border-x no-border-y">
+                        <tr>
+                          <td><a href="campaign-detail-page.html">Free Oil Change</a></td>
+                          <td>
+                            <i class="fa fa-car"></i>
+                            <i class="fa fa-wrench"></i>
+                          </td>
+                          <td>January 2015</td>
+                          <td>220</td>
+                          <td>103</td>
+                          <td>12</td>
+                          <td>4</td>
+                          <td>$11,213.00</td>
+                          <td>22</td>
+                          <td>$8,922.42</td>
+                          <td>$220.00</td>
+                          <td>3/30</td>
+                          <td><span class="label label-success">Execute</span></td>
+                          <td>
+                            <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
+                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><a href="campaign-detail-page.html">Birthday</a></td>
+                          <td>
+                            <i class="fa fa-wrench"></i>
+                          </td>
+                          <td>January 2015</td>
+                          <td>220</td>
+                          <td>103</td>
+                          <td>12</td>
+                          <td>4</td>
+                          <td>$11,213.00</td>
+                          <td>22</td>
+                          <td>$8,922.42</td>
+                          <td>$220.00</td>
+                          <td>3/30</td>
+                          <td><span class="label label-danger">Scheduled</span></td>
+                          <td>
+                            <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
+                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><a href="campaign-detail-page.html">VIP Buy Back</a></td>
+                          <td>
+                            <i class="fa fa-car"></i>
+                          </td>
+                          <td>January 2015</td>
+                          <td>220</td>
+                          <td>103</td>
+                          <td>12</td>
+                          <td>4</td>
+                          <td>$11,213.00</td>
+                          <td>22</td>
+                          <td>$8,922.42</td>
+                          <td>$220.00</td>
+                          <td>3/30</td>
+                          <td><span class="label label-success">Execute</span></td>
+                          <td>
+                            <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
+                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <th>Total</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>4</th>
+                        <th>33</th>
+                        <th>2</th>
+                        <th></th>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <p class="text-right">
+              <a onclick="saveform()" href="javascript:void(0)" class="btn btn-primary">Save</a>
+            </p>
+          </div>
+        </div>
+      </div>
+		
+		  </div>
+		</div> 
+		
+	</div>
+	<div class="modal fade" id="twilionumbermodal">
+  
+    </div><!-- /.modal -->
+	<script type="text/javascript">
+    //var availablecity = {{local.city|safe}}
+    function releasenumber()
+    {
+       var tid = $('#twillioId').val();
+       $('#trakingnumberid').showLoading();
+       $.get('/twilio/releasenumber/',
+	   {tid:tid},
+	   function(data, status) 
+	   {  
+          $('#trakingnumberid').html(data);
+          $('#trakingnumberid').hideLoading();
+          
+       });
+    }
+    function buynumber(id)
+    {
+       var number = $('#'+id+"_number").val();
+       var city = $('#'+id+"_city").val();
+       var state = $('#'+id+"_state").val();
+       var zip = $('#'+id+"_zip").val();
+       var ptype = $('#ptype').val();
+       var tid   = $('#twillioId').val();
+       $('#twilionumbermodal').showLoading();
+       $.get('/twilio/buynumber/',
+	   {number:number,city:city,state:state,ptype:ptype,zip:zip,tid:tid},
+	   function(data, status) 
+	   {  
+          $('#trakingnumberid').html(data);
+          $('#twilionumbermodal').hideLoading();
+          $('#twilionumbermodal').modal('hide');
+       });
+       
+       
+    }
+    function searchphonenumber()
+    {
+       var type = $('#ptype').val();
+       var pattern = $('#pattern').val();
+       var searchcity = $('#searchcity').val();
+       $('#twilionumbermodal').showLoading();
+       $.get('/twilio/searchnumber/',
+	   {type:type,pattern:pattern,city:searchcity},
+	   function(data, status) 
+	   {  
+          $('#twilionumbermodal').html(data);
+          $('#twilionumbermodal').hideLoading();
+       });
+    }
+    function addnumbermodal()
+    {
+       $.get('/twilio/searchbox/',
+	   {},
+	   function(data, status) 
+	   {  
+          $('#twilionumbermodal').html(data);
+          $('#twilionumbermodal').modal();
+       });
+       
+    }
+    function saveform()
+    {
+       $('#form1').submit();
+    }
+    $(document).ready(function(){
+        $('.bootstrap-switch').click(function(){
+          $(this).next().toggleClass('hide');
+        });
+        
+               
+        $('.tradecycle_main_id .bootstrap-switch-handle-off').click(function(){ $('#tradecycleid').val(1); });
+        $('.tradecycle_main_id .bootstrap-switch-handle-on').click(function(){ $('#tradecycleid').val(0); });
+        $('.email_main_id .bootstrap-switch-handle-off').click(function(){ $('#emailid').val(1); });
+        $('.email_main_id .bootstrap-switch-handle-on').click(function(){ $('#emailid').val(0); });
+        $('.birthday_main_id .bootstrap-switch-handle-off').click(function(){ $('#birthdayid').val(1); });
+        $('.birthday_main_id .bootstrap-switch-handle-on').click(function(){ $('#birthdayid').val(0); });
+        $('.newpurchase_main_id .bootstrap-switch-handle-off').click(function(){ $('#newpurchaseid').val(1); });
+        $('.newpurchase_main_id .bootstrap-switch-handle-on').click(function(){ $('#newpurchaseid').val(0); });
+        $('.equityposition_main_id .bootstrap-switch-handle-off').click(function(){ $('#equitypositionid').val(1); });
+        $('.equityposition_main_id .bootstrap-switch-handle-on').click(function(){ $('#equitypositionid').val(0); });
+        $('.fstservice_main_id .bootstrap-switch-handle-off').click(function(){ $('#fstserviceid').val(1); });
+        $('.fstservice_main_id .bootstrap-switch-handle-on').click(function(){ $('#fstserviceid').val(0); });
+        $('.warrantyexpiration_main_id .bootstrap-switch-handle-off').click(function(){ $('#warrantyexpirationid').val(1); });
+        $('.warrantyexpiration_main_id .bootstrap-switch-handle-on').click(function(){ $('#warrantyexpirationid').val(0); });
+        $('.overdueservices_main_id .bootstrap-switch-handle-off').click(function(){ $('#overdueservicesid').val(1); });
+        $('.overdueservices_main_id .bootstrap-switch-handle-on').click(function(){ $('#overdueservicesid').val(0); });
+        $('.makeconquest_main_id .bootstrap-switch-handle-off').click(function(){ $('#makeconquestid').val(1); });
+        $('.makeconquest_main_id .bootstrap-switch-handle-on').click(function(){ $('#makeconquestid').val(0); });
+        $('.crossoverconquest_main_id .bootstrap-switch-handle-off').click(function(){ $('#crossoverconquestid').val(1); });
+        $('.crossoverconquest_main_id .bootstrap-switch-handle-on').click(function(){ $('#crossoverconquestid').val(0); });
+        $('.main-switch .bootstrap-switch-handle-off').click(function(){$('.main-switch').next().removeClass('hide')});
+        $('.main-switch .bootstrap-switch-handle-on').click(function(){$('.main-switch').next().addClass('hide')})
+        
+        
+        
+        
+        $('.multiselect').multiselect();
+        $('.colorpicker').colorpicker();
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+        $("[data-mask='date']").mask("99/99/9999");
+        $("[data-mask='zipcode']").mask("99999");
+        $("[data-mask='phone']").mask("(999) 999-9999");
+        
+        $('.datatable').DataTable( {
+        initComplete: function () {
+          var api = this.api();
+
+          api.columns().indexes().flatten().each( function ( i ) {
+            var column = api.column( i );
+            var select = $('<select><option value=""></option></select>')
+              .appendTo( $(column.footer()).empty() )
+              .on( 'change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                  $(this).val()
+                );
+
+                column
+                  .search( val ? '^'+val+'$' : '', true, false )
+                  .draw();
+              } );
+
+            column.data().unique().sort().each( function ( d, j ) {
+              select.append( '<option value="'+d+'">'+d+'</option>' )
+            } );
+          } );
+        }
+      } );
+        $('.dataTables_length,.dataTables_filter,.dataTables_info,.dataTables_paginate').addClass('hide');
+    });
+  </script>

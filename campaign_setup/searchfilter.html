@@ -1,0 +1,191 @@
+{% load humanize %}
+{% load dealerfunnel_filters %}
+ <div class="row stat-item-group style-1">
+	  <div class="col-sm-3">
+	  	<div class="block">
+	  		<div class="content">
+	  			<div class="stat-item">
+		  			<i class="stat-icon icon-envelope"></i>
+			  		<span class="stat-title">Total Matches</span>
+			  		<span class="stat-descr">{{local.total_customer|intcomma}}</span>
+		  		</div>
+		  	</div>
+		  </div>
+	  </div>
+	  <div class="col-sm-3">
+		  <div class="block">
+		  	<div class="content">
+		  		<div class="stat-item">
+		  			<i class="stat-icon icon-envelope"></i>
+					  <span class="stat-title">Selected Total</span>
+					  <span id="select_count_id" class="stat-descr">{{local.selected_count|intcomma}}</span>
+			  	</div>
+			  </div>
+		  </div>
+	  </div>
+	  <div class="col-sm-3">
+		  <div class="block">
+		  	<div class="content">
+		  		<div class="stat-item">
+		  			<i class="stat-icon icon-envelope"></i>
+					  <span class="stat-title">Selected Email</span>
+					  <span id="select_email_id" class="stat-descr">{{local.selected_email|intcomma}}</span>
+					</div>
+				</div>
+		  </div>
+	  </div>
+	  <div class="col-sm-3">
+		  <div class="block">
+		  	<div class="content">
+		  		<div class="stat-item">
+		  			<i class="stat-icon flaticon-money-1"></i>
+			  		<span class="stat-title">Cost</span>
+			  		<span class="stat-descr">$<span id="costid" >{{local.cost|intcomma}}</span></span>
+			  	</div>
+		  	</div>
+			</div>
+		</div>
+	</div>
+
+        <div class="block" id="searchquery = query.filter(reduce(operator.or_, mylist))_result">
+          <div class="create-campaign-actions">
+          <div class="leads-list-data">
+          	<div class="header">
+          		<div class="btn-group">
+	              <a class="btn btn-sm btn-default" href="javascript:selectAll()">Select All</a>
+	              <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">
+	                <i class="fa fa-caret-down"></i>
+	              </button>
+	              <ul class="dropdown-menu">
+	                <li>
+	                  <a title="" data-original-title="" href="javascript:toggleSelection()">Toggle Selection</a>
+	                </li>
+	                <li><a data-toggle="modal" href="#modal-selection-range">Selection Range</a></li>
+	                <li class="divider"></li>
+	                <li>
+	                  <a title="" data-original-title="" href="javascript:unselectAll()">Unselect All</a>
+	                </li>
+	              </ul>
+	            </div> 
+          	</div>
+            <div id="ajaxpagincontainer" class="content">
+            	<div class="row">
+              <table class="table no-border datatable table-striped dataTable">
+	              <thead class="no-border">
+	                <tr>
+	                	<th></th>
+	                	<th>Name</th>
+	                	<th>Last Visit</th>
+	                	<th>Last Contacted</th>
+	                	<th>Location</th>
+	                	<th>Distance</th>
+	                	<th>Type</th></tr>
+	              </thead>
+              
+            <tbody class="no-border-x no-border-y">
+            {% for n in local.customer %}
+            <tr class="odd">
+                  <td>
+                  	<input {% if n.select == 1 %} checked {% endif %}  onclick="setcustomer('{{n.id}}')" type="checkbox">
+                  	
+                  </td>
+                  <td><a onclick="openmodal({{n.id}})" href="javascript:void(0)">{{ n.fname }} {{ n.lname }}</a></td>
+                  <td><abbr title="{{ n.lastvisit|date:"Y-m-d" }}" class="timeago">{{ n.lastvisit|date:"Y-m-d" }}</abbr></td>
+                  <td></td>
+                  <td>{{ n.city }}</td>
+                  <td>{{ n.distance|float_formate }}</td>
+                  <td> 
+                      {% if n.status == 1 %}
+                      <label class="label label-primary">Active</label>
+                      {% elif n.status == 2 %}
+                      <label class="label label-less-active">Less Active</label>
+                      {% elif n.status == 3 %}
+                      <label class="label label-lost">Lost</label>
+                      {% endif %} 
+                  </td>
+                  <input value="{{n.select}}" type="hidden" id="id_{{n.id}}"/>
+                  <input value="{{n.isemail}}" type="hidden" id="email_{{n.id}}"/>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+            <div class="dataTables_info" id="DataTables_Table_0_info">Showing {{ local.pagin.limitplus  }} to {{ local.pagin.offset }} of {{ local.pagin.total_content|intcomma }} entries
+            <select id="pagenumberid" onchange="pagechange()" >
+            {% for n in local.pagenumber %}
+            <option {% if local.pagin.current_page == n %} selected {% endif %}  value="{{n}}">{{n}}</option>
+            {% endfor %}
+            </select>
+            Pages
+            </div>
+            </div>
+            <input type="hidden" id="cpage" value="{{ local.pagin.current_page  }}"/>
+            <input type="hidden" id="tpage" value="{{ local.pagin.total_page  }}"/>
+            <input type="hidden" id="mselected" value=""/>
+            </div>
+          </div>
+          </div>
+        </div>
+<input value="{{local.selected_count}}" type="hidden" id="total_select_count_id"/>
+<input value="{{local.dealerid}}" type="hidden" id="dealerid"/>
+<input type="hidden" value="{{local.selected_email}}" id="totalemailselectedid"/>
+<input value="{{local.cost}}" type="hidden" id="totalcostid"/>
+<input value="{{local.cost_per_pieces}}" type="hidden" id="costperpiecesid"/>
+
+<input value="{{local.orderstatus1}}" type="hidden" id="orderstatus1"/>
+<input value="{{local.orderstatus2}}" type="hidden" id="orderstatus2"/>
+<input value="{{local.orderstatus3}}" type="hidden" id="orderstatus3"/>
+<input value="{{local.orderstatus4}}" type="hidden" id="orderstatus4"/>
+<input value="{{local.orderstatus5}}" type="hidden" id="orderstatus5"/>           
+
+<script>
+function setcustomer(val)
+{
+   var id = "id_"+val;
+   var isemail = parseInt($('#email_'+val).val());
+   var totalemailselected = parseInt($('#totalemailselectedid').val());
+   var costperpiece = $('#costperpiecesid').val();
+   var status = $('#'+id).val();
+   var scount = parseInt($('#total_select_count_id').val());
+   var tab    = $('#topnavid').val();
+   if(status == '0')
+   {
+      sentstatus = 1;
+      $('#'+id).val(sentstatus);
+      scount = scount + 1;
+      temailselect = totalemailselected + isemail; 
+      $('#totalemailselectedid').val(temailselect);
+      $('#select_email_id').html(temailselect);
+      $('#total_select_count_id').val(scount);
+   }
+   else
+   {
+      sentstatus = 0;
+      $('#'+id).val(sentstatus);
+      scount = scount - 1;
+      temailselect = totalemailselected - isemail;
+      $('#totalemailselectedid').val(temailselect);
+      $('#select_email_id').html(temailselect);
+      $('#total_select_count_id').val(scount);
+   }
+   totalcostid = scount * costperpiece;
+   $('#costid').html(totalcostid.toFixed(2));
+   $('#select_count_id').html(scount);
+   $('#searchfilter').showLoading();
+   $('#cmailtotalid').html(scount);
+   $('#cemailtotalid').html(temailselect);
+   $('#ccostid').html(totalcostid.toFixed(2));
+   $.get('/campaign/setup/build/',
+	 {cid:val,scount:sentstatus,email:isemail,tab:tab},function(data, status)
+	 {
+         $('#searchfilter').hideLoading(); 
+    });
+   
+}
+
+$(document).ready(function(){
+	$('.dataTables_filter input').addClass('form-control').attr('placeholder','Search');
+  $('.dataTables_length select').addClass('form-control');    
+})
+
+</script>      
+      

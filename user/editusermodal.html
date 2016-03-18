@@ -1,0 +1,129 @@
+  {% load dealerfunnel_filters %}
+ <style>
+ .ms-container {
+    width: 100%;
+}
+ </style>
+<div id="editmodalcontainer" class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title clearfix">Add User</h4>
+        </div>
+        <div class="modal-body">
+          <form id="edituserform" enctype="multipart/form-data" method="post" action="/user/updateuser/" class="form">
+            {% csrf_token %}
+            <input type="hidden" id="userid" name="userid" value="{{local.user.id}}"/>
+            <input type="hidden" name="pusertype" value="{{local.user.fusertype.id}}"/>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input id="cname" value="{{local.user.name}}" required name="name" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input id="cemail" value="{{local.user.email}}" required  name="email" type="text" class="form-control">
+                  <span id="eemail" style="display:none" ><label for="Name" generated="true" class="error">Email address already Used.Please choose another</label></span>
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input id="cpassword" type="password" required value="{{local.user.password}}" name="password" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Type</label>
+                  <select onchange="adminchangeedit()" name="utype" id="editutypeid" name="utype" id="utypeid" class="form-control">
+                    
+                    <option {% if local.user.fusertype.id = 1 %} selected {% endif %} value="1" >Admin</option>
+                    <option {% if local.user.fusertype.id = 2 %} selected {% endif %} value="2" >Client</option>
+                  </select>
+                </div>
+                
+              </div>
+              <div class="col-sm-6">
+              	<div class="form-group">
+	               	<label>Profile Picture</label><br>
+	                <div class="fileinput fileinput-new" data-provides="fileinput">
+									  <div class="fileinput-new thumbnail" style="width: 120px; height: 120px;">
+									    <img src="{{ local.user.fuserphoto.path|imagepath }}" alt="...">
+									  </div>
+									  <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+									  <div>
+									    <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="..."></span>
+									    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+									  </div>
+									</div>
+              </div>
+            </div>
+            {% if local.user.fusertype.id = 1 %}
+            <div style="display:none" id="editdealerlist">
+            {% endif %}
+            {% if local.user.fusertype.id = 2 %}
+            <div id="editdealerlist">
+            {% endif %}
+              <div class="col-sm-12">
+                <div class="form-group">
+                	<label>Dealership Access</label>
+                <select name="dealership[]" class="mtselect form-control" multiple='multiple'>
+                    {% for n in local.dealer %}
+                    	<option {% if n.selected = 1 %} selected {% endif %} value='{{ n.id }}'>{{ n.name }}</option>
+                    {% endfor %}	
+                    	
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="submitform()" type="button" class="btn btn-primary">Update</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+        </div>
+        </form>
+      </div>
+    </div>
+<script type="text/javascript">
+$(document).ready(function () {
+      $("#edituserform").validate();
+     $('.mtselect').multiSelect(); 
+ });
+ function adminchangeedit()
+    {
+       var clientid = $('#editutypeid').val();
+       if (clientid == '2')
+       {
+          $('#editdealerlist').show();
+       }
+       else
+       {
+          $('#editdealerlist').hide();
+       } 
+    }
+    
+ function submitform()
+    {
+        var email = $('#cemail').val();
+	    var userid = $('#userid').val();
+	    if (email == '') 
+	    {
+	       $('#edituserform').submit();
+	    }
+	    else
+	    {
+		    $('#editmodalcontainer').showLoading();
+		    $.getJSON("{% url 'json_check_useremail' %}",{email:email,userid:userid}, function( data ) {
+		    	$('#editmodalcontainer').hideLoading();
+		    	if (data.isemail == 1)
+		    	{
+		    	   $('#eemail').show();
+		    	}
+		    	else
+		    	{
+		    	   $('#eemail').hide();
+		    	   $('#edituserform').submit();
+		    	}
+		    	
+		    });
+        }
+    }
+</script>    

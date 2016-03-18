@@ -1,0 +1,240 @@
+
+{% load humanize %}
+{% load dealerfunnel_filters %}
+<div  class="row dash-cols">
+          
+        <div class="col-sm-8">
+          <div class="block">
+            <div class="header no-border">
+              <h4>Responses</h4>
+            </div>
+            <div data-intro="&lt;strong&gt;Unique Styled Plugins&lt;/strong&gt; &lt;br/&gt; We put love in every detail to give a great user experience!." data-step="3" class="content blue-chart">
+              <div style="height: 180px; padding: 0px; position: relative;" id="site_statistics"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 623px; height: 180px;" width="623" height="180"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div style="position: absolute; top: 159px; left: 18px; text-align: right;" class="flot-tick-label tickLabel">0</div><div style="position: absolute; top: 106px; left: 6px; text-align: right;" class="flot-tick-label tickLabel">500</div><div style="position: absolute; top: 53px; left: 0px; text-align: right;" class="flot-tick-label tickLabel">1000</div><div style="position: absolute; top: 1px; left: 0px; text-align: right;" class="flot-tick-label tickLabel">1500</div></div></div><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 623px; height: 180px;" width="623" height="180"></canvas></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="block-flat">
+            <div class="header no-border">
+              <h4 class="no-margin">Stats</h4>
+            </div>
+            <div class="content">
+              <div class="cp-stats">
+                <div class="item">
+                  <span class="label label-info"><i class="fa fa-envelope"></i></span>
+                  <span class="number">18</span>
+                  <span class="title">Mail Pieces</span>
+                </div>
+                <div class="item">
+                  <span class="label label-danger"><i class="fa fa-envelope-o"></i></span>
+                  <span class="number">372</span>
+                  <span class="title">Email</span>
+                </div>
+                <div class="item">
+                  <span class="label label-success"><i class="fa fa-phone"></i></span>
+                  <span class="number">65</span>
+                  <span class="title">Phone Calls</span>
+                </div>
+                <div class="item">
+                  <span class="label label-warning"><i class="fa fa-laptop"></i></span>
+                  <span class="number">99</span>
+                  <span class="title">Web Leads</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="stats_bar row">
+
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div class="sub"><h2>Cost</h2><span>${{local.box.cost.val}}</span></div>
+            <div class="stat"><span class="{{local.box.cost.flag}}">{{local.box.cost.pval}}%</span></div>
+          </div>
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div class="sub"><h2>Car sold</h2><span>{{local.box.carsold.val}}</span></div>
+            <div class="stat"><span class="{{local.box.carsold.flag}}">{{local.box.carsold.pval}}%</span></div>
+          </div> 
+        </div>
+        <div class="item-col-6"> 
+          <div class="butpro butstyle">
+            <div class="sub"><h2>Gross Profit</h2><span>${{local.box.grossprofit.val}}</span></div>
+            <div class="stat"><span class="{{local.box.grossprofit.flag}}">{{local.box.grossprofit.pval}}%</span></div>
+          </div>  
+        </div>
+        <div class="item-col-6"> 
+          <div class="butpro butstyle">
+            <div class="sub"><h2>Trades</h2><span>{{local.box.trades.val}}</span></div>
+            <div class="stat"><span class="{{local.box.trades.flag}}">{{local.box.trades.pval}}%</span></div>
+          </div>  
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div class="sub"><h2>Repair Orders</h2><span>{{local.box.repairorders.val}}</span></div>
+            <div class="stat"><span class="{{local.box.repairorders.flag}}">{{local.box.repairorders.pval}}%</span></div>
+          </div>
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div class="sub"><h2>RO Total</h2><span>${{local.box.invoiced.val}}</span></div>
+            <div class="stat"><span class="{{local.box.invoiced.flag}}">{{local.box.invoiced.val}}%</span></div>
+          </div>  
+        </div>
+
+      </div>
+      
+      <div class="campaign-dashboard-tbl">
+        <div class="block-flat">
+          <h3>Matches</h3>
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#sales-matches">Sales Matches</a></li>
+            <li><a data-toggle="tab" href="#service-matches">Services Matches</a></li>
+          </ul>
+          <div class="tab-content">
+            <div id="sales-matches" class="tab-pane active">
+              <div class="content table-responsive clearfix">
+                <button class="btn btn-sm btn-warning" id="btn-toggle-sale" type="button">
+                  <i class="fa fa-plus"></i>
+                  <i class="fa fa-minus hide"></i>
+                </button>
+                <table id="sale-matches-tbl" class="no-border jxpand-tbl">
+                  <thead class="no-border">
+                    <tr style="display: table-row;">
+                      <th>Name</th>
+                      <th>Vehicle</th>
+                      <th>Type</th>
+                      <th>Deal #</th>
+                      <th>Sold Date</th>
+                      <th>Gross Profit</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody class="no-border-x no-border-y">
+                    {% for n in local.salesservice %}
+                    {% if n.type == 1 %}
+                    <tr class="odd">
+                      <td>{{n.fcustomer.fname}} {{n.fcustomer.lname}}</td>
+                      <td>{{n.year}} {{n.make}} {{n.model}}</td>
+                      <td>{{n.fsales.vehicletype}}</td>
+                      <td>{{n.fsales.dealnumber}}</td>
+                      <td>{{n.entrydate|date:"SHORT_DATE_FORMAT"}}</td>
+                      <td>${{n.grossprofit|intcomma}}</td>
+                      <td><div class="arrow up"></div></td>
+                    </tr>
+                    <tr style="display: table-row;">
+                      <td colspan="3">
+                          <p>{{n.fcustomer.address}} {{n.fcustomer.city}}, {{n.fcustomer.state}} {{n.fcustomer.fzip.code}}</p>
+                          <p><strong>Home:</strong>{{n.fcustomer.homephone|phone_formate:'0'}}</p>
+                          <p><strong>Work:</strong>{{n.fcustomer.workphone|phone_formate:'0'}}</p>
+                          <p><strong>Cell:</strong>{{n.fcustomer.cellphone|phone_formate:'0'}}</p>
+                          <p><strong>Email:</strong> {{n.fcustomer.email}}</p>
+                      </td>
+                      <td colspan="2">
+                        <p><strong>VIN:</strong>{{n.fsales.vehiclevin}}</p>
+                        <p><strong>Sale Price:</strong>${{n.fsales.cashprice|intcomma}}</p>
+                        <p><strong>Front Gross:</strong>${{n.fsales.frontgross|intcomma}}</p>
+                        <p><strong>Back Gross:</strong>${{n.fsales.backgross|intcomma}}</p>
+                        <p><strong>Mileage:</strong>{{n.fsales.vehiclemileage}}</p>
+                      </td>
+                      <td colspan="2">
+                        <p><strong>Payment:</strong>${{n.fsales.downpayment|intcomma}}</p>
+                        <p><strong>Term:</strong>{{n.fsales.term}} Month</p>
+                        <p><strong>Trade:</strong>{{n.fsales.tradein_1_year}} {{n.fsales.tradein_1_make}} {{n.fsales.tradein_1_model}}</p>
+                        <p><strong>Trade VIN:</strong>{{n.fsales.tradein_1_vin}}</p>
+                        <p><strong>Trade ACV:</strong>${{n.fsales.tradein_1_acv|intcomma}}</p>
+                        <p><strong>Trade Profit:</strong>${{n.fsales.tradein_1_gross|intcomma}}</p>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div id="service-matches" class="tab-pane">
+              <div class="content table-responsive clearfix">
+                <button class="btn btn-sm btn-warning" id="btn-toggle-service" type="button">
+                  <i class="fa fa-plus"></i>
+                  <i class="fa fa-minus hide"></i>
+                </button>
+                <table id="service-matches-tbl" class="no-border jxpand-tbl"> 
+                  <thead class="no-border">
+                    <tr style="display: table-row;">
+                      <td>Name</td>
+                      <td>Vehicle</td>
+                      <th>RO #</th>
+                      <th>Closed Date</th>
+                      <th>Invoiced Amount</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody class="no-border-x no-border-y">
+                    {% for n in local.salesservice %}
+                    {% if n.type == 2 %}
+                    <tr class="odd">
+                      <td>{{n.fcustomer.fname}} {{n.fcustomer.lname}}</td>
+                      <td>{{n.year}} {{n.make}} {{n.model}}</td>
+                      <td>{{n.fservice.ronumber}}</td>
+                      <td>{{n.entrydate|date:"SHORT_DATE_FORMAT"}}</td>
+                      <td>${{n.fservice.roamount|intcomma}}</td>
+                      <td><div class="arrow"></div></td>
+                    </tr>
+                    <tr style="display: none;">
+                      <td colspan="3">
+                          <p>{{n.fcustomer.address}} {{n.fcustomer.city}}, {{n.fcustomer.state}} {{n.fcustomer.fzip.code}}</p>
+                          <p><strong>Home:</strong>{{n.fcustomer.homephone|phone_formate:'0'}}</p>
+                          <p><strong>Work:</strong>{{n.fcustomer.workphone|phone_formate:'0'}}</p>
+                          <p><strong>Cell:</strong>{{n.fcustomer.cellphone|phone_formate:'0'}}</p>
+                          <p><strong>Email:</strong> {{n.fcustomer.email}}</p>
+                      </td>
+                      <td colspan="2">
+                        <p><strong>VIN:</strong>{{n.fservice.vehiclevin}}</p>
+                        <p><strong>Customer Pay:</strong>${{n.fservice.customerpayrepairordertotal|intcomma}}</p>
+                        <p><strong>Warranty Pay:</strong>${{n.fservice.warrantypartscost|intcomma}}</p>
+                        
+                      </td>
+                      
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+       
+        </div>
+      </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#sale-matches-tbl tr:odd,#service-matches-tbl tr:odd").addClass("odd");
+        $("#sale-matches-tbl tr:not(.odd),#service-matches-tbl tr:not(.odd)").hide();
+        $("#sale-matches-tbl tr:first-child,#service-matches-tbl tr:first-child").show();
+      
+        $("#sale-matches-tbl tr.odd,#service-matches-tbl tr.odd").click(function(){
+        $(this).next("tr").toggle();
+        $(this).find(".arrow").toggleClass("up");
+        });
+
+        $('#btn-toggle-sale').click(function(){
+        $("#btn-toggle-sale .fa-plus,#btn-toggle-sale .fa-minus").toggleClass('hide');
+        $("#sale-matches-tbl tr.odd").next("tr").toggle();
+        $("#sale-matches-tbl tr.odd").find(".arrow").toggleClass("up");
+        });
+
+        $('#btn-toggle-service').click(function(){
+        $("#btn-toggle-service .fa-plus,#btn-toggle-service .fa-minus").toggleClass('hide');
+        $("#service-matches-tbl tr.odd").next("tr").toggle();
+        $("#service-matches-tbl tr.odd").find(".arrow").toggleClass("up");
+        });
+    });

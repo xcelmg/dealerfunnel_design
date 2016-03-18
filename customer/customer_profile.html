@@ -1,0 +1,1008 @@
+{% load humanize %} {% load dealerfunnel_filters %} {% load static %}
+<script type="text/javascript" src="{% static 'js/angular-timeago.js' %}"></script>
+<script>
+String.prototype.insertAt = function(index, string) {
+    return this.substr(0, index) + string + this.substr(index);
+}
+
+var app = angular.module('customerprofile', ['yaru22.angular-timeago']);
+
+
+app.controller("profilecampaign", function($scope, $http) {
+
+    $scope.FlagLst = [false];
+    $scope.idLst = [
+        ['hv1', 'sv1']
+    ];
+    $scope.customer = {};
+    $scope.lasttimevisit = (new Date()).toISOString();
+    $scope.homephone = '0000000000';
+    $scope.workphone = '0000000000';
+    //===================================== Appointment Dummy ============
+    $scope.app = {};
+    $scope.saveapp = function() {
+        $scope.toggole(0);
+        var islead = 0;
+        var isapp = 0;
+        if ($scope.islead) {
+            var islead = 1;
+        }
+        if ($scope.isApp) {
+            var isapp = 1;
+        }
+
+        var data = {
+            'cid': $scope.id.key,
+            'leadid': $scope.id.leadid,
+            'appid': $scope.id.appid,
+            'isapp': isapp,
+            'islead': islead,
+            'date': $scope.app.date,
+            'time': $scope.app.time,
+            'status': $scope.app.status,
+            'homephone': $scope.homephone,
+            'workphone': $scope.workphone,
+            'email': $scope.app.email,
+
+        };
+        $http.post("/api/setappointment/", data).then(function(response) {
+            $scope.customer.basic = response.data.basic;
+            $scope.customer.extra = response.data.extra;
+            $scope.customer.appointment = response.data.appointment;
+            $scope.customer.lookup = response.data.lookup;
+            $scope.response = response.data.Response;
+            $scope.isCampaign = response.data.isCampaign;
+            $scope.note = response.data.note;
+            $scope.islead = response.data.isLead;
+            $scope.isApp = response.data.isApp;
+            $scope.id = response.data.id;
+            $scope.note = response.data.note;
+            $scope.lasttimevisit = $scope.customer.extra.lastvisit.ST;
+            $scope.homephone = $scope.customer.basic.homephone;
+            $scope.workphone = $scope.customer.basic.workphone;
+            $scope.setAppModel();
+
+            $scope.toggole(0);
+        });
+
+        if ($scope.appnote != null) {
+            $scope.noteval = $scope.appnote;
+            $scope.savenote();
+        }
+    }
+    $scope.setAppModel = function() {
+        $scope.homephone = $scope.customer.basic.homephone;
+        $scope.workphone = $scope.customer.basic.workphone;
+        $scope.app.email = $scope.customer.basic.email;
+        $scope.app.date = $scope.customer.appointment.date;
+        $scope.app.time = $scope.customer.appointment.time;
+        $scope.app.status = $scope.customer.appointment.status;
+        $scope.app.statuslst = $scope.customer.lookup.statuslist;
+        $scope.app.statelst = $scope.customer.lookup.statelist;
+    }
+    $scope.toggole = function(index) {
+        if (!$scope.FlagLst[index]) {
+            $('#' + $scope.idLst[index][1]).removeClass('hidden');
+            $('#' + $scope.idLst[index][0]).addClass('hidden');
+            $scope.FlagLst[index] = true;
+        } else {
+            $('#' + $scope.idLst[index][0]).removeClass('hidden');
+            $('#' + $scope.idLst[index][1]).addClass('hidden');
+            $scope.FlagLst[index] = false;
+        }
+
+    }
+    $scope.newnote = function() {
+
+        $('#addnote').modal();
+
+    };
+
+    $scope.getCustomer = function() {
+        $scope.cid = $('#cid').val();
+        $http.get("/api/getcustomer/", {
+            params: {
+                "cid": $scope.cid
+
+            }
+        }).then(function(response) {
+            $scope.customer.basic = response.data.basic;
+            $scope.customer.extra = response.data.extra;
+            $scope.customer.appointment = response.data.appointment;
+            $scope.customer.lookup = response.data.lookup;
+            $scope.response = response.data.Response;
+            $scope.isCampaign = response.data.isCampaign;
+            $scope.note = response.data.note;
+            $scope.islead = response.data.isLead;
+            $scope.isApp = response.data.isApp;
+            $scope.id = response.data.id;
+            $scope.note = response.data.note;
+            $scope.lasttimevisit = $scope.customer.extra.lastvisit.ST;
+            $scope.homephone = $scope.customer.basic.homephone;
+            $scope.workphone = $scope.customer.basic.workphone;
+            $scope.setAppModel();
+
+            $scope.toggole(0);
+
+        });
+    }
+    $scope.savenote = function() {
+        var data = {
+            'id': $scope.editId,
+            'note': $scope.editnotemodel
+        };
+        $http.post("/api/updatenotes/", data).then(function(response) {
+
+        });
+        var loc = $scope.getNoteLoc($scope.editId);
+        $scope.note[loc].note = $scope.editnotemodel
+        $('#editnote').modal('hide');
+    };
+    $scope.editnote = function(cid) {
+        var loc = $scope.getNoteLoc(cid);
+        $scope.editnotemodel = $scope.note[loc].note;
+        $scope.editId = cid;
+        $('#editnote').modal();
+    };
+    $scope.addnote = function() {
+        $scope.cid = $('#cid').val();
+        var data = {
+            'cid': $scope.cid,
+            'note': $scope.noteval
+        };
+        $http.post("/api/addnote/", data).then(function(response) {
+            $scope.note = response.data.note;
+        });
+        $('#addnote').modal('hide');
+    };
+    $scope.getNoteLoc = function(id) {
+        for (i = 0; i < $scope.note.length; i++) {
+            if ($scope.note[i].id == id) {
+                return i;
+            }
+
+        }
+        return -1;
+    };
+
+    $scope.deletenote = function(id) {
+        $scope.cid = $('#cid').val();
+        $http.get("/api/deletenotes/", {
+            params: {
+                "cid": $scope.cid,
+                "id": id
+
+            }
+        }).then(function(response) {
+            $scope.note = response.data.note;
+
+        });
+    };
+    $scope.changeyear = function() {
+        $http.get("/api/getmakes/", {
+            params: {
+                "year": $scope.appSyear
+
+            }
+        }).then(function(response) {
+            $scope.make = response.data.make;
+            $scope.appSmake = 'Select Make';
+        });
+    };
+    $scope.changemake = function() {
+        $http.get("/api/getmakes/", {
+            params: {
+                "year": $scope.appSyear
+
+            }
+        }).then(function(response) {
+            $scope.make = response.data.make;
+            $scope.appSmake = 'Select Make';
+        });
+    };
+    $scope.changemodel = function() {
+        $http.get("/api/getmodels/", {
+            params: {
+                "year": $scope.appSyear,
+                "make": $scope.appSmake
+
+            }
+        }).then(function(response) {
+            $scope.make = response.data.make;
+            $scope.appSmake = 'Select Make';
+        });
+    };
+    $scope.setapp = function() {
+        $('#appdatepicker').datepicker();
+        $('#timepicker').timepicker();
+        $('#appointment').modal();
+    };
+
+    $scope.init = function() {
+        $scope.cid = '';
+        $scope.note = {};
+        $scope.editnotemodel = "";
+        $scope.customer = {};
+        $scope.trade = {};
+        $scope.year = {};
+        $scope.make = {};
+        $scope.model = {};
+        $scope.state = {};
+        $scope.app = {};
+        $scope.appstatus = {};
+        $scope.response = {};
+        $scope.appnote = '';
+    };
+
+});
+app.config(function($interpolateProvider) {
+    $interpolateProvider.startSymbol('{[{');
+    $interpolateProvider.endSymbol('}]}');
+});
+app.filter('customerstatus', function() {
+    return function(input) {
+        if (input == 1) {
+            return 'Active';
+        } else if (input == 2) {
+            return 'Less Active';
+        } else {
+            return 'Lost';
+        }
+    }
+});
+app.filter('phoneformate', function() {
+    return function(input) {
+        if (input == null) {
+            return '';
+        } else {
+            return input.insertAt(0, '(').insertAt(4, ')').insertAt(5, ' ').insertAt(9, '-');
+        }
+    }
+});
+app.filter('phoneformate1', function() {
+    return function(input) {
+        if (input == null) {
+            return '';
+        } else {
+            return input.insertAt(3, ' ').insertAt(7, ' ');
+        }
+    }
+});
+</script>
+<script>
+$(document).ready(function() {
+    $("abbr.timeago").timeago();
+    var controller = angular.element($("#pcont")).scope();
+    controller.$apply(function() {
+        controller.getCustomer();
+
+
+    });
+})
+
+function setapp() {
+    var controller = angular.element($("#pcont")).scope();
+    controller.$apply(function() {
+        controller.setapp();
+
+    });
+}
+</script>
+<div ng-app='customerprofile' ng-controller='profilecampaign' class="container-fluid" id="pcont">
+    <div class="page-head ">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Customer Profile</h2>
+                <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Customers</a></li>
+                    <li class="active">Customer Profile</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="cl-mcont customer-profile">
+        <div class="row">
+            <div class="col-sm-8 col-md-8">
+                <div class="block">
+                	<div class="content">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div align="center" id="hv1" class="preloading">
+                                <img src='/media/ajaxloader/squares2.gif' />
+                            </div>
+                            <div id="sv1" class="hidden">
+                                <div class="customer-info media">
+                                    <img src="{% static 'images/avatar.png' %}" alt="" class="customer-avatar media-object pull-left" />
+                                    <div class="media-body">
+                                        <p class="text-primary no-margin-top"><strong>{[{customer.basic.fname}]} {[{customer.basic.lname}]}</strong>
+                                            <span class="label label-primary">{[{customer.extra.status|customerstatus}]}</span>
+                                        </p>
+                                        <div>
+                                            <p>
+                                                <i class="icon-location-pin"></i>
+                                                <span style="display: inline-block; vertical-align: top;">{[{customer.basic.address}]}, <br>{[{customer.basic.city}]},{[{customer.basic.state}]}, {[{customer.basic.zip}]}</span>
+                                            </p>
+                                            <p ng-if="customer.basic.email !=''"><i class="icon-envelope"></i> {[{customer.basic.email}]}</p>
+                                            <p ng-if="homephone !=null"><i class="icon-phone"></i> {[{homephone | phoneformate}]} (Home)</p>
+                                            <p ng-if="workphone !=null"><i class="icon-phone"></i> {[{workphone | phoneformate}]} (Work)</p>
+                                            <p><i class="icon-clock"></i> Last Visit: <small>{[{ lasttimevisit | timeAgo}]}</small></p>
+                                            {% if local.customer.isbirthday == 1 %}
+                                            <p ng-if="customer.extra.isbirthday =='1'"><i class="icon-star"></i> Birth Date: {[{customer.extra.birth_date.ST|date:'yyyy/MM/dd'}]}</p> {%endif%}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="customer-map">
+                                <div id="map" style="height:180px;" class="map">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="row cusstat stat-item-group style-1">
+                    <div class="col-sm-3">
+                        <div class="block">
+                        	<div class="content">
+                            <div class="stat-item">
+                                <i class="stat-icon flaticon-basic-car"></i>
+                                <h2 class="stat-title">Car sold</h2>
+                                <span class="stat-descr">{{ local.Extra.sales }}</span>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="block">
+                        	<div class="content">
+                            <div class="stat-item">
+                                <i class="stat-icon flaticon-moneys"></i>
+                                <h2 class="stat-title">Gross Profit</h2>
+                                <span class="stat-descr">${{ local.Extra.grossprofit }}</span>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="block">
+                        	<div class="content">
+                            <div class="stat-item">
+                                <i class="stat-icon icon-wrench"></i>
+                                <h2 class="stat-title">Repair Orders</h2>
+                                <span class="stat-descr">{{ local.Extra.service }}</span>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="block">
+                        	<div class="content">
+                            <div class="stat-item">
+                                <i class="stat-icon flaticon-money-tape"></i>
+                                <h2 class="stat-title">Total Invoiced</h2>
+                                <span class="stat-descr">${{ local.Extra.invoiced }}</span>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="custable">
+                    <div class="tab-container">
+                        <ul class="nav nav-tabs">
+                            {% if local.isSales %}
+                            <li class="{{local.salesactive}}"><a href="#sales" data-toggle="tab">Sales</a></li>
+                            {% endif %} {% if local.isService %}
+                            <li class="{{local.serviceactive}}"><a href="#services" data-toggle="tab">Services</a></li>
+                            {% endif %}
+                            <li><a href="#vehicles" data-toggle="tab">Vehicles</a></li>
+                            <li><a href="#financial" data-toggle="tab">Financial Info</a></li>
+                            {% if local.isCampaign %}
+                            <li><a href="#campaigns" data-toggle="tab">Campaigns</a></li>
+                            {% endif %} {% if local.isCampaign %}
+                            <li><a href="#response" data-toggle="tab">Response</a></li>
+                            {% endif %}
+                            <li><a href="#note" data-toggle="tab">Notes</a></li>
+                            {% if local.isApp %}
+                            <li><a href="#response" data-toggle="tab">Response</a></li>
+                            {% endif %}
+                        </ul>
+                        <div class="tab-content">
+                        	<div class="tab-pane" id="financial">
+                        		<div class="row">
+                        		<table class="table table-striped table-hover">
+                        			<tbody class="no-border-x no-border-y">
+                        				<tr>
+                        					<td width="200"><strong>DOB</strong></td>
+                        					<td></td>
+                        					<td width="200"><strong>Housing Type</strong></td>
+                        					<td></td>
+                        				</tr>
+                        				<tr>
+                        					<td><strong>SSN</strong></td>
+                        					<td></td>
+                        					<td><strong>Housing Cost</strong></td>
+                        					<td>$0</td>
+                        				</tr>
+                        				<tr>
+                        					<td><strong>Employer</strong></td>
+                        					<td></td>
+                        					<td><strong>Housing Length</strong></td>
+                        					<td></td>
+                        				</tr>
+                        				<tr>
+                        					<td><strong>Occupation</strong></td>
+                        					<td></td>
+                        					<td><strong>BK</strong></td>
+                        					<td></td>
+                        				</tr>
+                        				<tr>
+                        					<td><strong>Time Employed</strong></td>
+                        					<td></td>
+                        					<td><strong>Repo</strong></td>
+                        					<td></td>
+                        				</tr>
+                        				<tr>
+                        					<td><strong>Monthly Income</strong></td>
+                        					<td></td>
+                        					<td><strong>DL Number</strong></td>
+                        					<td></td>
+                        				</tr>
+                        			</tbody>
+                        		</table>
+                        		</div>
+                        	</div>
+                            {% if local.isSales %}
+                            <div class="tab-pane {{local.salesactive}} cont" id="sales">
+                                <div class="row">
+                                <table id="sale-matches-tbl" class="table table-striped table-hover jxpand-tbl">
+                                    <thead class="no-border">
+                                        <tr>
+                                            <th>Vehicle</th>
+                                            <th>Type</th>
+                                            <th>Deal #</th>
+                                            <th>Sold Date</th>
+                                            <th>Gross Profit</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="no-border-x no-border-y">
+                                        {% for n in local.Roi.Sales %}
+                                        <tr onclick='salesexpand({{n.id}})' class="odd">
+                                            <td>{{n.make}} {{n.model}}</td>
+                                            <td>{{n.vehicletype}}</td>
+                                            <td>{{n.dealnumber}}</td>
+                                            <td>{{n.Ddate|date:"m/d/Y"}}</td>
+                                            <td>${{n.grossprofit|group}}</td>
+                                            <td>
+                                                <div id='salesArrow_{{n.id}}' class="arrow"></div>
+                                            </td>
+                                        </tr>
+                                        <tr id='hiddenSalesRow_{{n.id}}' style="display: none;">
+                                            <td colspan="4">
+                                                <p><strong>VIN:</strong> {{n.vin}}</p>
+                                                <p><strong>Sale Price:</strong> ${{n.saleprice|group}}</p>
+                                                <p><strong>Front Gross:</strong> ${{n.frontgross|group}}</p>
+                                                <p><strong>Back Gross:</strong> ${{n.backgross|group}}</p>
+                                                <p><strong>Mileage:</strong> {{n.mileage|group}}</p>
+                                            </td>
+                                            <td colspan="2">
+                                                <p><strong>Payment:</strong> ${{n.payment|group}}</p>
+                                                <p><strong>Term:</strong> {{n.term}} Months</p>
+                                                <p><strong>Trade:</strong> {{n.tradeyear}} {{n.trademake}} {{n.trademodel}}</p>
+                                                <p><strong>Trade VIN:</strong> {{n.tradevin}}</p>
+                                                <p><strong>Trade ACV:</strong> ${{n.tradeacv|group}}</p>
+                                                <p><strong>Trade Profit:</strong> ${{n.tradeprofit|group}}</p>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                            {% endif %} {% if local.isService %}
+                            <div class="tab-pane {{local.serviceactive}}" id="services">
+                               <div class="row">
+                                <table id="sale-matches-tbl" class="table table-striped table-hover  jxpand-tbl">
+                                    <thead class="no-border">
+                                        <tr style="display: table-row;">
+                                            <th>Vehicle</th>
+                                            <th>RO #</th>
+                                            <th>Closed Date</th>
+                                            <th>Invoiced Amount</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="no-border-x no-border-y">
+                                        {% for n in local.Roi.Service %}
+                                        <tr onclick='salesexpand({{n.id}})' class="odd">
+                                            <td>{{n.make}} {{n.model}}</td>
+                                            <td>{{n.ronumber}}</td>
+                                            <td>{{n.Ddate|date:"m/d/Y"}}</td>
+                                            <td>${{n.roamount|group}}</td>
+                                            <td>
+                                                <div id='salesArrow_{{n.id}}' class="arrow"></div>
+                                            </td>
+                                        </tr>
+                                        <tr id='hiddenSalesRow_{{n.id}}' style="display: none;">
+                                            <td colspan="5">
+                                                <p><strong>VIN:</strong> {{n.vin}}</p>
+                                                <p><strong>Customer Pay:</strong> ${{n.customerpay}}</p>
+                                                <p><strong>Warranty Pay:</strong> ${{n.warrantypay}}</p>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            {% endif %}
+                            <div class="tab-pane" id="vehicles">
+                              <div class="row">
+                                <table class="table table-striped table-hover">
+                                    <thead class="no-border">
+                                        <tr>
+                                            <th>Vehicle</th>
+                                            <th>Mileage</th>
+                                            <th>Own</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="no-border-x no-border-y">
+                                        <tr>
+                                            <td>{{ local.Roi.Vehicles.year }} {{ local.Roi.Vehicles.make }} {{ local.Roi.Vehicles.model }}</td>
+                                            <td>{{ local.Roi.Vehicles.mileage|intcomma }}</td>
+                                            <td>{{ local.Roi.Vehicles.own}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            {% if local.isCampaign %}
+                            <div class="tab-pane cont" id="campaigns">
+                              <div class="row">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Campaign</th>
+                                            <th>Type</th>
+                                            <th>Mail</th>
+                                            <th>Email</th>
+                                            <th>Activity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for r in local.Cmp %}
+                                        <tr>
+                                            <td>{{r.Ddate}}</td>
+                                            <td>{{r.Campaign}}</td>
+                                            <td>
+                                                {% if r.Type == 1 %}
+                                                <i class="stat-icon flaticon-car-2"></i> {% endif %} {% if r.Type == 2 %}
+                                                <i class="icon-wrench"></i> {% endif %} {% if r.Type == 3 %}
+                                                <i class="stat-icon flaticon-car-2"></i>
+                                                <i class="icon-wrench"></i> {% endif %}
+                                            </td>
+                                            <td>{{r.Mail|intcomma}}</td>
+                                            <td>{{r.Email|intcomma}}</td>
+                                            <td>1</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            {% endif %} {% if local.isCampaign %}
+                            <div class="tab-pane" id="response">
+                              <div class="row">
+                                <table class="table table-striped table-hover table-bordered ">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Details</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    		<tr>
+                                    			<td>
+                                    				<span class="item-type-ico label label-primary"><i class="icon-clock"></i></span>
+                                    			</td>
+                                    			<td><audio src="http://kolber.github.io/audiojs/demos/mp3/juicy.mp3" preload="auto" /></td>
+                                    			<td>25 Feb 2016</td>
+                                    			<td>03:28 AM</td>
+                                    		</tr>
+                                        <tr ng-repeat="n in response">
+                                            <td>
+                                                <span ng-if="n.type == '1'" class="item-type-ico label label-success ng-scope" ng-if="lead.isphone == 1"><i class="icon-phone"></i></span>
+                                                <span ng-if="n.type == '2'" class="item-type-ico label label-success ng-scope" ng-if="lead.isphone == 1"><i class="icon-phone"></i></span>
+                                                <span ng-if="n.type == '3'" class="item-type-ico label label-danger ng-scope" ng-if="lead.isweb == 1"><i class="icon-screen-desktop"></i></span>
+                                            </td>
+                                            <td>
+                                                <span>{[{n.source}]}</span>
+                                            </td>
+                                            <td>
+                                                <span>{[{n.date}]}</span>
+                                            </td>
+                                            <td>
+                                                <span>{[{n.time}]}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                              </audio>
+                            </div>
+                            {% endif %}
+                            <div class="tab-pane" id="note">
+                                <div class="clearfix">
+                    <a class="btn btn-success pull-right" data-target="#modal-wrap-3" data-toggle="modal" href="javascript:void(0)" ng-click="newnote()">New Note</a>
+                    </div>
+                    <hr>
+                    	<div class="row">
+                                <table class="table table-striped table-hover">
+                                    <thead class="no-border">
+                                        <tr>
+                                            <th>Date & Time</th>
+                                            <th>Note</th>
+                                            <th>Rep</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="no-border-x no-border-y">
+                                        <tr ng-repeat="nt in note">
+                                            <td>
+                                                {[{nt.date}]}
+                                            </td>
+                                            <td>{[{nt.note}]}</td>
+                                            <td>{[{nt.agent}]}</td>
+                                            <td>
+                                                <a class="btn btn-warning btn-xs" ng-click="editnote(nt.id)" href="javascript:void(0)">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                <a class="btn btn-danger btn-xs" ng-click="deletenote(nt.id)" href="javascript:void(0)">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <ul class="cbp_tmtimeline">
+                    {% for r in local.TimeLine %} {% if r.type == 3 %}
+                    <li>
+                        
+                        <div class="cbp_tmicon"><i class="icon-folder"></i></div>
+                        <div class="timeline-ct">
+                        	<h4 class="timeline-title">{{ r.name}}</h4>
+                        	<div class="timeline-time" datetime="{{ r.date|date:" m/d/Y " }}"><span>{{ r.Ddate|date:"m/d/Y" }}</span></div>
+                        </div>
+                    </li>
+                    {% endif %} {% if r.type == 1 %}
+                    <li>
+                        <div class="cbp_tmicon"><i class="flaticon-basic-car"></i></div>
+                        <div class="timeline-ct">
+                        	<h4 class="timeline-title">{{ r.year }} {{ r.make }} {{ r.model }}</h4>
+	                        <p><strong>Gross Profit:</strong> ${{ r.grossprofit }}</p>
+
+	                        <div class="timeline-time" datetime="{{ r.date|date:" m/d/Y " }}"><span>{{ r.Ddate|date:"m/d/Y" }}</span> </div>
+                        </div>
+                    </li>
+                    {% endif %} {% if r.type == 2 %}
+                    <li class="old-time">
+                        
+                        <div class="cbp_tmicon"><i class="icon-wrench"></i></div>
+                        <div class="timeline-ct">
+                        	<h4 class="timeline-title">Service</h4>
+                        	<h5 class="timeline-subtitle">{{ r.year }} {{ r.make }} {{ r.model }}</h5>
+	                        <p><strong>Invoiced Total:</strong> ${{ r.roamount }}</p>
+	                        <div class="timeline-time" datetime="{{ r.Ddate|date:" m/d/Y " }}"><span>{{ r.Ddate|date:"m/d/Y" }}</span> </div>
+                        </div>
+                    </li>
+                    {% endif %} {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="cid" value="{{local.Id.key}}" />
+    <div class="modal fade" id="addnote">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title clearfix">Add Note </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form">
+                        <textarea ng-model="noteval" class="form-control" required="" id="note"></textarea>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-click="addnote()" type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div class="modal fade" id="editnote">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title clearfix">Edit Note
+        
+        </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form">
+                        <div class="row-fluid">
+                            <textarea ng-model="editnotemodel" required="">{{editnotemodel}}</textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-click="savenote()" type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div class="modal fade" id="appointment">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title clearfix">Set Appoinment
+        
+        </h4>
+                    <span>{[{app.fname}]} {[{app.lname}]}</span>
+                </div>
+                <div class="modal-body">
+                    <form class="form">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Select Date</label>
+                                    <input ng-model="app.date" value="{[{app.date}]}" id="appdatepicker" type="text" class="form-control" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mobile Phone</label>
+                                    <input ng-model="workphone" data-mask="999 999 9999" value="{[{workphone|phoneformate1}]}" type="text" class="form-control" name="name" required="" id="cname">
+                                </div>
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select ng-model="app.status" class="form-control" ng-options="st as st for st in app.statuslst">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Select Time</label>
+                                    <div class="input-group bootstrap-timepicker timepicker">
+                                        <input ng-model="app.time" value="{[{app.time}]}" type="text" class="form-control timepicker" name="name" required="" id="timepicker">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Home Phone</label>
+                                    <input ng-model="homephone" data-mask="999 999 9999" value="{[{homephone|phoneformate1}]}" type="text" class="form-control" name="name" required="" id="cname">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input ng-model="app.email" value="{[{app.email}]}" type="text" class="form-control" name="name" required="" id="cname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label>Note</label>
+                                    <textarea ng-model="appnote" rows="4" class="form-control" name="Note"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-click="saveapp()" type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
+</div>
+<script>
+$(document).ready(function() {
+    $("#sale-matches-tbl tr:odd,#service-matches-tbl tr:odd").addClass("odd");
+    $("#sale-matches-tbl tr:not(.odd),#service-matches-tbl tr:not(.odd)").hide();
+    $("#sale-matches-tbl tr:first-child,#service-matches-tbl tr:first-child").show();
+
+
+
+    $('#btn-toggle-sale').click(function() {
+        $("#btn-toggle-sale .fa-plus,#btn-toggle-sale .fa-minus").toggleClass('hide');
+        $("#sale-matches-tbl tr.odd").next("tr").toggle();
+        $("#sale-matches-tbl tr.odd").find(".arrow").toggleClass("up");
+    });
+
+    $('#btn-toggle-service').click(function() {
+        $("#btn-toggle-service .fa-plus,#btn-toggle-service .fa-minus").toggleClass('hide');
+        $("#service-matches-tbl tr.odd").next("tr").toggle();
+        $("#service-matches-tbl tr.odd").find(".arrow").toggleClass("up");
+    });
+});
+
+function salesexpand(val) {
+
+    $('#hiddenSalesRow_' + val).toggle();
+    $('#salesArrow_' + val).toggleClass("up");
+}
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+// When the window has finished loading create our google map below
+google.maps.event.addDomListener(window, 'load', init);
+
+function init() {
+    // Basic options for a simple Google Map
+    // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
+    var mapOptions = {
+        // How zoomed in you want the map to start at (always required)
+        zoom: 11,
+
+        // The latitude and longitude to center the map (always required)
+        center: new google.maps.LatLng(40.6700, -73.9400), // New York
+        scrollwheel: false,
+
+        // How you would like to style the map. 
+        // This is where you would paste any style found on Snazzy Maps.
+        styles: [{
+            "featureType": "water",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#e9e9e9"
+            }, {
+                "lightness": 17
+            }]
+        }, {
+            "featureType": "landscape",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#f5f5f5"
+            }, {
+                "lightness": 20
+            }]
+        }, {
+            "featureType": "road.highway",
+            "elementType": "geometry.fill",
+            "stylers": [{
+                "color": "#ffffff"
+            }, {
+                "lightness": 17
+            }]
+        }, {
+            "featureType": "road.highway",
+            "elementType": "geometry.stroke",
+            "stylers": [{
+                "color": "#ffffff"
+            }, {
+                "lightness": 29
+            }, {
+                "weight": 0.2
+            }]
+        }, {
+            "featureType": "road.arterial",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#ffffff"
+            }, {
+                "lightness": 18
+            }]
+        }, {
+            "featureType": "road.local",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#ffffff"
+            }, {
+                "lightness": 16
+            }]
+        }, {
+            "featureType": "poi",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#f5f5f5"
+            }, {
+                "lightness": 21
+            }]
+        }, {
+            "featureType": "poi.park",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#dedede"
+            }, {
+                "lightness": 21
+            }]
+        }, {
+            "elementType": "labels.text.stroke",
+            "stylers": [{
+                "visibility": "on"
+            }, {
+                "color": "#ffffff"
+            }, {
+                "lightness": 16
+            }]
+        }, {
+            "elementType": "labels.text.fill",
+            "stylers": [{
+                "saturation": 36
+            }, {
+                "color": "#333333"
+            }, {
+                "lightness": 40
+            }]
+        }, {
+            "elementType": "labels.icon",
+            "stylers": [{
+                "visibility": "off"
+            }]
+        }, {
+            "featureType": "transit",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#f2f2f2"
+            }, {
+                "lightness": 19
+            }]
+        }, {
+            "featureType": "administrative",
+            "elementType": "geometry.fill",
+            "stylers": [{
+                "color": "#fefefe"
+            }, {
+                "lightness": 20
+            }]
+        }, {
+            "featureType": "administrative",
+            "elementType": "geometry.stroke",
+            "stylers": [{
+                "color": "#fefefe"
+            }, {
+                "lightness": 17
+            }, {
+                "weight": 1.2
+            }]
+        }]
+    };
+
+    // Get the HTML DOM element that will contain your map 
+    // We are using a div with id="map" seen below in the <body>
+    var mapElement = document.getElementById('map');
+
+    // Create the Google Map using our element and options defined above
+    var map = new google.maps.Map(mapElement, mapOptions);
+
+    // Let's also add a marker while we're at it
+    var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(40.6700, -73.9400),
+        map: map,
+        title: 'Snazzy!'
+    });
+}
+</script>

@@ -1,0 +1,510 @@
+<input type="hidden" value="" id="startDate" />
+<input type="hidden" value="" id="endDate" />
+<input type="hidden" value="{{dealer.keyid}}" id="dealerkeyid" />
+<input type="hidden" value="" id="campaignid" />
+<div class="container-fluid" id="pcont">
+    <div class="page-head ">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2 class="title">Leads</h2>
+                <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li class="active">Leads</li>
+                </ol>
+            </div>
+            <div id="sv3" class="hidden">
+            </div>
+            <div id="hv3" class="">
+                <div class="col-sm-6 text-right">
+                    <img src='/media/ajaxloader/ripple.gif' />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cl-mcont">
+        <div align="center" id='hv4' class='preloading'>
+            <img src='/media/ajaxloader/squares2.gif' />
+        </div>
+        <div class="page-content-sidebar">
+        	<div class="page-aside">
+                <div class="lead-sidebar">
+                    <div class="content">
+                        <div class="header">
+                            <button class="navbar-toggle" data-target=".mail-nav" data-toggle="collapse" type="button">
+                                <span class="fa fa-chevron-down"></span>
+                            </button>
+                            <div id="lead_daterange">
+                                <div id="reportrange">
+                                    <i class="icon-calender"></i>
+                                    <span></span>
+                                    <b class="caret"></b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mail-nav">
+                            <div id="hv1" class="">
+                                <ul class="sidebar-nav">
+                                    <li class=""><a href="#"><span class="label label-primary pull-right"><img src='/media/ajaxloader/ring1.gif'/></span><i class="icon-envelope"></i> Leads</a></li>
+                                </ul>
+                            </div>
+                            <div id="sv1" class="hidden">
+                                <ul class="sidebar-nav">
+                                    <li class=""><a ng-click="getLeadByLead()" href="javascript:void(0)"><span class="label label-primary pull-right">{[{leadcount}]}</span><i class="icon-star"></i> Leads</a></li>
+                                </ul>
+                            </div>
+                            <div id="hv2" class="">
+                                <ul class="sidebar-nav">
+                                    <li><a href="#"><span class="label label-hot pull-right"><img src='/media/ajaxloader/ring1.gif'/></span>Hot</a></li>
+                                    <li><a href="#"><span class="label label-cold pull-right"><img src='/media/ajaxloader/ring1.gif'/></span>Cold</a></li>
+                                    <li><a href="#"><span class="label label-sold pull-right"><img src='/media/ajaxloader/ring1.gif'/></span>Sold</a></li>
+                                    <li><a href="#"><span class="label label-warm pull-right"><img src='/media/ajaxloader/ring1.gif'/></span>Warm</a></li>
+                                    <li><a href="#"><span class="label label-followup pull-right"><img src='/media/ajaxloader/ring1.gif'/></span>Follow Up</a></li>
+                                    <li><a href="#"><span class="label label-dead pull-right"><img src='/media/ajaxloader/ring1.gif'/></span>Dead</a></li>
+                                </ul>
+                            </div>
+                            <div id="sv2" class="hidden">
+                                <ul class="sidebar-nav">
+                                    <li><a ng-click="getLeadByLabel(1)" href="javascript:void(0)"><span class="label label-hot pull-right">{[{labelcount.Hot}]}</span> Hot</a></li>
+                                    <li><a ng-click="getLeadByLabel(2)" href="javascript:void(0)"><span class="label label-cold pull-right">{[{labelcount.Cold}]}</span>Cold</a></li>
+                                    <li><a ng-click="getLeadByLabel(3)" href="javascript:void(0)"><span class="label label-sold pull-right">{[{labelcount.Sold}]}</span>Sold</a></li>
+                                    <li><a ng-click="getLeadByLabel(4)" href="javascript:void(0)"><span class="label label-warm pull-right">{[{labelcount.Warm}]}</span>Warm</a></li>
+                                    <li><a ng-click="getLeadByLabel(5)" href="javascript:void(0)"><span class="label label-followup pull-right">{[{labelcount.Folloup}]}</span>Follow Up</a></li>
+                                    <li><a ng-click="getLeadByLabel(6)" href="javascript:void(0)"><span class="label label-dead pull-right">{[{labelcount.Dead}]}</span>Dead</a></li>
+                                </ul>
+                            </div>
+                            <form class="lead-multiselect">
+                                <div class="form-group">
+                                    <label>Response Type</label>
+                                    <select ng-change="responsetypechange()" ng-model="selectedresponse" id="responsetypeid" class="form-control multiselect" multiple="multiple">
+                                        <option selected value="0">All</option>
+                                        <option value="1">Phone</option>
+                                        <option value="2">Web</option>
+                                        <option value="3">Appointment</option>
+                                        <option value="4">Response</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <labe>Campaign Type</label>
+                                   <select id="triggerid" ng-change="triggerchange()" ng-model="triggerselect" class="form-control multiselect" multiple="multiple">
+	                                    <option selected value="0">All</option>
+	                                    <option value="1">Total Cusomers</option>
+	                                    <option value="2">Warranty Expiration</option>
+	                                    <option value="3">Crossover Conquest</option>
+	                                    <option value="4">Lease Expiration</option>
+	                                    <option value="5">Birthday</option>
+	                                    <option value="6">Equity Position</option>
+	                                    <option value="7">Trade Cycle</option>
+	                                    <option value="8">Make Conquest</option>
+	                                    <option value="9">Late Service</option>
+	                                </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Campaigns</label>
+                                   	<select id="campaignlist" ng-change="campaignchange()" ng-model="campaignselect" class="form-control multiselect" multiple="multiple">
+                                   		<option>All</option>
+                                        </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+
+                <div id='sv4' class='hidden'>
+                    <div class="lead-content">
+                        <div class="block-flat">
+                        	<h4 class="title">{[{ newleadcount }]} New Lead{[{ newleadPs }]}</h4>
+                            <div class="leads-list-data">
+                                <div class="content table-responsive clearfix">
+                                    <div role="grid" class="dataTables_wrapper clearfix" id="DataTables_Table_0_wrapper">
+                                        <div class="row">
+                                            <div id="DataTables_Table_0_length" class="dataTables_length" style="display: none;">
+                                                <label>Show
+                                                    <select name="DataTables_Table_0_length" size="1" aria-controls="DataTables_Table_0" class="form-control">
+                                                        <option value="10" selected="selected">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select> entries</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                            	<ul class="lead-action-nav">
+							                                    <li class="select-email-actions">
+							                                        <div class="btn-group">
+							                                            <a class="btn btn-sm btn-default" href="javascript:selectAll()">Select All</a>
+							                                            <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">
+							                                                <i class="fa fa-caret-down"></i>
+							                                            </button>
+							                                            <ul class="dropdown-menu">
+							                                                <li>
+							                                                    <a href="javascript:toggleSelection()">Toggle Selection</a>
+							                                                </li>
+							                                                <li class="divider"></li>
+							                                                <li>
+							                                                    <a href="javascript:unselectAll()">Unselect All</a>
+							                                                </li>
+							                                            </ul>
+							                                        </div>
+							                                    </li>
+							                                    <li class="dropdown">
+							                                        <a data-toggle="dropdown" class="btn btn-default btn-sm" href="#">Action <i class="fa fa-caret-down"></i></a>
+							                                        <ul class="dropdown-menu">
+							                                            <li>
+							                                                <a ng-click="markedasnew(0)" href="javascript:void(0)">Mark as read</a>
+							                                            </li>
+							                                            <li>
+							                                                <a ng-click="markedasnew(1)" href="javascript:void(0)">Mark as unread</a>
+							                                            </li>
+							                                            <li class="divider"></li>
+							                                            <li>
+							                                                <a ng-click="exportbyid()" href="javascript:void(0)">Export Selection</a>
+							                                            </li>
+							                                            <li>
+							                                                <a ng-click="exportall()" href="javascript:void(0)">Export All</a>
+							                                            </li>
+							                                            <li class="divider"></li>
+							                                            <li>
+							                                                <a ng-click="assignowner()" href="javascript:void(0)">Assign Owner</a>
+							                                            </li>
+							                                            <li>
+							                                                <a ng-click="unassignowner()" href="javascript:void(0)">Unassign Owner</a>
+							                                            </li>
+							                                            <li>
+							                                                <a ng-click="changelabelcommon()" href="javascript:void(0)">Change Status</a>
+							                                            </li>
+							                                        </ul>
+							                                    </li>
+							                                </ul>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="dataTables_filter" id="DataTables_Table_0_filter">
+                                                    <input type="text" aria-controls="DataTables_Table_0" class="form-control" placeholder="Search">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        <hr>
+                                        <table class="table table-hover no-border datatable table-striped dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                                            <thead class="no-border">
+                                                <tr role="row">
+                                                    <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width:5%" aria-sort="ascending" aria-label=": activate to sort column descending"></th>
+                                                    <th ng-click="sorting(0)" style="cursor: pointer;" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width:15%" aria-label="Type: activate to sort column ascending">Response</th>
+                                                    <th ng-click="sorting(1)" style="cursor: pointer;" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width:20%" aria-label="Name: activate to sort column ascending">Name</th>
+                                                    <th ng-click="sorting(2)" style="cursor: pointer;" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width:15%" aria-label="Campaign: activate to sort column ascending">Campaign</th>
+                                                    <th ng-click="sorting(3)" style="cursor: pointer;" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width:15%" aria-label="Time: activate to sort column ascending">Time</th>
+                                                    <th ng-click="sorting(4)" style="cursor: pointer;" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width:15%" aria-label="Last Visited: activate to sort column ascending">Last Visited</th>
+                                                    <th ng-click="sorting(5)" style="cursor: pointer;" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width:15%" aria-label="Status: activate to sort column ascending">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="no-border-x no-border-y" role="alert" aria-live="polite" aria-relevant="all">
+                                                <tr ng-repeat="lead in responselead.lead" class="odd">
+                                                    <td class="sorting_1" style="text-align: center">
+                                                        <input class='ckbox' id='{[{lead.id}]}' type="checkbox">
+                                                    </td>
+                                                    <td class=" ">
+                                                        <a ng-click="leadmodal(1,lead.id,lead.cid,lead.isnew)" href='javascript:void(0)'><span ng-if="lead.isphone == 1" class="item-type-ico label label-success"><i class="icon-phone"></i></span></a>
+                                                        <a ng-click="leadmodal(3,lead.id,lead.cid,lead.isnew)" href='javascript:void(0)'><span ng-if="lead.isweb == 1" class="item-type-ico label label-danger"><i class="icon-screen-desktop"></i></span></a>
+                                                        <a ng-click="leadmodal(4,lead.id,lead.cid,lead.isnew)" href='javascript:void(0)'><span ng-if="lead.isapp == 1" class="item-type-ico label label-primary"><i class="icon-clock"></i></span></a>
+                                                    </td>
+                                                    <td class=" "><a href="/customer/profile/?cid={[{lead.cid}]}">{[{lead.name}]}</a></td>
+                                                    <td class=" ">{[{lead.campaign}]}</td>
+                                                    <td class=" "><span am-time-ago="{[{lead.entrydateftime}]}"></span></td>
+                                                    <td class=" "><span am-time-ago="{[{lead.lastdateftime}]}"></span></td>
+                                                    <td class=" ">
+                                                        <button ng-click="labelmodal(lead.id,lead.label)" data-toggle="modal" class="btn btn-xs {[{lead.iconeClass}]}" type="button">{[{lead.icone}]}</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <hr>
+                                    	</div>
+                                    	<div class="row">
+                                    		<div class="col-sm-8">
+                                    			<div class="dataTables_info" id="DataTables_Table_0_info">Showing {[{responselead.start}]} to {[{responselead.end}]} of {[{responselead.count}]} entries</div>
+                                    		</div>
+                                    		<div class="col-sm-4">
+                                    			
+                                        	<div class="dataTables_paginate paging_two_button btn-group" id="DataTables_Table_0_paginate">
+	                                        	<a role="button" tabindex="0" class="paginate_disabled_previous btn btn-default btn-sm" ng-click="previouspage()" id="DataTables_Table_0_previous" aria-controls="DataTables_Table_0">Previous</a>
+	                                        	<a ng-click="nextpage()" role="button" tabindex="0" class="paginate_enabled_next btn btn-default btn-sm" id="DataTables_Table_0_next" aria-controls="DataTables_Table_0">Next</a>
+                                        	</div>
+                                    		</div>
+                                    	</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section>
+    <div class="modal fade" id="modal-owner">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Owner</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Select Owner</label>
+                                    <select id="owneroption" class="form-control">
+                                        <option value="-1">Select Owner</option>
+                                        {% for n in user %}
+                                        <option value="{{n.id}}">{{n.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-click="saveowner()" type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div class="modal fade" id="modal-label-common">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Lead Status</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Select Status</label>
+                                    <select id="labeloptioncommon" class="form-control">
+                                        <option value="1">Hot</option>
+                                        <option value="2">Cold</option>
+                                        <option value="3">Sold</option>
+                                        <option value="4">Warm</option>
+                                        <option value="5">Folloup</option>
+                                        <option value="6">Dead</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-click="savecommonlabel()" type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div class="modal fade" id="modal-status">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Lead Status</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Select Status</label>
+                                    <select id="labeloption" class="form-control">
+                                        <option value="1">Hot</option>
+                                        <option value="2">Cold</option>
+                                        <option value="3">Sold</option>
+                                        <option value="4">Warm</option>
+                                        <option value="5">Folloup</option>
+                                        <option value="6">Dead</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-click="savelabel()" type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div class="modal fade" id="modal-type">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Lead Type</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Select Type</label>
+                                    <select class="form-control">
+                                        <option>Call</option>
+                                        <option>Web Lead</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div class="modal fade" id="modal-weblead">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Web Leads<br><small>Sub lines</small></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h4>{[{webmodal.basic.fname}]} {[{webmodal.basic.lname}]}</h4>
+                                <p><i class="icon-location-pin"></i>{[{webmodal.basic.address}]} {[{webmodal.basic.city}]} {[{webmodal.basic.state}]} {[{webmodal.basic.zip}]}</p>
+                                <p><i class="icon-phone"></i>{[{webmodal.basic.homephone|phoneformate2}]}</p>
+                                <p><i class="icon-envelope"></i> <a href="#">{[{webmodal.basic.email}]}</a></p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p><strong>Source : </strong> <a href="#">{[{webmodal.response.source}]}</a></p>
+                                <p><strong>Date : </strong>{[{webmodal.response.date.d}]}/{[{webmodal.response.date.m}]}/{[{webmodal.response.date.Y}]}</p>
+                                <p><strong>Time : </strong>{[{webmodal.response.date.H}]}:{[{webmodal.response.date.I}]} {[{webmodal.response.date.P}]}</p>
+                                <p><strong>Owner : </strong>{[{webmodal.lead.ownername}]}</p>
+                                <p><strong>Status : </strong>
+                                    <button type="button" class="btn btn-xs {[{webmodal.lead.iconeClass}]}">{[{webmodal.lead.icone}]}</button>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-click="customersummary(webmodal.customer.keyid)" type="button" class="btn btn-primary">Customer Summary</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div class="modal fade" id="modal-phonelead">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title clearfix">Phone Leads
+        <small class="pull-right" style="margin-right: 20px;"><a href="#"><i class="icon-cloud-download"></i> Download</a></small>
+        </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <audio src="{[{phonemodal.response.recordingurl}]}" preload="auto" />
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h4>{[{phonemodal.basic.fname}]} {[{phonemodal.basic.lname}]}</h4>
+                                <p><i class="icon-location-pin"></i>{[{phonemodal.basic.address}]} {[{phonemodal.basic.city}]} {[{phonemodal.basic.state}]} {[{phonemodal.basic.zip}]}</p>
+                                <p><i class="icon-phone"></i>{[{phonemodal.basic.homephone|phoneformate2}]}</p>
+                                <p><i class="icon-envelope"></i> <a href="#">{[{phonemodal.basic.email}]}</a></p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p><strong>Source : </strong> <a href="#">{[{phonemodal.response.source}]}</a></p>
+                                <p><strong>Date : </strong>{[{phonemodal.response.date.d}]}/{[{phonemodal.response.date.m}]}/{[{phonemodal.response.date.Y}]}</p>
+                                <p><strong>Time : </strong>{[{phonemodal.response.date.H}]}:{[{phonemodal.response.date.I}]} {[{phonemodal.response.date.P}]}</p>
+                                <p><strong>Owner : </strong>{[{phonemodal.lead.ownername}]}</p>
+                                <p><strong>Status : </strong>
+                                    <button type="button" class="btn btn-xs {[{phonemodal.lead.iconeClass}]}">{[{phonemodal.lead.icone}]}</button>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-click="customersummary(phonemodal.customer.keyid)" type="button" class="btn btn-primary">Customer Summary</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div class="modal fade" id="modal-smslead">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title clearfix">SMS</h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="media-group sms-list">
+                        <li class="media sms-sender">
+                            <img src="http://placehold.it/100x100" alt="" class="media-object pull-left">
+                            <div class="media-body">
+                                <div class="sms-body">
+                                    <div class="sms-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                                    <div class="sms-time">8:00 AM </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="media sms-reciver">
+                            <img src="http://placehold.it/100x100" alt="" class="media-object pull-right">
+                            <div class="media-body">
+                                <div class="sms-body">
+                                    <div class="sms-content">Suspendisse elit libero, sollicitudin vel lorem at, malesuada lobortis leo.</div>
+                                    <div class="sms-time">8:01 AM</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <form class="form frm-send-sms">
+                        <div class="input-group">
+                            <input type="text" class="form-control">
+                            <div class="input-group-btn">
+                                <button tabindex="-1" class="btn btn-default" type="button"><i class="fa fa-camera"></i></button>
+                                <button tabindex="-1" class="btn btn-default" type="button">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->

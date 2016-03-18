@@ -1,0 +1,830 @@
+{% load humanize %}
+{% load dealerfunnel_filters %}
+{% load static %}
+<script type="text/javascript" src="{% static 'js/angular-timeago.js' %}"></script>
+<script>
+
+String.prototype.insertAt=function(index, string) { 
+  return this.substr(0, index) + string + this.substr(index);
+}
+
+var app = angular.module('customerprofile',['yaru22.angular-timeago']);
+
+
+app.controller("profilecampaign", function($scope,$http) {
+     
+     $scope.FlagLst          = [false];
+     $scope.idLst            = [['hv1','sv1']];
+     $scope.customer         = {};
+     $scope.lasttimevisit    = (new Date()).toISOString();
+     $scope.homephone        = '0000000000';
+     $scope.workphone        = '0000000000';
+     //===================================== Appointment Dummy ============
+     $scope.app              = {};
+     $scope.setAppModel      = function()
+     {
+        $scope.app.fname     = $scope.customer.basic.fname;
+        $scope.app.lname     = $scope.customer.basic.lname;
+        $scope.app.address   = $scope.customer.basic.address;
+        $scope.app.city      = $scope.customer.basic.city;
+        $scope.app.state     = $scope.customer.basic.state;
+        $scope.app.zip       = $scope.customer.basic.zip;
+        $scope.homephone     = $scope.customer.basic.homephone;
+        $scope.workphone     = $scope.customer.basic.workphone;
+        $scope.app.email     = $scope.customer.basic.email;
+        $scope.app.date      = $scope.customer.appointment.date;
+        $scope.app.time      = $scope.customer.appointment.time;
+        $scope.app.status    = $scope.customer.appointment.status;
+        $scope.app.statuslst = $scope.customer.lookup.statuslist;
+        $scope.app.statelst  = $scope.customer.lookup.statelist;
+     }
+     $scope.toggole          = function(index)
+            {
+                if(!$scope.FlagLst[index])
+                {
+                   $('#'+$scope.idLst[index][1]).removeClass('hidden');
+                   $('#'+$scope.idLst[index][0]).addClass('hidden');
+                   $scope.FlagLst[index] = true;
+                }
+                else
+                {
+                   $('#'+$scope.idLst[index][0]).removeClass('hidden');
+                   $('#'+$scope.idLst[index][1]).addClass('hidden');
+                   $scope.FlagLst[index] = false;
+                }
+                
+            }
+     $scope.newnote = function()
+     {
+        
+        $('#addnote').modal();
+        
+     };
+     
+     $scope.getCustomer = function()
+     {
+        $scope.cid = $('#cid').val();
+        $http.get("/api/getcustomer/",
+                {
+                  params:
+                     {
+                         "cid":$scope.cid
+                         
+                     }
+                 }).then(function(response) 
+    			 {
+    				$scope.customer.basic = response.data.basic;	
+    				$scope.customer.extra = response.data.extra;
+    				$scope.customer.appointment = response.data.appointment;
+    				$scope.customer.lookup = response.data.lookup;
+    				$scope.note            = response.data.note;
+    				$scope.islead          = response.data.isLead;
+    				$scope.id              = response.data.id;
+    				$scope.note            = response.data.note;
+    				$scope.lasttimevisit  = $scope.customer.extra.lastvisit.ST;
+    				$scope.homephone = $scope.customer.basic.homephone;
+    				$scope.workphone = $scope.customer.basic.workphone;
+                    $scope.setAppModel();			
+    				
+    				$scope.toggole(0);
+    				
+    			 });
+     }
+     $scope.savenote = function()
+     {
+         var data = {
+            'id': $scope.editId,
+            'note':$scope.editnotemodel
+        };
+        $http.post("/api/updatenotes/",data).then(function(response)
+        {
+           
+        });
+        var loc = $scope.getNoteLoc($scope.editId);
+        $scope.note[loc].note = $scope.editnotemodel
+        $('#editnote').modal('hide');
+     };
+     $scope.editnote = function(cid)
+     {
+         var loc = $scope.getNoteLoc(cid);
+         $scope.editnotemodel = $scope.note[loc].note;
+         $scope.editId        = cid;
+         $('#editnote').modal();
+     };
+     $scope.addnote = function()
+     {
+        $scope.cid = $('#cid').val();
+        var data = {
+            'cid': $scope.cid,
+            'note':$scope.noteval
+        };
+        $http.post("/api/addnote/",data).then(function(response)
+        {
+           $scope.note = response.data.note;
+        });
+        $('#addnote').modal('hide');
+     };
+     $scope.getNoteLoc = function(id)
+     {
+        for(i=0;i<$scope.note.length;i++)
+        {
+           if($scope.note[i].id == id)
+           {
+              return i;
+           }
+            
+        }
+        return -1;
+     };
+     
+     $scope.deletenote = function(id)
+     {
+        $scope.cid = $('#cid').val();
+        $http.get("/api/deletenotes/",
+                {
+                  params:
+                     {
+                         "cid":$scope.cid,
+                         "id" :id 
+                         
+                     }
+                 }).then(function(response) 
+    			 {
+    				$scope.note = response.data.note;	
+    					
+    			 });
+     };
+     $scope.changeyear = function()
+     {
+        $http.get("/api/getmakes/",
+                {
+                  params:
+                     {
+                         "year":$scope.appSyear
+                         
+                     }
+                 }).then(function(response) 
+    			 {
+    				 $scope.make       = response.data.make;
+    				 $scope.appSmake   = 'Select Make';
+    			 });
+     };
+     $scope.changemake = function()
+     {
+         $http.get("/api/getmakes/",
+                {
+                  params:
+                     {
+                         "year":$scope.appSyear
+                         
+                     }
+                 }).then(function(response) 
+    			 {
+    				 $scope.make       = response.data.make;
+    				 $scope.appSmake   = 'Select Make';
+    			 });
+     };
+     $scope.changemodel = function()
+     {
+         $http.get("/api/getmodels/",
+                {
+                  params:
+                     {
+                         "year":$scope.appSyear,
+                         "make":$scope.appSmake
+                         
+                     }
+                 }).then(function(response) 
+    			 {
+    				 $scope.make       = response.data.make;
+    				 $scope.appSmake   = 'Select Make';
+    			 });
+     };
+     $scope.setapp = function()
+     {
+        $('#appdatepicker').datepicker();
+        $('#timepicker').timepicker({
+        	defaultTime: 'value'
+        });
+    	$('#appointment').modal();
+     };
+     
+     $scope.init = function () {
+        $scope.cid = '';
+        $scope.note = {};
+        $scope.editnotemodel = "";
+        $scope.customer      = {};
+        $scope.trade         = {};
+        $scope.year          = {};
+        $scope.make          = {};
+        $scope.model         = {};
+        $scope.state         = {};
+        $scope.app           = {};
+        $scope.appstatus     = {};   
+     };
+     
+});
+     app.config(function($interpolateProvider) {
+  			$interpolateProvider.startSymbol('{[{');
+  			$interpolateProvider.endSymbol('}]}');
+     });
+     app.filter('customerstatus', function() {
+		return function(input) {
+		    if(input == 1)
+		    {
+		       return '(Active)';
+		    }
+		    else if(input == 2)
+		    {
+		       return '(Less Active)'; 
+		    }
+		    else
+		    {
+		        return '(Lost)';
+		    }
+		}
+	 });
+	 app.filter('phoneformate',function()
+	 {
+	    return function(input)
+	    {
+	       if(input == null)
+	       {
+	          return '';
+	       }
+	       else
+	       {
+	       	  return input.insertAt(0,'(').insertAt(4,')').insertAt(5,' ').insertAt(9,'-');
+	       }
+	    }
+	 });
+	 app.filter('phoneformate1',function()
+	 {
+	    return function(input)
+	    {
+	       if(input == null)
+	       {
+	          return '';
+	       }
+	       else
+	       {
+	       	  return input.insertAt(3,' ').insertAt(7,' ');
+	       }
+	    }
+	 });
+
+</script>
+<script>
+$(document).ready(function(){
+	$("abbr.timeago").timeago();
+	var controller = angular.element($("#pcont")).scope();
+    controller.$apply(function(){
+        controller.getCustomer();
+        
+            
+    });
+})
+function setapp()
+{
+    var controller = angular.element($("#pcont")).scope();
+    controller.$apply(function(){
+        controller.setapp();
+            
+    });
+}
+</script>
+<div ng-app='customerprofile' ng-controller='profilecampaign' class="container-fluid" id="pcont">
+      <div class="page-head ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Customer Profile</h2>
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Customers</a></li>
+              <li class="active">Customer Profile</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+		  <div class="cl-mcont customer-profile">
+
+  			<div class="row">
+  				<div class="col-sm-8 col-md-8">
+  					<div class="block-flat">
+              <div class="row">
+                <div class="col-sm-5">
+                  <div align="center" id="hv1" class="" >
+              	  
+                   
+	              	<img src='/media/ajaxloader/squares2.gif'/>
+	              
+                
+                  </div>
+                  <div id="sv1" class="hidden">
+                  <div  class="customer-info">
+                    <h4 class="text-primary no-margin-top">{[{customer.basic.fname}]} {[{customer.basic.lname}]} 
+                    <span>{[{customer.extra.status|customerstatus}]}</span>
+                    </h4>
+                    <p><i class="fa fa-location-arrow"></i> {[{customer.basic.address}]}, {[{customer.basic.city}]},{[{customer.basic.state}]}, {[{customer.basic.zip}]}</p>
+                    <p ng-if="customer.basic.email !=null"><i class="fa fa-envelope-o"></i> {[{customer.basic.email}]}</p>
+                    <p ng-if="homephone !=null"><i class="fa fa-phone"></i> {[{homephone | phoneformate}]} (Home)</p>
+                    <p ng-if="workphone !=null"><i class="fa fa-phone"></i> {[{workphone | phoneformate}]} (Work)</p>
+                    <p><i class="fa fa-clock-o"></i> Last Visit: <span>{[{ lasttimevisit | timeAgo}]}</span></p>
+                    {% if local.customer.isbirthday == 1 %}
+                    <p ng-if="customer.extra.isbirthday =='1'"><i class="fa fa-clock-o"></i> Birth Date: {[{customer.extra.birth_date.ST|date:'yyyy/MM/dd'}]}</p>
+                    {%endif%}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-7">
+                  <div class="customer-map">
+                       <div id="map">
+	                      <iframe width="100%" height="200" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="/iframe/map/?lat={{ local.Basic.lat }}&lng={{ local.Basic.lng }}"></iframe>
+	                   </div>
+                    
+                  </div>
+                </div>
+              </div>
+  					</div>
+
+            <div class="row cusstat">
+              <div class="col-sm-3">
+                <div class="block-flat">
+                  <div class="sub"><h2>Car sold</h2><span>{{ local.Extra.sales }}</span></div>
+                </div>
+              </div>  
+              <div class="col-sm-3">
+                <div class="block-flat">
+                    <div class="sub"><h2>Gross Profit</h2><span>${{ local.Extra.grossprofit }}</span></div>
+                </div>
+              </div>  
+              <div class="col-sm-3">
+                <div class="block-flat">
+                  <div class="sub"><h2>Repair Orders</h2><span>{{ local.Extra.service }}</span></div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="block-flat">
+                  <div class="sub"><h2>Total Invoiced</h2><span>${{ local.Extra.invoiced }}</span></div>
+                </div>
+              </div> 
+            </div>
+            
+            <div class="custable">
+              <div class="tab-container">
+                <ul class="nav nav-tabs">
+                  {% if local.isSales %}
+                  	<li class="active"><a href="#sales" data-toggle="tab">Sales</a></li>
+                  {% endif %}
+                  {% if local.isService %}
+                  	<li><a href="#services" data-toggle="tab">Services</a></li>
+                  {% endif %}
+                  <li><a href="#vehicles" data-toggle="tab">Vehicles</a></li>
+                  {% if local.isCampaign %}
+                  	<li><a href="#campaigns" data-toggle="tab">Campaigns</a></li>
+                  {% endif %}
+                  {% if local.isCampaign %}
+                  	<li><a href="#response" data-toggle="tab">Response</a></li>
+                  {% endif %}
+                  <li><a href="#note" data-toggle="tab">Note</a></li>
+                  {% if local.isApp %}
+                  	<li><a href="#response" data-toggle="tab">Response</a></li>
+                  {% endif %}
+                </ul>
+                <div class="tab-content">
+                  {% if local.isSales %}
+                  <div class="tab-pane active cont" id="sales">
+                    <h3>Sales</h3>
+                    
+                    <table id="sale-matches-tbl" class="no-border jxpand-tbl">
+                  <thead class="no-border">
+                    <tr  style="display: table-row;">
+                      <th>Vehicle</th>
+                      <th>Type</th>
+                      <th>Deal #</th>
+                      <th>Sold Date</th>
+                      <th>Gross Profit</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody class="no-border-x no-border-y">
+                    {% for n in local.Roi.Sales %}
+                    <tr onclick='salesexpand({{n.id}})' class="odd">
+                      <td>{{n.make}} {{n.model}}</td>
+                      <td>{{n.fsales.vehicletype}}</td>
+                      <td>{{n.fsales.dealnumber}}</td>
+                      <td>{{n.Ddate|date:"m/d/Y"}}</td>
+                      <td>${{n.grossprofit|group}}</td>
+                      <td><div id='salesArrow_{{n.id}}' class="arrow"></div></td>
+                    </tr>
+                    <tr id='hiddenSalesRow_{{n.id}}' style="display: none;">
+                      <td colspan="4">
+                        <p><strong>VIN:</strong> {{n.vin}}</p>
+                        <p><strong>Sale Price:</strong> ${{n.saleprice|group}}</p>
+                        <p><strong>Front Gross:</strong> ${{n.frontgross|group}}</p>
+                        <p><strong>Back Gross:</strong> ${{n.backgross|group}}</p>
+                        <p><strong>Mileage:</strong> {{n.mileage|group}}</p>
+                      </td>
+                      <td colspan="2">
+                        <p><strong>Payment:</strong> ${{n.payment|group}}</p>
+                        <p><strong>Term:</strong> {{n.term}} Months</p>
+                        <p><strong>Trade:</strong> {{n.tradeyear}} {{n.trademake}} {{n.trademodel}}</p>
+                        <p><strong>Trade VIN:</strong> {{n.tradevin}}</p>
+                        <p><strong>Trade ACV:</strong> ${{n.tradeacv|group}}</p>
+                        <p><strong>Trade Profit:</strong> ${{n.tradeprofit|group}}</p>
+                      </td>
+                    </tr>
+                     {% endfor %}
+                    
+                    
+                  </tbody>
+                </table>
+                  </div>
+                  {% endif %}
+                  {% if local.isService %}
+                  <div class="tab-pane" id="services">
+                    <h3>Services</h3>
+                    <table id="sale-matches-tbl" class="no-border jxpand-tbl">
+                  <thead class="no-border">
+                    <tr  style="display: table-row;">
+                      <th>Vehicle</th>
+                      <th>RO #</th>
+                      <th>Closed Date</th>
+                      <th>Invoiced Amount</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody class="no-border-x no-border-y">
+                    {% for n in local.Roi.Sales %}
+                    <tr onclick='salesexpand({{n.id}})' class="odd">
+                      <td>{{n.make}} {{n.model}}</td>
+                      <td>{{n.ronumber}}</td>
+                      <td>{{n.Ddate|date:"m/d/Y"}}</td>
+                      <td>${{n.roamountt|group}}</td>
+                      <td><div id='salesArrow_{{n.id}}' class="arrow"></div></td>
+                    </tr>
+                    <tr id='hiddenSalesRow_{{n.id}}' style="display: none;">
+                        <td colspan="5">
+                        <p><strong>VIN:</strong> {{n.vin}}</p>
+                        <p><strong>Customer Pay:</strong> ${{n.customerpay}}</p>
+                        <p><strong>Warranty Pay:</strong> ${{n.warrantypay}}</p>
+                        
+                      </td>
+                    </tr>
+                     {% endfor %}
+                    
+                    
+                  </tbody>
+                </table> 
+                    
+                  </div>
+                  {% endif %}
+                  <div class="tab-pane" id="vehicles">
+                    <h3>Vehicles</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Vehicle</th>
+                          <th>Mileage</th>
+                          <th>Own</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ local.Roi.Vehicles.year }} {{ local.Roi.Vehicles.make }} {{ local.Roi.Vehicles.model }}</td>
+                          <td>{{ local.Roi.Vehicles.mileage|intcomma }}</td>
+                          
+                          <td>{{ local.Roi.Vehicles.own}}</td>
+                         
+                        </tr>
+                        
+                        
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                  {% if local.isCampaign %}
+                  <div class="tab-pane cont" id="campaigns">
+                    <h3>Campaigns</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Campaign</th>
+                          <th>Type</th>
+                          <th>Mail</th>
+                          <th>Email</th>
+                          <th>Activity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for r in local.Cmp %}
+                        <tr>
+                          <td>{{r.Ddate}}</td>
+                          <td>{{r.Campaign}}</td>
+                          <td>
+                            
+                            {% if r.Type == 1 %}
+                            	<i class="fa fa-car"></i>
+                            {% endif %}
+                            {% if r.Type == 2 %}
+                            	<i class="fa fa-wrench"></i>
+                            {% endif %}
+                            {% if r.Type == 3 %}
+                            	<i class="fa fa-car"></i>
+                            	<i class="fa fa-wrench"></i>
+                            {% endif %}
+                          </td>
+                          <td>{{r.Mail|intcomma}}</td>
+                          <td>{{r.Email|intcomma}}</td>
+                          <td>1</td>
+                        </tr>
+                        {% endfor %}
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                  {% endif %}
+                  {% if local.isCampaign %}
+                  <div class="tab-pane" id="response">
+                    <h3>Response</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th>Details</th>
+                          <th>Date</th>
+                          <th>Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                  {% endif %}
+                  <div class="tab-pane" id="note">
+                    <h4>Notes
+                    <a class="btn btn-blue btn-small pull-right" data-target="#modal-wrap-3" data-toggle="modal" href="javascript:void(0)" ng-click="newnote()">New Note</a>
+                    </h4>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Date & Time</th>
+                          <th>Note</th>
+                          <th>Rep</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                        <tr ng-repeat="nt in note">
+                          <td>
+                              {[{nt.date}]}
+                          </td>
+                          <td>{[{nt.note}]}</td>
+                          <td>{[{nt.agent}]}</td>
+                          <td>
+                          	<a class="btn btn-warning btn-xs" ng-click="editnote(nt.id)" href="javascript:void(0)">
+                          		<i class="fa fa-edit"></i>
+                          	</a>
+                          	<a class="btn btn-danger btn-xs" ng-click="deletenote(nt.id)" href="javascript:void(0)">
+                          		<i class="fa fa-times"></i>
+                          	</a>
+                          </td>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+  				</div>	
+  				
+  			 <div class="col-sm-4 col-md-4">
+  			 <ul class="cbp_tmtimeline">
+              {% for r in local.timeline %}
+              {% if r.type == 3 %}
+              <li>
+                <time class="cbp_tmtime" datetime="{{ r.date|date:"m/d/Y" }}"><span>{{ r.date|date:"m/d/Y" }}</span></time>
+                <div class="cbp_tmicon"><i class="fa fa-bullhorn"></i></div>
+                <div class="cbp_tmlabel">
+                  <h4>{{ r.name}}</h4>
+                </div>
+              </li>
+              {% endif %}
+              {% if r.type == 1 %}
+              <li>
+                <time class="cbp_tmtime" datetime="{{ r.date|date:"m/d/Y" }}"><span>{{ r.date|date:"m/d/Y" }}</span>  </time>
+                <div class="cbp_tmicon"><i class="fa fa-wrench"></i></div>
+                <div class="cbp_tmlabel">
+                  <h4>{{ r.year }} {{ r.make }} {{ r.model }}</h4>
+                  <p><strong>Gross Profit:</strong> ${{ r.grossprofit }}</p>
+                </div>
+              </li>
+              {% endif %}
+              {% if r.type == 2 %}
+              <li class="old-time">
+                <time class="cbp_tmtime" datetime="{{ r.date|date:"m/d/Y" }}"><span>{{ r.date|date:"m/d/Y" }}</span>  </time>
+                <div class="cbp_tmicon"><i class="fa fa-bullhorn"></i></div>
+                <div class="cbp_tmlabel">
+                  <h4>Services</h4>
+                  <p><strong>Invoiced Total:</strong> ${{ r.roamount }}</p>
+                </div>
+              </li>
+              {% endif %}
+              
+              {% endfor %}
+              
+              
+            </ul>
+  				</div>
+  			</div>
+		  </div>
+
+	<input type="hidden" id="cid" value="{{local.Id.key}}"/>	
+	
+<div class="modal fade" id="addnote">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Add Note
+        
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form class="form">
+          
+          <div class="row-fluid">
+            <textarea ng-model="noteval" required="" id="note"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button ng-click="addnote()" type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="editnote">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Edit Note
+        
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form class="form">
+          
+          <div class="row-fluid">
+            <textarea ng-model="editnotemodel" required="">{{editnotemodel}}</textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button ng-click="savenote()" type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" id="appointment">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Set Appoinment
+        
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form class="form">
+           
+            
+            
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input value="{[{app.fname}]}" type="text" class="form-control" required="" id="">
+                </div>
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input value="{[{app.lname}]}" type="text" class="form-control" name="name" required="" id="cname">
+                </div>
+                <div class="form-group">
+                  <label>Address</label>
+                  <input value="{[{app.address}]}" type="text" class="form-control" name="name" required="" id="cname">
+                </div>
+                <div class="form-group">
+                  <label>City</label>
+                  <input value="{[{app.city}]}" type="text" class="form-control" name="name" required="" id="cname">
+                </div>
+                <div class="form-group">
+                  <label>State</label>
+                  
+                  <select
+                  	ng-model="app.state"
+                  	ng-options="st as st for st in app.statelst">
+                  </select>
+                                    
+                  
+                </div>
+                <div class="form-group">
+                  <label>Zip</label>
+                  <input value="{[{app.zip}]}" type="text" class="form-control" name="name" required="" id="cname">
+                </div>
+                
+                
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input value="{[{app.email}]}" type="text" class="form-control" name="name" required="" id="cname">
+                </div>
+                <div class="form-group">
+                  <label>Mobile Phone</label>
+                  <input value="{[{workphone|phoneformate1}]}" type="text" class="form-control" name="name" required="" id="cname">
+                </div>
+                <div class="form-group">
+                  <label>Home Phone</label>
+                  <input value="{[{homephone|phoneformate1}]}" type="text" class="form-control" name="name" required="" id="cname">
+                </div>
+                <div class="form-group">
+                  <label>Select Date</label>
+                  <input value="{[{app.date}]}" id="appdatepicker" type="text" class="form-control" name="name" required="">
+                </div>
+                <div class="form-group">
+                  <label>Select Time</label>
+                  <input value="{[{app.time}]}" type="text" class="form-control" name="name" required="" id="timepicker">
+                </div>
+                <div class="form-group">
+                  <label>Status</label>
+                  <select
+                  	ng-model="app.status"
+                  	ng-options="st as st for st in app.statuslst">
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label>Note</label>
+                  <textarea rows="4" name="Note"></textarea>
+                </div>
+            </div>
+            
+           
+           
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button ng-click="savenote()" type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+</div>
+</div> 
+<script>
+$(document).ready(function(){
+        $("#sale-matches-tbl tr:odd,#service-matches-tbl tr:odd").addClass("odd");
+        $("#sale-matches-tbl tr:not(.odd),#service-matches-tbl tr:not(.odd)").hide();
+        $("#sale-matches-tbl tr:first-child,#service-matches-tbl tr:first-child").show();
+      
+        
+
+        $('#btn-toggle-sale').click(function(){
+        $("#btn-toggle-sale .fa-plus,#btn-toggle-sale .fa-minus").toggleClass('hide');
+        $("#sale-matches-tbl tr.odd").next("tr").toggle();
+        $("#sale-matches-tbl tr.odd").find(".arrow").toggleClass("up");
+        });
+
+        $('#btn-toggle-service').click(function(){
+        $("#btn-toggle-service .fa-plus,#btn-toggle-service .fa-minus").toggleClass('hide');
+        $("#service-matches-tbl tr.odd").next("tr").toggle();
+        $("#service-matches-tbl tr.odd").find(".arrow").toggleClass("up");
+        });
+    });
+function salesexpand(val)
+{
+   
+   $('#hiddenSalesRow_'+val).toggle();
+   $('#salesArrow_'+val).toggleClass("up");
+}    
+</script>
+
+  

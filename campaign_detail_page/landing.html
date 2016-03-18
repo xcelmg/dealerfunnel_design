@@ -1,0 +1,913 @@
+
+<script>
+         var app = angular.module('selectcampaignapp', []);
+         
+         app.controller("campaign_lst", function($scope,$http) {
+            $scope.lst    = {};
+            $scope.setList = function()
+            {
+               var str = '';
+               for(i=0;i<$scope.lst.Active.length;i++)
+               {
+                  str = str + "<li><a onclick=getnewcampaign('" + $scope.lst.Active[i].key + "') href='javascript:void(0)'>" + $scope.lst.Active[i].name + " </a></li>";
+               }
+               $('#campaign_list').html(str);
+               $('#selected_campaign_name').html($scope.lst.selected.name);
+            }
+            
+            $scope.getLst = function(keyid)
+            {
+            $http.get("/api/getallcampaignbycmp/",
+            			{params:{"id":keyid}}
+            	     )
+    			.then(function(response) 
+    				{
+    					$scope.lst = response.data;
+    					$scope.setList();
+    					$scope.isLst = true;
+    				});
+    		};
+    		$scope.init = function () {
+    		   $scope.isLst  = false;
+    		};
+    		$scope.init();
+         });
+         
+         
+         app.controller("campaign_daterange", function($scope,$http) {
+            $scope.box    = {};
+            $scope.getBox = function(startDate,endDate,keyid)
+            {
+            $http.get("/api/getcampaignbox/",
+            			{params:{"startDate":startDate, "endDate": endDate,"keyid":keyid}}
+            	     )
+    			.then(function(response) 
+    				{
+    					$scope.box = response.data;
+    					$scope.isBox = true;
+    				});
+    		};
+    		$scope.init = function () {
+    		   $scope.isBox  = false;
+    		};
+    		$scope.init();
+         });
+         
+         app.controller("campaign_box", function($scope,$http) {
+            $scope.box    = {};
+            $scope.getBox = function(startDate,endDate,keyid)
+            {
+            $http.get("/api/getcampaignbox/",
+            			{params:{"startDate":startDate, "endDate": endDate,"keyid":keyid}}
+            	     )
+    			.then(function(response) 
+    				{
+    					$scope.box = response.data;
+    					$scope.isBox = true;
+    				});
+    		};
+    		$scope.init = function () {
+    		   $scope.isBox  = false;
+    		};
+    		$scope.init();
+         });
+         app.controller("campaign_roi", function($scope,$http) {
+            
+            $scope.setServiceStr = function()
+            {
+               var str = '';
+               for(i=0;i<$scope.roi.services.length;i++)
+               {
+                  var idval   = 'hiddenServiceRow_'+i;
+                  var idvalsn = 'serviceArrow_'+i;
+                  var sentry = $scope.roi.services[i];
+                  var solddate = sentry.entrydate.d+'/'+sentry.entrydate.m+'/'+sentry.entrydate.Y;
+                  str = str + "<tr onclick='serviceexpand(" + i + ")' class='odd'>";
+                  str = str + "<td>" + sentry.name + "</td>";
+                  str = str + "<td>" + sentry.vehicle + "</td>";
+                  str = str + "<td>" + sentry.ronumber + "</td>";
+                  str = str + "<td>" + solddate + "</td>";
+                  str = str + "<td>" + sentry.roamount + "</td>";
+                  str = str + "<td>" + "<div id='"+ idvalsn +"' class='arrow'></div>" + "</td>";
+                  str = str + '</tr>';
+                  
+                  str = str + "<tr id='"+idval+"' style='display: none;'>";
+                  
+                  str = str + "<td colspan='3'>";
+                  str = str + "<p>" + sentry.address + "</p>";
+                  str = str + "<p>" + "<strong>Home:</strong>" + sentry.homephone  + "</p>";
+                  str = str + "<p>" + "<strong>Work:</strong>" + sentry.workphone  + "</p>";
+                  str = str + "<p>" + "<strong>Cell:</strong>" + sentry.cellphone  + "</p>";
+                  str = str + "<p>" + "<strong>Email:</strong>" + sentry.email  + "</p>";
+                  str = str + '</td>';
+                  
+                  str = str + "<td colspan='2'>";
+                  str = str + "<p>" + "<strong>VIN:</strong>" + sentry.vehiclevin  + "</p>";
+                  str = str + "<p>" + "<strong>Customer Pay:</strong>" + sentry.warrantypartscost  + "</p>";
+                  str = str + "<p>" + "<strong>Warranty Pay:</strong>" + sentry.customerpayrepairordertotal  + "</p>";
+                  
+                  str = str + '</td>';
+                  str = str + '</tr>';
+                  
+               }
+               $('#servicestr').html(str);
+            }
+            $scope.setSalesStr = function()
+            {
+               var str = '';
+               for(i=0;i<$scope.roi.sales.length;i++)
+               {
+                  var idval   = 'hiddenSalesRow_'+i;
+                  var idvalsn = 'salesArrow_'+i;
+                  var sentry = $scope.roi.sales[i];
+                  var solddate = sentry.entrydate.d+'/'+sentry.entrydate.m+'/'+sentry.entrydate.Y;
+                  str = str + "<tr onclick='salesexpand(" + i + ")' class='odd'>";
+                  str = str + "<td>" + sentry.basic.name + "</td>";
+                  str = str + "<td>" + sentry.year + ' ' + sentry.make + ' ' + sentry.model + "</td>";
+                  str = str + "<td>" + sentry.vehicletype + "</td>";
+                  str = str + "<td>" + sentry.dealnumber + "</td>";
+                  str = str + "<td>" + solddate + "</td>";
+                  str = str + "<td>" + '$'+sentry.grossprofit + "</td>";
+                  str = str + "<td>" + "<div id='"+ idvalsn +"' class='arrow'></div>" + "</td>";
+                  str = str + '</tr>';
+                  
+                  str = str + "<tr id='"+idval+"' style='display: none;'>";
+                  
+                  str = str + "<td colspan='3'>";
+                  str = str + " <p>" + sentry.basic.address + '<br/>' +  sentry.basic.city + ',' + sentry.basic.state + ',' + sentry.basic.zip + "</p>";
+                  if(sentry.basic.homephone!=null)
+                  {
+                  	str = str + " <p>" + "<strong>Home: </strong>" + sentry.basic.homephone  + "</p>";
+                  }
+                  else
+                  {
+                    str = str + " <p>" + "<strong>Home: </strong></p>";
+                  }
+                  if(sentry.basic.workphone!=null)
+                  {
+                  	str = str + " <p>" + "<strong>Work: </strong>" + sentry.basic.workphone  + "</p>";
+                  }
+                  else
+                  {
+                     str = str + " <p>" + "<strong>Work: </strong></p>";
+                  }
+                  if(sentry.basic.cellphone!=null)
+                  {
+                  	str = str + " <p>" + "<strong>Cell:</strong>" + sentry.basic.cellphone  + "</p>";
+                  }
+                  else
+                  {
+                     str = str + " <p>" + "<strong>Cell: </strong></p>";
+                  }
+                  if(sentry.basic.email!=null)
+                  {
+                  	str = str + " <p>" + "<strong>Email: </strong>" + sentry.basic.email  + "</p>";
+                  }
+                  else
+                  {
+                     str = str + " <p>" + "<strong>Email: </strong></p>";
+                  }
+                  str = str + '</td>';
+                  
+                  str = str + "<td colspan='2'>";
+                  str = str + " <p>" + "<strong>VIN:</strong>" +' ' + sentry.vin  + "</p>";
+                  str = str + " <p>" + "<strong>Sale Price:</strong>"  + ' $' + sentry.saleprice  + "</p>";
+                  str = str + " <p>" + "<strong>Front Gross:</strong>" + ' $' + sentry.frontgross  + "</p>";
+                  str = str + " <p>" + "<strong>Back Gross:</strong>" + ' $' + sentry.backgross  + "</p>";
+                  str = str + " <p>" + "<strong>Mileage:</strong>" + ' ' + sentry.mileage  + "</p>";
+                  str = str + '</td>';
+                  
+                  str = str + "<td colspan='2'>";
+                  str = str + " <p>" + " <strong>Payment: </strong>" + '$ '+sentry.payment  + "</p>";
+                  str = str + " <p>" + " <strong>Term: </strong>" + ' ' + sentry.term  + " Months</p>";
+                  str = str + " <p>" + " <strong>Trade: </strong>" + ' '+ sentry.tradeyear  + ' '+ sentry.trademake + ' ' + sentry.trademodel + "</p>";
+                  str = str + " <p>" + " <strong>Trade VIN:</strong>" + ' '  + sentry.tradevin  + "</p>";
+                  str = str + " <p>" + " <strong>Trade ACV:</strong>" + ' ' + sentry.tradeacv  + "</p>";
+                  str = str + " <p>" + " <strong>Trade Profit:</strong>" + ' ' + '$'+sentry.tradeprofit  + "</p>";
+                  str = str + '</td>';
+                  
+                  str = str + '</tr>';
+                  
+                  
+               }
+               $('#salestr').html(str);
+               
+            } 
+            $scope.getRoi = function(startDate,endDate,keyid)
+            {
+            $http.get("/api/getcampaignroimatch/",
+            			{params:{"startDate":startDate, "endDate": endDate,"id":keyid}}
+            	     )
+    			.then(function(response) 
+    				{
+    					$scope.roi.sales    = response.data.sales;
+    					$scope.roi.services = response.data.service;
+    					$scope.setSalesStr();
+    					$scope.setServiceStr();
+    					$scope.isRoi = true;
+    				});
+    		};
+    		$scope.init = function () {
+    		   $scope.isRoi  = false;
+    		   $scope.roi    = {};
+    		   $scope.roi.salesStr = '';
+    		   $scope.roi.serviceStr = '';
+               
+    		};
+    		$scope.init();
+         });
+         app.controller("campaign_stats", function($scope,$http) {
+            $scope.stats    = {};
+            $scope.getStats = function(keyid)
+            {
+            $http.get("/api/getstats/",
+            			{params:{"keyid":keyid}}
+            	     )
+    			.then(function(response) 
+    				{
+    					$scope.stats = response.data;
+    					$scope.isStats = true;
+    				});
+    		};
+    		$scope.init = function () {
+    		   $scope.isStats  = false;
+    		};
+    		$scope.init();
+         });
+         app.config(function($interpolateProvider) {
+  			$interpolateProvider.startSymbol('{[{');
+  			$interpolateProvider.endSymbol('}]}');
+		 });
+		 app.controller("campaign_chart", function($scope,$http) {
+            $scope.chart    = {};
+            $scope.chart.web = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0]];
+            $scope.chart.phone = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0]];
+            $scope.chart.app = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0]];
+            $scope.chart.sequence = ["", "", "","", "", "", "", ""];
+            $scope.chart.strdate = {"Start": "", "End": ""};
+            
+            $scope.chartinit = function()
+            { 
+            	// Need update chart data new
+            }
+            
+            
+            $scope.getChart = function(keyid)
+            {
+            $http.get("/api/responsecount/",
+            			{params:{"keyid":keyid}}
+            	     )
+    			.then(function(response) 
+    				{
+    					$scope.chart = response.data;
+    					$scope.isChart  = true;
+    					$scope.chartinit();
+    				});
+    		};
+    		$scope.init = function () {
+    		   $scope.isChart  = false;
+    		};
+    		$scope.init();
+         });
+         
+		 
+		 
+         
+         app.config(function($interpolateProvider) {
+  			$interpolateProvider.startSymbol('{[{');
+  			$interpolateProvider.endSymbol('}]}');
+		 });
+		 
+</script>
+<div ng-app='selectcampaignapp' id="pcont" class="container-fluid">
+      
+      <div class="page-head ">
+        <div class="row">
+          <div id="campaign_lst" ng-controller='campaign_lst' class="col-sm-6">
+            <div ng-show="!isLst">
+               	<div class="block-loading"><img src='/media/ajaxloader/squares.gif' alt=""/></div>
+            </div>
+            
+            <h2><div class="dropdown">
+              <a id="selected_campaign_name" class="dropdown-toggle" data-toggle="dropdown" href="#"><small><i class="fa fa-angle-down"></i></small></a>
+              <ul id="campaign_list" class="dropdown-menu">
+                
+              </ul>
+            </div></h2>
+            <input type="hidden" id="selected_campaign" value="{{local.selectcmp.id}}"/>
+            <input type="hidden" value="" id="startdate"/>
+	        <input type="hidden" value="" id="enddate"/>
+	        {% for n in local.cmpmap %}
+	            <input type="hidden" id="{{n.Dealerkey}}" value="{{n.Cmpkey}}"/>
+	        {% endfor %}
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li><a href="campaign-page.html">Campaigns</a></li>
+              <li class="active">Campaign Detail</li>
+            </ol>
+        </div>
+
+        <div class="col-sm-6 text-right">
+            <div class="reportrange daterange-picker">
+               <i class="icon-calender"></i>
+               <span></span> 
+               <i class="fa fa-caret-down"></i>
+            </div>
+       </div>
+     
+        </div>
+      </div>
+      <div class="cl-mcont">
+
+      <div class="row dash-cols">
+      
+        <div id="campaign_chart" ng-controller='campaign_chart' class="col-sm-6">
+          <div class="block">
+            <div class="header no-border">
+              <div ng-show="isChart">
+              	<h4 class="title">Responses</h4>
+              </div>
+              <div ng-show="!isChart">
+               	<div class="block-loading"><img src='/media/ajaxloader/squares.gif' alt=""/></div>
+              </div>
+            </div>
+            <div  >
+           <div class="chart-area">
+							<div id="campaign-chart" style="height:310px;"></div>
+						</div>
+            
+            	
+                
+            </div>
+          </div>
+        </div>
+        <div id="campaign_stats" ng-controller='campaign_stats' class="col-sm-6">
+        	<div class="row stats ds-stats customer-stat-group">
+            <div class="col-sm-6">
+              <div class="stat-item block">
+              	<div class="content">
+              	<div class="media">
+              		<div class="media-object pull-left">
+              			<i class="flaticon-mail-bulb stat-icon"></i>
+              		</div>
+              		<div class="media-body">
+	                  	<h4 class="stat-counter">2245</h4>
+              				<p class="stat-title">Mail Pieces</p>
+              		</div>
+              	</div>
+              	</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+            	<div class="stat-item block">
+            	<div class="content">
+              	<div class="media">
+              		<div class="media-object pull-left">
+              			<i class="icon-envelope stat-icon"></i>
+              		</div>
+              		<div class="media-body">
+                  	<h4 class="stat-counter">5564</h4>
+              			<p class="stat-title">Email</p>
+              		</div>
+              	</div>
+              </div>
+              </div>
+            </div>
+          </div>
+
+        	<div class="row stats ds-stats customer-stat-group">
+            <div class="col-sm-6">
+              <div class="stat-item block">
+              	<div class="content">
+              	<div class="media">
+              		<div class="media-object pull-left">
+              			<i class="icon-user-follow stat-icon"></i>
+              		</div>
+              		<div class="media-body">
+	                  	<h4 class="stat-counter">22</h4>
+              				<p class="stat-title">New Customers</p>
+              		</div>
+              	</div>
+              	</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+            	<div class="stat-item block">
+            	<div class="content">
+              	<div class="media">
+              		<div class="media-object pull-left">
+              			<i class="icon-user-following stat-icon"></i>
+              		</div>
+              		<div class="media-body">
+                  	<h4 class="stat-counter">187</h4>
+              			<p class="stat-title">Saved Customers</p>
+              		</div>
+              	</div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="block">
+          	<div class="header no-border">
+          		<h4 class="title">Leads</h4>
+          	</div>
+          	<div class="content">
+              <div class="clearfix">
+                <div class="ds-stat">
+                  <span class="item-type-ico label label-primary"><i class="icon-screen-desktop"></i></span>
+                  <span class="ds-stat-number">233</span>
+                  <span class="ds-stat-title">Web Leads</span>
+                </div>
+                <div class="ds-stat">
+                  <span class="item-type-ico label label-success"><i class="icon-phone"></i></span>
+                  <span class="ds-stat-number">233</span>
+                  <span class="ds-stat-title">Phone Calls</span>
+                </div>
+                <div class="ds-stat">
+                  <span class="item-type-ico label label-danger"><i class="icon-clock"></i></span>
+                  <span class="ds-stat-number">989</span>
+                  <span class="ds-stat-title">Appointments</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="campaign_box" ng-controller='campaign_box' class="stats_bar row">
+
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div ng-show="isBox">
+            	<div class="sub"><h2>Cost</h2><span>{[{ box.cost.val  }]}</span></div>
+            	<div class="stat"><span class="{[{ box.cost.flag  }]}">{[{ box.cost.par  }]}</span></div>
+            </div>
+            <div ng-show="!isBox">
+    			<div class="block-loading"><div class="sub"><img src='/media/ajaxloader/squares.gif' alt=""/></div></div>
+			</div>
+            
+          </div>
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div ng-show="isBox">
+            	<div class="sub"><h2>Car sold</h2><span>{[{ box.carsold.val  }]}</span></div>
+            	<div class="stat"><span class="{[{ box.carsold.flag  }]}">{[{ box.carsold.par  }]}</span></div>
+            </div>
+            <div ng-show="!isBox">
+    			<div class="block-loading"><div class="sub"><img src='/media/ajaxloader/squares.gif' alt=""/></div></div>
+			</div>
+          </div> 
+        </div>
+        <div class="item-col-6"> 
+          <div class="butpro butstyle">
+            <div ng-show="isBox">
+            	<div class="sub"><h2>Gross Profit</h2><span>{[{ box.grossprofit.val  }]}</span></div>
+            	<div class="stat"><span class="{[{ box.grossprofit.flag  }]}">{[{ box.grossprofit.par  }]}</span></div>
+            </div>
+            <div ng-show="!isBox">
+    			<div class="block-loading"><div class="sub"><img src='/media/ajaxloader/squares.gif' alt=""/></div></div>
+			</div>
+          </div>  
+        </div>
+        <div class="item-col-6"> 
+          <div class="butpro butstyle">
+            <div ng-show="isBox">
+            	<div class="sub"><h2>Trades</h2><span>{[{ box.trades.val  }]}</span></div>
+            	<div class="stat"><span class="{[{ box.trades.flag  }]}">{[{ box.trades.par  }]}</span></div>
+            </div>
+            <div ng-show="!isBox">
+    			<div class="block-loading"><div class="sub"><img src='/media/ajaxloader/squares.gif' alt=""/></div></div>
+			</div>
+          </div>  
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div ng-show="isBox">
+            	<div class="sub"><h2>Repair Orders</h2><span>{[{ box.repairorders.val  }]}</span></div>
+            	<div class="stat"><span class="{[{ box.repairorders.flag  }]}">{[{ box.repairorders.par  }]}</span></div>
+            </div>
+            <div ng-show="!isBox">
+    			<div class="block-loading"><div class="sub"><img src='/media/ajaxloader/squares.gif' alt=""/></div></div>
+			</div>
+          </div>
+        </div>
+        <div class="item-col-6">
+          <div class="butpro butstyle">
+            <div ng-show="isBox">
+            	<div class="sub"><h2>RO Total</h2><span>{[{ box.rototal.val  }]}</span></div>
+            	<div class="stat"><span class="{[{ box.rototal.flag  }]}">{[{ box.rototal.par  }]}</span></div>
+            </div>
+            <div ng-show="!isBox">
+    			<div class="block-loading"><div class="sub"><img src='/media/ajaxloader/squares.gif' alt=""/></div></div>
+			</div>
+          </div>  
+        </div>
+
+      </div>
+      <div id="campaign_roi" ng-controller='campaign_roi' >
+      <div ng-show="!isRoi">
+    			<div class="block-loading"><div class="sub"><img src='/media/ajaxloader/squares.gif' alt=""/></div></div>
+	  </div>
+	  <div ng-show="isRoi">
+      <div  class="campaign-dashboard-tbl">
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#sales-matches">Sales Matches</a></li>
+            <li><a data-toggle="tab" href="#service-matches">Services Matches</a></li>
+            <li><a data-toggle="tab" href="#lead-matches">Leads</a></li>
+            
+            <li class="pull-right">
+            	<button class="btn btn-primary btn-toggle-row" id="btn-toggle-sale" type="button">
+                <i class="fa fa-caret-down"></i>
+                <i class="fa fa-caret-up hide"></i>
+              </button>
+            </li>
+            <li class="pull-right">
+            	<div class="btn-group">
+            		<button type="button" class="btn btn-default"><i class="fa fa-file-excel-o"></i></button>
+            		<button type="button" class="btn btn-default"><i class="fa fa-file-pdf-o"></i></button>
+            		<button type="button" class="btn btn-default"><i class="icon-printer"></i></button>
+            	</div>
+            </li>
+          </ul>
+          <div class="tab-content">
+          	<div id="lead-matches" class="tab-pane">
+          		<div class="row">
+          			<table class="table table-striped table-hover">
+                  <thead class="no-border">
+                  	<tr>
+                  		<th style="width: 40px;"></th>
+                  		<th>Response</th>
+                  		<th>Name</th>
+                  		<th>Campaign</th>
+                  		<th>Time</th>
+                  		<th>Last Visited</th>
+                  		<th>Status</th>
+                  	</tr>
+                  </thead>
+                  <tbody  class="no-border-x no-border-y">
+                  	<tr>
+                  		<td class="text-cdnter"><input type="checkbox"></td>
+                  		<td>
+                  			<a class="item-type-ico label label-danger"><i class="icon-screen-desktop"></i></span></a>
+                  		</td>
+                  		<td>
+                  			<a href="http://dealerfunnel.com/customer/profile/?cid=f1b73941244bd3e6e68c935bccb7a4100a38af315e76481d3a6d33f6">VISION CANANDAIGUA</a>
+                  		</td>
+                  		<td>Total Cusomers</td>
+                  		<td><span am-time-ago="1456370834000">11 days ago</span></td>
+                  		<td><span am-time-ago="1455494400000">21 days ago</span></td>
+                  		<td><button data-toggle="modal" class="btn btn-xs btn-green" type="button">sold</button></td>
+                  	</tr>
+                  	<tr>
+                  		<td class="text-cdnter"><input type="checkbox"></td>
+                  		<td>
+                  			<a class="item-type-ico label label-danger"><i class="icon-screen-desktop"></i></span></a>
+                  		</td>
+                  		<td>
+                  			<a href="http://dealerfunnel.com/customer/profile/?cid=f1b73941244bd3e6e68c935bccb7a4100a38af315e76481d3a6d33f6">VISION CANANDAIGUA</a>
+                  		</td>
+                  		<td>Total Cusomers</td>
+                  		<td><span am-time-ago="1456370834000">11 days ago</span></td>
+                  		<td><span am-time-ago="1455494400000">21 days ago</span></td>
+                  		<td><button data-toggle="modal" class="btn btn-xs btn-green" type="button">sold</button></td>
+                  	</tr>
+                  	<tr>
+                  		<td class="text-cdnter"><input type="checkbox"></td>
+                  		<td>
+                  			<a class="item-type-ico label label-danger"><i class="icon-screen-desktop"></i></span></a>
+                  		</td>
+                  		<td>
+                  			<a href="http://dealerfunnel.com/customer/profile/?cid=f1b73941244bd3e6e68c935bccb7a4100a38af315e76481d3a6d33f6">VISION CANANDAIGUA</a>
+                  		</td>
+                  		<td>Total Cusomers</td>
+                  		<td><span am-time-ago="1456370834000">11 days ago</span></td>
+                  		<td><span am-time-ago="1455494400000">21 days ago</span></td>
+                  		<td><button data-toggle="modal" class="btn btn-xs btn-green" type="button">sold</button></td>
+                  	</tr>
+                  	<tr>
+                  		<td class="text-cdnter"><input type="checkbox"></td>
+                  		<td>
+                  			<a class="item-type-ico label label-danger"><i class="icon-screen-desktop"></i></span></a>
+                  		</td>
+                  		<td>
+                  			<a href="http://dealerfunnel.com/customer/profile/?cid=f1b73941244bd3e6e68c935bccb7a4100a38af315e76481d3a6d33f6">VISION CANANDAIGUA</a>
+                  		</td>
+                  		<td>Total Cusomers</td>
+                  		<td><span am-time-ago="1456370834000">11 days ago</span></td>
+                  		<td><span am-time-ago="1455494400000">21 days ago</span></td>
+                  		<td><button data-toggle="modal" class="btn btn-xs btn-green" type="button">sold</button></td>
+                  	</tr>
+                  	<tr>
+                  		<td class="text-cdnter"><input type="checkbox"></td>
+                  		<td>
+                  			<a class="item-type-ico label label-danger"><i class="icon-screen-desktop"></i></span></a>
+                  		</td>
+                  		<td>
+                  			<a href="http://dealerfunnel.com/customer/profile/?cid=f1b73941244bd3e6e68c935bccb7a4100a38af315e76481d3a6d33f6">VISION CANANDAIGUA</a>
+                  		</td>
+                  		<td>Total Cusomers</td>
+                  		<td><span am-time-ago="1456370834000">11 days ago</span></td>
+                  		<td><span am-time-ago="1455494400000">21 days ago</span></td>
+                  		<td><button data-toggle="modal" class="btn btn-xs btn-green" type="button">sold</button></td>
+                  	</tr>
+
+                  </tbody>
+                </table>
+          		</div>
+          	</div>
+            <div id="sales-matches" class="tab-pane active">
+              <div class="row">
+                
+                <table class="table table-stripe table-hovered jxpand-tbl table-sale-service">
+                  <thead class="no-border">
+                    <tr >
+                      <th>Name</th>
+                      <th>Vehicle</th>
+                      <th>Type</th>
+                      <th>Deal #</th>
+                      <th>Sold Date</th>
+                      <th>Gross Profit</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="salestr" class="no-border-x no-border-y">
+                    
+                    
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div id="service-matches" class="tab-pane">
+              <div class="row">
+                <table class="table table-stripe table-hovered jxpand-tbl table-sale-service"> 
+                  <thead class="no-border">
+                    <t>
+                      <th>Name</th>
+                      <th>Vehicle</th>
+                      <th>RO #</th>
+                      <th>Closed Date</th>
+                      <th>Invoiced Amount</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="servicestr" class="no-border-x no-border-y">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+        </div>
+      </div>
+		
+		  </div>
+</div>
+<input type="hidden" id="skeyid" value="{{local.keyid}}"/>
+<script>
+function initDatePicker(start,end)
+{
+    $('.daterange-picker').daterangepicker(
+       {
+          startDate: start,
+          endDate: end,
+          minDate: '01/01/2013',
+          maxDate: '12/31/2016',
+          dateLimit: { days: 1200 },
+          showDropdowns: true,
+	      showWeekNumbers: true,
+          timePicker: false,
+          timePickerIncrement: 1,
+          timePicker12Hour: true,
+          ranges: {
+             'Today': [moment(), moment()],
+             'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+             'Last 7 Days': [moment().subtract('days', 6), moment()],
+             'Last 30 Days': [moment().subtract('days', 29), moment()],
+             'This Month': [moment().startOf('month'), moment().endOf('month')],
+             'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')],
+             'This Year' : [moment().startOf('year'), moment().endOf('year')],
+             'Last Year' : [moment().subtract('year', 1).startOf('year'), moment().subtract('year', 1).endOf('year')],
+             'Turn Off'  : [moment().subtract('days', 500), moment()],
+          },
+          opens: 'right',
+          buttonClasses: ['btn'],
+          applyClass: 'btn-sm btn-primary',
+          cancelClass: 'btn-sm btn-inverse',
+          format: 'MM/DD/YYYY',
+          separator: ' to ',
+          locale: {
+              applyLabel: 'Submit',
+              fromLabel: 'From',
+              toLabel: 'To',
+              customRangeLabel: 'Custom Range',
+              daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+              monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+              firstDay: 1
+          }
+       },
+       function(start, end) 
+       {
+            $('#startdate').val(start.format('YYYY-MM-DD'));
+            $('#enddate').val(end.format('YYYY-MM-DD')); 
+            $('.daterange-picker span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            updateroi();
+            
+       }
+       
+    );
+    $('.daterange-picker span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+}
+function dealer_ajax_loading()
+{
+   var dealer  = $('#selectedkeyid').val();
+   var cmp     = $('#'+dealer).val();
+   location.href = "{{local.domain}}" + "campaign/detail/page/" + dealer + "/" + cmp;
+}
+function change_campaign(keyid)
+{
+   var dealer  = $('#selectedkeyid').val();
+   location.href = "{{local.domain}}" + "campaign/detail/page/" + dealer + "/" + keyid;
+}
+function getcampaign()
+{
+   var cmpid      = $('#selected_campaign').val();
+   var startdate  = $('#startdate').val();
+   var enddate    = $('#enddate').val();
+   $('#ajaxcontainer').showLoading(); 
+   $.get('{% url 'selected_campaign_details_page' %}',{id:cmpid,startdate:startdate,enddate:enddate},function(data, status){
+         $('#ajaxcontainer').html(data);
+         $('#ajaxcontainer').hideLoading();
+   });
+}
+function updateroi()
+{
+    var startDate = $('#startdate').val();
+    var endDate   = $('#enddate').val();
+    var skeyid    = $('#skeyid').val();
+    var roiScop = angular.element($("#campaign_roi")).scope(); 
+    roiScop.$apply(function(){
+        roiScop.init();
+        roiScop.getRoi(startDate,endDate,skeyid);
+        
+    });
+    
+    var boxScop = angular.element($("#campaign_box")).scope();
+	boxScop.$apply(function(){
+        boxScop.init();
+        boxScop.getBox(startDate,endDate,skeyid);
+    });
+}
+function setInit(flag)
+{ 
+    var startDate = $('#startdate').val();
+    var endDate   = $('#enddate').val();
+    var skeyid    = $('#skeyid').val();
+	var boxScop = angular.element($("#campaign_box")).scope();
+	boxScop.$apply(function(){
+        if(flag) {boxScop.init();}
+        boxScop.getBox(startDate,endDate,skeyid);
+    });
+    var statsScop = angular.element($("#campaign_stats")).scope(); 
+    statsScop.$apply(function(){
+        if(flag) {statsScop.init();}
+        statsScop.getStats(skeyid);
+    });
+	var chartScop = angular.element($("#campaign_chart")).scope(); 
+    chartScop.$apply(function(){
+        if(flag) {chartScop.init();}
+        chartScop.chartinit();
+        chartScop.getChart(skeyid);
+        
+    });
+    var roiScop = angular.element($("#campaign_roi")).scope(); 
+    roiScop.$apply(function(){
+        if(flag) {roiScop.init();}
+        roiScop.getRoi(startDate,endDate,skeyid);
+        
+    });
+    
+    var lstScop = angular.element($("#campaign_lst")).scope(); 
+    lstScop.$apply(function(){
+        lstScop.getLst(skeyid);
+        
+    });
+    
+   
+}
+
+
+$(document).ready(function(){
+	var skeyid    = $('#skeyid').val();
+	$.get("/api/getcampaigndate/",{keyid:skeyid}, function( data ) {
+        
+        var obj       = jQuery.parseJSON(data);
+        var startdate = moment(obj.startdate);
+        var enddate   = moment(obj.enddate);
+        initDatePicker(startdate,enddate);
+        $('#startdate').val(obj.startdate);
+        $('#enddate').val(obj.enddate);
+        setInit(false);
+    });
+	
+	
+	$('#selectedkeyid').val('{{local.dealer.keyid}}');
+	
+    
+});
+$(document).ready(function(){
+        $("#sale-matches-tbl tr:odd,#service-matches-tbl tr:odd").addClass("odd");
+        $("#sale-matches-tbl tr:not(.odd),#service-matches-tbl tr:not(.odd)").hide();
+        $("#sale-matches-tbl tr:first-child,#service-matches-tbl tr:first-child").show();
+      
+        
+
+        $('#btn-toggle-sale').click(function(){
+        $("#btn-toggle-sale .fa-caret-down,#btn-toggle-sale .fa-caret-up").toggleClass('hide');
+        $(".table-sale-service tr.odd").next("tr").toggle();
+        $(".table-sale-service tr.odd").find(".arrow").toggleClass("up");
+        });
+
+    });
+
+function salesexpand(val)
+{
+   
+   $('#hiddenSalesRow_'+val).toggle();
+   $('#salesArrow_'+val).toggleClass("up");
+}
+
+function serviceexpand(val)
+{
+   $('#hiddenServiceRow_'+val).toggle();
+   $('#serviceArrow_'+val).toggleClass("up");
+}
+function getnewcampaign(skeyid)
+{
+  $('#skeyid').val(skeyid);
+  $.get("/api/getcampaigndate/",{keyid:skeyid}, function( data ) {
+        
+        var obj       = jQuery.parseJSON(data);
+        var startdate = moment(obj.startdate);
+        var enddate   = moment(obj.enddate);
+        initDatePicker(startdate,enddate);
+        $('#startdate').val(obj.startdate);
+        $('#enddate').val(obj.enddate);
+        setInit(true);
+    });
+}
+function dealerrequest(dealerid,dealername,keyid)
+{
+     $('#selectedid').val(dealerid);
+     $('#selected_dealer_name').html(dealername);
+     $('#selectedkeyid').val(keyid);
+     $.get('/ajax/dealer/select/',{select_id:dealerid},function(data, status){});
+     var cmpkey = $('#'+keyid).val();
+     $('#skeyid').val(cmpkey);
+     var skeyid    = $('#skeyid').val();
+     $.get("/api/getcampaigndate/",{keyid:skeyid}, function( data ) {
+        
+        var obj       = jQuery.parseJSON(data);
+        var startdate = moment(obj.startdate);
+        var enddate   = moment(obj.enddate);
+        initDatePicker(startdate,enddate);
+        $('#startdate').val(obj.startdate);
+        $('#enddate').val(obj.enddate);
+        setInit(true);
+    });
+     
+     
+}
+</script>
+<script type="text/javascript">
+	$(document).ready(function () {
+ 		area1 = Morris.Area({
+	  element: 'campaign-chart',
+	  data: [
+	      {period: '2014 Q1', phone: 2666, app: null, web: 1113},
+	      {period: '2014 Q2', phone: 2778, app: 2294, web: 1113},
+	      {period: '2014 Q3', phone: 4912, app: 1969, web: 1113},
+	      {period: '2014 Q4', phone: 13767, app: 7597, web: 1113},
+	      {period: '2015 Q1', phone: 6810, app: 11914, web: 1113},
+	      {period: '2015 Q2', phone: 9670, app: 6293, web: 1113},
+	      {period: '2015 Q3', phone: 4820, app: 3795, web: 1113},
+	      {period: '2015 Q4', phone: 15073, app: 5967, web: 1113},
+	      {period: '2016 Q1', phone: 10687, app: 4460, web: 1113},
+	      {period: '2016 Q2', phone: 8432, app: 713, web: 11131}
+	    ],
+	    xkey: 'period',
+	    ykeys: ['phone', 'app', 'web'],
+	    labels: ['Phone', 'App', 'Web'],
+	    pointSize: 2,
+	    hideHover: 'auto',
+	    lineWidth: 2,
+	    behaveLikeLine: true,
+	    lineColors: ['#298CF9','#2671C5',"#565656"],
+	    fillOpacity: 1
+	});
+ 		$(window).on('resize', function() { area1.redraw() });
+});
+
+</script>

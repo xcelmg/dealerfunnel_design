@@ -1,0 +1,129 @@
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+<link rel='shortcut icon' type='image/x-icon' href="{% static 'images/favicon.ico' %}">
+
+  <title>Dealer Funnel</title>
+	<link href='http://fonts.googleapis.com/css?family=Lato:400,300,700,900' rel='stylesheet' type='text/css'>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'js/bootstrap/dist/css/bootstrap.css' %}" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/dealerminer.css' %}" />
+
+  <!-- Font Icon Packs -->
+  <link href="{% static 'css/font-awesome-4.5.0/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/simple-line-icons/css/simple-line-icons.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/dealerfunnel-icons/flaticon.css' %}" />
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.gritter/css/jquery.gritter.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.nanoscroller/nanoscroller.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.easypiechart/jquery.easy-pie-chart.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.switch/bootstrap-switch.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.select2/select2.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.datatables/bootstrap-adapter/css/datatables.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.slider/css/slider.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/intro.js/introjs.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.timepicker/bootstrap-timepicker.min.css' %}" />
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/showLoading.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.timeline/css/component.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/jasny-bootstrap.css' %}" />
+  
+	<link rel="stylesheet" type="text/css" href="{% static 'css/morris.css' %}">
+ 	<link rel="stylesheet" type="text/css" href="{% static 'js/timepicker-1.3.2/jquery.timepicker.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+
+
+</head>
+<body class="login-page">
+
+  <div id="cl-wrapper" class="login-container">
+
+  <div class="login-box">
+      <div class="header clearfix">              
+         <a class="navbar-brand" href="index.html"><strong>Dealer</strong>Funnel</a>
+      </div>
+      <div>
+        <form id="loginform" class="form-horizontal" method="post" action="/login/submit/">
+          {% csrf_token %}
+          <input type="hidden" name="Timeoffset" id="Timeoffset" >
+          <div id="ajaxcontent" class="content">
+            <div class="login-fields">
+            	<div class="input-group">
+                <span class="input-group-addon"><i class="icon-user"></i></span>
+                <input type="text" placeholder="Username" name="username" id="username" class="form-control">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="icon-lock"></i></span>
+                <input type="password" placeholder="Password" name="password" id="password" class="form-control">
+              </div>
+            </div>  
+              
+          </div>
+          <span id="errorid">Invalid username or password</span>
+          <div class="foot">
+            <button onclick="setlogin()" class="btn btn-primary btn-block"  type="button">Log me in</button>
+            
+            <a href="{% url 'login_forgotpassword' %}">Forgot Password?</a>
+          </div>
+        </form>
+    </div>
+  </div> 
+  
+</div>
+
+  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'js/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.showLoading.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.showLoading.min.js' %}"></script>
+  <script>
+  function setlogin()
+  {
+     $('#ajaxcontent').showLoading();
+     username = $('#username').val();
+     password = $('#password').val();
+     $.getJSON('/login/jsoncheck/',{username:username,password:password},function(data, status){
+       $('#ajaxcontent').hideLoading();
+       if(data.islogin == '0')
+       {
+          $('#errorid').show();
+          
+       }
+       else
+       {
+          $('#loginform').submit(); 
+       }    
+     }); 
+  }
+  function settimeoffset()
+  {
+	var d = new Date()
+	var n = d.getTimezoneOffset();
+	$('#Timeoffset').val(n);
+  }
+  function enterkey(e)
+  {
+            
+    var keyCode = (window.event) ? event.keyCode : e.keyCode;
+    if (keyCode == 13) {
+      	setlogin();
+    }
+  }
+  $(document).ready ( function () 
+  {
+    settimeoffset();
+    document.body.onkeypress = enterkey;
+  });
+  </script> 
+  </body>
+</html>

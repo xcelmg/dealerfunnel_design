@@ -1,0 +1,16 @@
+{% load dealerfunnel_filters %}
+<div class="row">
+                    <div class="col-sm-12">
+                    {{local.info.number|phone_formate:'0'}}
+                    </div>
+                    <div class="col-sm-12">
+                    Forward Number:<input value="{{local.forwardnumber|phone_formate:'1'}}" id="smsforwardnumber" data-mask="999-999-9999" name="smsforwardnumber" type="text"/>   
+                    </div>
+                  </div>
+                  <div class="row">
+                    
+                    <div class="col-sm-12">
+                      <a onclick="releasesmsnumber()" href="javascript:void(0)" class="btn btn-warning">Release Number</a>
+                    </div>
+                  </div>
+                  <input name="ksmstwilio" type="hidden" value="{{local.info.tid}}" id="smstwillioId"/>

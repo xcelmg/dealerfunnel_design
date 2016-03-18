@@ -1,0 +1,588 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">         
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script> 
+<div class="container-fluid" id="pcont">
+      <div class="page-head ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Dealership Setup</h2>
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Dealership</a></li>
+              <li class="active">Dealership Setup</li>
+            </ol>
+        </div>
+        </div>
+      </div>
+    <div class="cl-mcont">
+
+      <div class="campaign-dashboard-tbl">
+        <div class="block-flat">
+          <div class="dealership-setup">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dealer-info" data-toggle="tab">Dealer Info</a></li>
+              <li><a href="#dealer-trigger" data-toggle="tab">Triggers</a></li>
+              
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="dealer-info">
+                <form enctype="multipart/form-data" id="form1" method="post" action="/dealership/setup/upload/" class="form">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Name</label>
+                            <input name="name" type="text" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label>Address</label>
+                            <input name="address" type="text" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>City</label>
+                            <input name="city" type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <label>State</label>
+                            <select name="state" class="form-control">
+                            {% for state in local.state %}
+                            	<option value="{{ state.state_abbreviation }}" >{{ state.state_abbreviation }}</option>
+                            {% endfor %}	
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <label>Zip</label>
+                            <input name="zip" type="text" class="form-control" data-mask="zipcode">
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>Logo</label>
+                        <input name="rlogo" type="file" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>Manufactor Logo</label>
+                        <input name="mlogo" type="file" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <label>Color</label>
+                        <div class="input-group colorpicker">
+                          <input name="color" type="text" value="#000000" class="form-control"  />
+                          <span class="input-group-addon"><i class=""></i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h4 class="border-bottom">Contact</h4>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Contacts</label>
+                          <input name="sale_contact" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Contacts</label>
+                          <input name="service_contact" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Contacts</label>
+                          <input name="trade_contact" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Title</label>
+                          <input name="sale_title" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Title</label>
+                          <input name="service_title" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Title</label>
+                          <input name="trade_title" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Phone</label>
+                          <input name="sale_phone" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Phone</label>
+                          <input name="service_phone" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Phone</label>
+                          <input name="trade_phone" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h4>Sales Hours</h4>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h5>Monday - Friday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input name="sales_regular_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input name="sales_regular_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <h5 class="clearfix">Sunday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input name="sales_sunday_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input name="sales_sunday_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h5>Saturday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input name="sales_saturday_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input name="sales_saturday_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <h4>Services Hours</h4>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h5>Monday - Friday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input name="service_regular_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input name="service_regular_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <h5 class="clearfix">Sunday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input name="service_sunday_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input name="service_sunday_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h5>Saturday</h5>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>From</label>
+                                <input name="service_saturday_hour_from" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>To</label>
+                                <input name="service_saturday_hour_to" type="text" class="form-control timepicker">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h4 class="border-bottom">Tracking Number</h4>
+                  <div id="trakingnumberid" >
+                  <div class="row">
+                    
+                    <div class="col-sm-12">
+                      <a onclick="addnumbermodal()" href="javascript:void(0)" class="btn btn-warning">Add Number</a>
+                    </div>
+                  </div>
+                  <input type="hidden" value="" id="twillioId"/>
+                </div>
+              </div>
+              
+              <div class="tab-pane" id="dealer-trigger">
+                
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Budget</label>
+                          <input type="text" name="triggers_budget" class="form-control" value="" placeholder="$1,000">
+                        </div>
+                        <div class="col-sm-4">
+                          <label># of Pieces</label>
+                          <input type="text" name="triggers_pieces" class="form-control" value="" placeholder="4,500">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Cost Per Piece</label>
+                          <input type="text" name="trigger_cost_per_pieces" class="form-control" value="" placeholder=".95">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="switcher-list">
+                    <div class="switch-item">
+                      <div  class="row main-switch tradecycle_main_id">
+                        <label class="col-sm-3 text-right">Trade Cycle</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                      <div  class="email_main_id sub-switch row hide">
+                        <label class="col-sm-3 text-right">Email</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div  class="birthday_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Birthday</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="newpurchase_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">New Purchase</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="equityposition_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Equity Position</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="fstservice_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">1st Service</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="warrantyexpiration_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Warranty Expiration</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="overdueservices_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Overdue Services</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="makeconquest_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Make Conquest</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="crossoverconquest_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Crossover Conquest</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                <input type="hidden" value="0" name="trigger_crossover_conquest" id="crossoverconquestid"/>
+                <input type="hidden" value="0" name="trigger_make_conquest" id="makeconquestid"/>
+                <input type="hidden" value="0" name="trigger_overdue_services" id="overdueservicesid"/>
+                <input type="hidden" value="0" name="trigger_warranty_expiration" id="warrantyexpirationid"/>
+                <input type="hidden" value="0" name="trigger_fst_service" id="fstserviceid"/>
+                <input type="hidden" value="0" name="trigger_equity_position" id="equitypositionid"/>
+                <input type="hidden" value="0" name="trigger_new_purchase" id="newpurchaseid"/>
+                <input type="hidden" value="0" name="trigger_birthday" id="birthdayid"/>
+                <input type="hidden" value="0" name="triggers_email" id="emailid"/>
+                <input type="hidden" value="0" name="trigger_trade_cycle" id="tradecycleid"/>
+                </form>
+              </div>
+              <div class="tab-pane" id="campaign-planner">
+                <div class="stats_bar campaign_planner_bars row">
+                  <div class="item-col-6">
+                    <div class="butpro butstyle" data-step="2" data-intro="<strong>Beautiful Elements</strong> <br/> If you are looking for a different UI, this is for you!.">
+                      <div class="sub"><h2>Campaigns</h2><span id="total_clientes">170</span></div>
+                      <div class="stat"><span class="spk1"><canvas style="display: inline-block; width: 74px; height: 16px; vertical-align: top;" width="74" height="16"></canvas></span></div>
+                    </div>
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Cost</h2><span>$7,611</span></div>
+                      <div class="stat"><span class="up"> 13,5%</span></div>
+                    </div>
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Car sold</h2><span>70</span></div>
+                      <div class="stat"><span class="down"> 20,7%</span></div>
+                    </div> 
+                  </div>
+                  <div class="item-col-6"> 
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Gross Profit</h2><span>$69,133.00</span></div>
+                      <div class="stat"><span class="equal"> 0%</span></div>
+                    </div>  
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Repair Orders</h2><span>70</span></div>
+                      <div class="stat"><span class="down"> 21.3%</span></div>
+                    </div>
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>RO Total</h2><span>$39,001.33</span></div>
+                      <div class="stat"><span class="up"> 6.7%</span></div>
+                    </div>  
+                  </div>
+                </div>
+                <hr>
+                
+              </div>
+            </div>
+            <p class="text-right">
+              <a onclick="saveform()" href="javascript:void(0)" class="btn btn-primary">Save</a>
+            </p>
+          </div>
+        </div>
+      </div>
+		
+		  </div>
+		</div> 
+		
+	</div>
+<div class="modal fade" id="twilionumbermodal">
+  
+</div><!-- /.modal -->
+	<script type="text/javascript">
+    var availablecity = {{local.city|safe}}
+    function releasenumber()
+    {
+       var tid = $('#twillioId').val();
+       $('#trakingnumberid').showLoading();
+       $.get('/twilio/releasenumber/',
+	   {tid:tid},
+	   function(data, status) 
+	   {  
+          $('#trakingnumberid').html(data);
+          $('#trakingnumberid').hideLoading();
+          
+       });
+    }
+    function buynumber(id)
+    {
+       var number = $('#'+id+"_number").val();
+       var city = $('#'+id+"_city").val();
+       var state = $('#'+id+"_state").val();
+       var zip = $('#'+id+"_zip").val();
+       var ptype = $('#ptype').val();
+       var tid   = $('#twillioId').val();
+       $('#twilionumbermodal').showLoading();
+       $.get('/twilio/buynumber/',
+	   {number:number,city:city,state:state,ptype:ptype,zip:zip,tid:tid},
+	   function(data, status) 
+	   {  
+          $('#trakingnumberid').html(data);
+          $('#twilionumbermodal').hideLoading();
+          $('#twilionumbermodal').modal('hide');
+       });
+       
+       
+    }
+    function searchphonenumber()
+    {
+       var type = $('#ptype').val();
+       var pattern = $('#pattern').val();
+       var searchcity = $('#searchcity').val();
+       $('#twilionumbermodal').showLoading();
+       $.get('/twilio/searchnumber/',
+	   {type:type,pattern:pattern,city:searchcity},
+	   function(data, status) 
+	   {  
+          $('#twilionumbermodal').html(data);
+          $('#twilionumbermodal').hideLoading();
+       });
+    }
+    function addnumbermodal()
+    {
+       $.get('/twilio/searchbox/',
+	   {},
+	   function(data, status) 
+	   {  
+          $('#twilionumbermodal').html(data);
+          $('#twilionumbermodal').modal();
+       });
+       
+    }
+    function saveform()
+    {
+       $('#form1').submit();
+    }
+    $(document).ready(function(){
+        $("#searchcity").autocomplete({
+			minLength:3,source: availablecity
+		});
+        $('.bootstrap-switch').click(function(){
+          $(this).next().toggleClass('hide');
+        });
+        
+               
+        $('.tradecycle_main_id .bootstrap-switch-handle-off').click(function(){ $('#tradecycleid').val(1); });
+        $('.tradecycle_main_id .bootstrap-switch-handle-on').click(function(){ $('#tradecycleid').val(0); });
+        $('.email_main_id .bootstrap-switch-handle-off').click(function(){ $('#emailid').val(1); });
+        $('.email_main_id .bootstrap-switch-handle-on').click(function(){ $('#emailid').val(0); });
+        $('.birthday_main_id .bootstrap-switch-handle-off').click(function(){ $('#birthdayid').val(1); });
+        $('.birthday_main_id .bootstrap-switch-handle-on').click(function(){ $('#birthdayid').val(0); });
+        $('.newpurchase_main_id .bootstrap-switch-handle-off').click(function(){ $('#newpurchaseid').val(1); });
+        $('.newpurchase_main_id .bootstrap-switch-handle-on').click(function(){ $('#newpurchaseid').val(0); });
+        $('.equityposition_main_id .bootstrap-switch-handle-off').click(function(){ $('#equitypositionid').val(1); });
+        $('.equityposition_main_id .bootstrap-switch-handle-on').click(function(){ $('#equitypositionid').val(0); });
+        $('.fstservice_main_id .bootstrap-switch-handle-off').click(function(){ $('#fstserviceid').val(1); });
+        $('.fstservice_main_id .bootstrap-switch-handle-on').click(function(){ $('#fstserviceid').val(0); });
+        $('.warrantyexpiration_main_id .bootstrap-switch-handle-off').click(function(){ $('#warrantyexpirationid').val(1); });
+        $('.warrantyexpiration_main_id .bootstrap-switch-handle-on').click(function(){ $('#warrantyexpirationid').val(0); });
+        $('.overdueservices_main_id .bootstrap-switch-handle-off').click(function(){ $('#overdueservicesid').val(1); });
+        $('.overdueservices_main_id .bootstrap-switch-handle-on').click(function(){ $('#overdueservicesid').val(0); });
+        $('.makeconquest_main_id .bootstrap-switch-handle-off').click(function(){ $('#makeconquestid').val(1); });
+        $('.makeconquest_main_id .bootstrap-switch-handle-on').click(function(){ $('#makeconquestid').val(0); });
+        $('.crossoverconquest_main_id .bootstrap-switch-handle-off').click(function(){ $('#crossoverconquestid').val(1); });
+        $('.crossoverconquest_main_id .bootstrap-switch-handle-on').click(function(){ $('#crossoverconquestid').val(0); });
+        
+        $('.main-switch .bootstrap-switch-handle-off').click(function(){$('.main-switch').next().removeClass('hide')});
+        $('.main-switch .bootstrap-switch-handle-on').click(function(){$('.main-switch').next().addClass('hide')})
+
+        $('.multiselect').multiselect();
+        $('.colorpicker').colorpicker();
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+        $("[data-mask='date']").mask("99/99/9999");
+        $("[data-mask='zipcode']").mask("99999");
+        $("[data-mask='phone']").mask("(999) 999-9999");
+        
+        $('.datatable').DataTable( {
+        initComplete: function () {
+          var api = this.api();
+
+          api.columns().indexes().flatten().each( function ( i ) {
+            var column = api.column( i );
+            var select = $('<select><option value=""></option></select>')
+              .appendTo( $(column.footer()).empty() )
+              .on( 'change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                  $(this).val()
+                );
+
+                column
+                  .search( val ? '^'+val+'$' : '', true, false )
+                  .draw();
+              } );
+
+            column.data().unique().sort().each( function ( d, j ) {
+              select.append( '<option value="'+d+'">'+d+'</option>' )
+            } );
+          } );
+        }
+      } );
+        $('.dataTables_length,.dataTables_filter,.dataTables_info,.dataTables_paginate').addClass('hide');
+    });
+  </script>

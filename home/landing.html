@@ -1,0 +1,462 @@
+	{% load static %}
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>DealerFunnel</title>
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="icon" type="home/image/png" href="http://dealerfunnel.com/statics/images/favicon.ico" />
+		<!-- Bootstrap -->
+		<script src="{% static 'home/js/modernizr.custom.js' %}"></script>
+		<link href="{% static 'home/css/bootstrap.min.css' %}" rel="stylesheet">
+		<link href="{% static 'home/css/jquery.fancybox.css' %}" rel="stylesheet">
+		<link href="{% static 'home/css/flickity.css' %}" rel="stylesheet" >
+		<link href="{% static 'home/css/animate.css' %}" rel="stylesheet">
+		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+		<link href="{% static 'home/fonts/gotham.css' %}" rel="stylesheet">
+		<link href="{% static 'home/css/styles.css' %}" rel="stylesheet">
+		<link href="{% static 'home/css/queries.css' %}" rel="stylesheet">
+		<!-- Facebook and Twitter integration -->
+		<meta property="og:title" content=""/>
+		<meta property="og:image" content=""/>
+		<meta property="og:url" content=""/>
+		<meta property="og:site_name" content=""/>
+		<meta property="og:description" content=""/>
+		<meta name="twitter:title" content="" />
+		<meta name="twitter:image" content="" />
+		<meta name="twitter:url" content="" />
+		<meta name="twitter:card" content="" />
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+		<!-- open/close -->
+		<div class="nav nav-wrapper">
+			<div class="container">
+				<div class="col-md-6 col-sm-6 col-xs-6 text-left">
+					<a href="#" class="logo">
+						<img src="{% static 'home/img/logo-trans.png' %}" alt="Dealer Funnel">
+						<span>Dealer<small>Funnel</small></span>
+					</a>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-6 text-right navicon">
+					<ul class="mainnav">
+						<li><a href="#about">About</a></li>
+						<li><a href="#contact">Contact</a></li>
+						<li><a href="#strategy">Strategy</a></li>
+						<li><a href="/login">Login</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<header>
+			<section class="hero">
+				<div class="texture-overlay"></div>
+				<div class="container">
+					<div class="row hero-content">
+						<div class="col-md-12">
+							<h1 class="animated fadeInDown">Strengthening relationships through 1 to 1 marketing.</h1>
+							<p class="banner-desc">DealerFunnel makes it easy to send messages that reasonate with your customers. Getting Started is easy.</p>
+							<a href="http://www.youtube.com/embed/9No-FiEInLA?autoplay=1&wmode=opaque&fs=1" class="youtube-media use-btn animated fadeInUp"><i class="fa fa-play-circle-o"></i> Watch the Video</a> 
+							<a href="#about" class="learn-btn animated fadeInUp hidden-xs">Learn more <i class="fa fa-arrow-down"></i></a>
+						</div>
+					</div>
+				</div>
+			</section>
+		</header>
+		<div class="masthead">
+	        <div class="container">
+	        	<div id="tweecool" class="random-tweet"></div>
+	        </div>
+	      </div>
+	    <div class="client">
+        <div class="container">
+          <ul class="client-list list-unstyled">
+            <li class="client-item">
+            	<img src="http://xcelmediagroup.com/wp-content/uploads/2014/07/client-1.png" alt="">
+            </li>
+            <li class="client-item">
+            	<img src="http://xcelmediagroup.com/wp-content/uploads/2014/07/client-2.png" alt="">
+            </li>
+            <li class="client-item">
+            	<img src="http://xcelmediagroup.com/wp-content/uploads/2014/07/client-3.png" alt="">
+            </li>
+            <li class="client-item">
+            	<img src="http://xcelmediagroup.com/wp-content/uploads/2014/07/client-4.png" alt="">
+            </li>
+            <li class="client-item">
+            	<img src="http://xcelmediagroup.com/wp-content/uploads/2014/07/client-5.png" alt="">
+            </li>
+            <li class="client-item">
+            	<img src="http://xcelmediagroup.com/wp-content/uploads/2014/07/client-6.png" alt="">
+            </li>
+          </ul>
+        </div>
+      </div>
+		<section class="features-intro chart-boxes" id="about">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-6 features-intro-img ">
+						<div class="features-bg">
+							<a href="#" data-toggle="tab" class="feature-action"  data-target="#tab_2" id="tab-engage">Engage</a>
+							<a href="#" data-toggle="tab" class="feature-action" data-target="#tab_1" id="tab-identify">Identify</a>
+							<a href="#" data-toggle="tab" class="feature-action" data-target="#tab_3" id="tab-retain">Retain</a>
+							<a href="#" data-toggle="tab" class="feature-action" data-target="#tab_4" id="tab-report">Report</a>
+							<img src="{% static 'home/img/chart.png' %}" alt="" class="chart-bg-img">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<ul class="nav nav-tabs">
+							<li class="feature-tabs active" id="tab-identify-main"><a href="#" data-target="#tab_1" data-toggle="tab">Identify</a></li>
+							<li class="feature-tabs" id="tab-engage-main"><a href="#" data-target="#tab_2" data-toggle="tab">Engage</a></li>
+							<li class="feature-tabs" id="tab-retain-main"><a href="#" data-target="#tab_3" data-toggle="tab">Retain</a></li>
+							<li class="feature-tabs" id="tab-report-main"><a href="#" data-target="#tab_4" data-toggle="tab">Report</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab_1">
+								<h1>Identify</h1>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+								<p>Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+								
+							</div>
+							<div class="tab-pane" id="tab_2">
+								<h1>Engage</h1>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+								
+							</div>
+							<div class="tab-pane" id="tab_3">
+								<h1>Retain</h1>
+								<p>Sed a lorem quis neque interdum consequat ut sed sem. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+								
+							</div>
+							<div class="tab-pane" id="tab_4">
+								<h1>Report</h1>
+								<p>Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="features-list" id="strategy">
+			<div class="container">
+				<h1 class="text-center">Strategy</h1>
+				<div class="row">
+				<div class="col-md-12 text-center">
+					<img src="{% static 'home/img/assr_stack3.png' %}" alt="" >
+				</div>
+				</div>
+				
+			</div>
+		</section>
+		<section class="showcase">
+			<div class="showcase-wrap">
+				<div class="texture-overlay"></div>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="device wp3">
+								<div class="device-content">
+									<div class="showcase-slider">
+										<ul class="slides" id="showcaseSlider">
+											<li>
+												<img src="{% static 'home/img/screen1.jpg' %}" alt="Device Content Image">
+											</li>
+											<li>
+												<img src="{% static 'home/img/screen2.jpg' %}" alt="Device Content Image">
+											</li>
+											<li>
+												<img src="{% static 'home/img/screen3.jpg' %}" alt="Device Content Image">
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<h1>Unlock the power of your database.</h1>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+							<blockquote class="team-quote">
+								<div class="avatar"><img src="{% static 'home/img/avatar.png' %}" alt="User Avatar"></div>
+								<p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc."</p>
+								
+							</blockquote>
+							<a class="youtube-media use-btn animated fadeInUp" href="http://www.youtube.com/embed/9No-FiEInLA?autoplay=1&wmode=opaque&fs=1">Watch the Video! <i class="fa fa-play-circle-o"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="screenshots-intro">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Unlock the power of your database & Comminute more effectively with your customer</h1>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+						<p><a  class="youtube-media use-btn animated fadeInUp" href="http://www.youtube.com/embed/9No-FiEInLA?autoplay=1&wmode=opaque&fs=1">Watch the video <i class="fa fa-play-circle-o"></i></a></p>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<section class="download" id="contact">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center wp4">
+						<h1>Contact Us</h1>
+						<address>
+							<h3 style="margin-bottom: 0;"><strong>DealerFunnel</strong></h3>
+							5739 Byron Anthony Place<br>
+							Sanford, FL 32771<br>
+						</address>
+
+						<form action="/home/submit/" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate form-register" novalidate>
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-sm-3">
+									<div class="form-group mc-field-group">
+										<label>Name</label>
+										<input type="text" value="" name="FULLNAME" class="form-control" id="mce-FULLNAME" placeholder="Your Name">
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="form-group mc-field-group">
+										<label>Dealership</label>
+										<input type="text"  value="" name="DEALERSHIP" class="form-control" id="mce-DEALERSHIP" placeholder="Your Dealership">
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="form-group mc-field-group">
+										<label>Email</label>
+										<input type="email" value="" name="EMAIL" class="required email form-control" id="mce-EMAIL" placeholder="Email Address">
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="form-group mc-field-group">
+										<label>Phone</label>
+										<input type="text" value="" name="PHONE" class="form-control bfh-phone" data-format="ddd - ddd - dddd" id="mce-PHONE" placeholder="Phone Number">
+									</div>
+								</div>
+							</div>
+							<div id="mce-responses" class="clear">
+              <div class="response" id="mce-error-response" style="display:none"></div>
+              <div class="response" id="mce-success-response" style="display:none"></div>
+            </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+              <div style="position: absolute; left: -5000px;"><input type="text" name="b_2d0b2f586cafd2f83716a289a_9ea2b87b01" tabindex="-1" value=""></div>
+              <div class="clear form-group">
+              <input type="submit" value="Send Info Now" name="subscribe" id="mc-embedded-subscribe" class="button btn btn-lg btn-success">
+              </div>
+						</form>
+						<h2>Give us a call 866-712-5990</h2>
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="footer-logo">
+							<img src="{% static 'home/img/logo.png' %}" alt="DealerFunnel">
+							<span>Dealer<small>Funnel</small></span>
+						</div>
+					</div>
+					<div class="col-md-7">
+						<ul class="footer-nav">
+							<li><a href="#about">About</a></li>
+							<li><a href="#">Strategy</a></li>
+							<li><a href="#contact">Contact</a></li>
+							<li><a href="#">Login</a></li>
+						</ul>
+					</div>
+					<div class="col-md-2">
+						<ul class="social-share">
+							<li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<hr>
+		<div class="copyright text-center">
+			<p>Copyright 2015 Dealer Funnel LLC</p>
+			<p><a href="#" data-target="#modal-privacy" data-toggle="modal">Privacy Policy</a></p>
+		</div>
+
+
+
+		<div class="modal fade" id="modal-privacy">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h2 class="modal-title">Privacy Policy</h2>
+          </div>
+          <div class="modal-body">
+            
+<p>This privacy policy has been compiled to better serve those who are concerned with how their 'Personally identifiable information' (PII) is being used online. PII, as used in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.</p>
+
+<p><strong>What personal information do we collect from the people that visit our blog, website or app?</strong></p>
+
+<p>When ordering or registering on our site, as appropriate, you may be asked to enter your or other details to help you with your experience.</p>
+
+<p><strong>When do we collect information?</strong></p>
+
+<p>We collect information from you when you or enter information on our site.</p>
+
+
+<p><strong>How do we use your information?</strong></p>
+
+<p>We may use the information we collect from you when you register, make a purchase, sign up for our newsletter, respond to a survey or marketing communication, surf the website, or use certain other site features in the following ways:
+</p>
+
+<h5>How do we protect visitor information?</h5>
+
+
+<p><strong>Do we use 'cookies'?</strong></p>
+
+
+<p>You can choose to have your computer warn you each time a cookie is being sent, or you can choose to turn off all cookies. You do this through your browser (like Internet Explorer) settings. Each browser is a little different, so look at your browser's Help menu to learn the correct way to modify your cookies.</p>
+
+<p>If you disable cookies off, some features will be disabled that make your site experience more efficient and some of our services will not function properly.</p>
+
+<p>However, you can still place orders .</p>
+
+
+<h5>Third Party Disclosure</h5>
+
+
+<p><strong>Third party links</strong></p>
+
+
+<p><strong>Google</strong></p>
+
+<p>Google's advertising requirements can be summed up by Google's Advertising Principles. They are put in place to provide a positive experience for users. <a href="https://support.google.com/adwordspolicy/answer/1316548?hl=en ">https://support.google.com/adwordspolicy/answer/1316548?hl=en </a></p>
+
+
+<p>Google, as a third party vendor, uses cookies to serve ads on our site. Google's use of the DART cookie enables it to serve ads to our users based on their visit to our site and other sites on the Internet. Users may opt out of the use of the DART cookie by visiting the Google ad and content network privacy policy.</p>
+
+<p><strong>We have implemented the following:</strong></p>
+
+<p>We along with third-party vendors, such as Google use first-party cookies (such as the Google Analytics cookies) and third-party cookies (such as the DoubleClick cookie) or other third-party identifiers together to compile data regarding user interactions with ad impressions, and other ad service functions as they relate to our website.</p>
+
+<p><strong>Opting out:</strong></p>
+<p>Users can set preferences for how Google advertises to you using the Google Ad Settings page. Alternatively, you can opt out by visiting the Network Advertising initiative opt out page or permanently using the Google Analytics Opt Out Browser add on.</p>
+
+<p><strong>California Online Privacy Protection Act</strong></p>
+
+<p>CalOPPA is the first state law in the nation to require commercial websites and online services to post a privacy policy. The law's reach stretches well beyond California to require a person or company in the United States (and conceivably the world) that operates websites collecting personally identifiable information from California consumers to post a conspicuous privacy policy on its website stating exactly the information being collected and those individuals with whom it is being shared, and to comply with this policy. - See more at: <a href="http://consumercal.org/california-online-privacy-protection-act-caloppa/#sthash.0FdRbT51.dpuf">http://consumercal.org/california-online-privacy-protection-act-caloppa/#sthash.0FdRbT51.dpuf</a></p>
+
+<p><strong>According to CalOPPA we agree to the following:</strong></p>
+       On our Privacy Policy Page
+
+<p><strong>How does our site handle do not track signals?</strong></p>
+
+<p><strong>Does our site allow third party behavioral tracking?</strong></p>
+
+<p><strong>COPPA (Children Online Privacy Protection Act)</strong></p>
+
+<p>When it comes to the collection of personal information from children under 13, the Children's Online Privacy Protection Act (COPPA) puts parents in control. The Federal Trade Commission, the nation's consumer protection agency, enforces the COPPA Rule, which spells out what operators of websites and online services must do to protect children's privacy and safety online.</p>
+
+
+<p><strong>Fair Information Practices</strong></p>
+
+<p>The Fair Information Practices Principles form the backbone of privacy law in the United States and the concepts they include have played a significant role in the development of data protection laws around the globe. Understanding the Fair Information Practice Principles and how they should be implemented is critical to comply with the various privacy laws that protect personal information.</p>
+
+<p>In order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur:</p>
+
+<p><strong>CAN SPAM Act</strong></p>
+
+<p>The CAN-SPAM Act is a law that sets the rules for commercial email, establishes requirements for commercial messages, gives recipients the right to have emails stopped from being sent to them, and spells out tough penalties for violations.</p>
+
+<p><strong>We collect your email address in order to:</strong></p>
+<ul>
+  <li>Send information, respond to inquiries, and/or other requests or questions.</li>
+  <li>Process orders and to send information and updates pertaining to orders</li>
+  <li>Market to our mailing list or continue to send emails to our clients after the original transaction has occurred</li>
+</ul>
+<p><strong>To be accordance with CANSPAM we agree to the following:</strong></p>
+<ul>
+    <li>NOT use false, or misleading subjects or email addresses</li>
+    <li>Identify the message as an advertisement in some reasonable way</li>
+    <li>Include the physical address of our business or site headquarters</li>
+    <li>Monitor third party email marketing services for compliance, if one is used.</li>
+    <li>Honor opt-out/unsubscribe requests quickly</li>
+    <li>Allow users to unsubscribe by using the link at the bottom of each email</li>
+</ul>
+If at any time you would like to unsubscribe from receiving future emails, you can
+and we will promptly remove you from ALL correspondence.</p>
+
+
+<p><strong>Contacting Us</strong></p>
+
+<p>If there are any questions regarding this privacy policy you may contact us using the information below.</p>
+
+<p><strong>Destination Kia</strong>
+Albany<br>
+USA<br>
+760 Central Ave<br>
+NY<br>
+12206<br>
+<a href="mailto:info@xcelmg.com">info@xcelmg.com</a><br>
+866-712-5990</p>
+
+<small>Last Edited on 2014-12-27</small>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-inverse btn-sm" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script type="text/javascript" src="{% static 'home/js/min/toucheffects-min.js' %}"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script type="text/javascript" src="{% static 'home/js/flickity.pkgd.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'home/js/jquery.fancybox.pack.js' %}"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script  type="text/javascript" src="{% static 'home/js/retina.js' %}"></script>
+		<script  type="text/javascript" src="{% static 'home/js/waypoints.min.js' %}"></script>
+		<script  type="text/javascript" src="{% static 'home/js/bootstrap.min.js' %}"></script>
+		<script  type="text/javascript" src="{% static 'home/js/tweecool.min.js' %}"></script>
+    <script  type="text/javascript" src="{% static 'home/js/jqBootstrapValidation.js' %}"></script>
+    <script  type="text/javascript" src="{% static 'home/js/jquery.validate.js' %}" ></script>
+  	<script  type="text/javascript" src="{% static 'home/js/bootstrap.formhelpers-phone.js' %}"></script>
+		<script  type="text/javascript" src="{% static 'home/js/jquery.sticky.js' %}"></script>
+		<script  type="text/javascript" src="{% static 'home/js/min/scripts-min.js' %}"></script>
+		<script  type="text/javascript">
+		  $(document).ready(function() {
+	      $('#tweecool').tweecool({
+	         username : 'dealerfunnel', 
+	         limit : 1  
+	      });
+
+	      $(".nav-wrapper").sticky({topSpacing:0});
+
+		    $('#tab-identify').click(function(){$('.feature-tabs').removeClass('active');$('#tab-identify-main').addClass('active');});
+		    $('#tab-engage').click(function(){$('.feature-tabs').removeClass('active');$('#tab-engage-main').addClass('active');});
+		    $('#tab-retain').click(function(){$('.feature-tabs').removeClass('active');$('#tab-retain-main').addClass('active');});
+		    $('#tab-report').click(function(){$('.feature-tabs').removeClass('active');$('#tab-report-main').addClass('active');});
+		    
+		    $("form").validate({
+			     onsubmit: true
+			  });
+		  });
+
+
+		  </script>
+	</body>
+</html>

@@ -1,0 +1,953 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">         
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script> 
+<div ng-app='editdealership' ng-controller='editdealership_controller' class="container-fluid" id="pcont">
+      <div class="page-head ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Dealership Setup aa</h2>
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Dealership</a></li>
+              <li class="active">Dealership Setup</li>
+            </ol>
+        </div>
+        </div>
+      </div>
+    <div class="cl-mcont">
+
+      <div class="campaign-dashboard-tbl">
+          <div class="dealership-setup">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dealer-info" data-toggle="tab">Dealer Info</a></li>
+              <li><a href="#dealer-trigger" data-toggle="tab">Triggers</a></li>
+              
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="dealer-info">
+                <form enctype="multipart/form-data" id="form1" method="post" action="/dealership/setup/upload/" class="form form-horizontal">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <div class="form-group">
+                        <div class="col-sm-6">
+                           <label>Name</label>
+                            <input id="nameid" required name="name" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                         <label>Address</label>
+                            <input required name="address" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-sm-3">
+                          <label>City</label>
+                            <input required name="city" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-2">
+                          <label>State</label>
+                            <select required name="state" class="form-control">
+                            {% for state in local.state %}
+                            	<option value="{{ state.state_abbreviation }}" >{{ state.state_abbreviation }}</option>
+                            {% endfor %}	
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                           <label>Zip</label>
+                            <input  name="zip" type="text" class="form-control" >
+                        </div>
+                      </div>
+                    </div> 
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-3">
+                      <label>Logo</label>
+                        <input name="rlogo" type="file" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                      <label>Manufactor Logo</label>
+                        <input name="mlogo" type="file" class="form-control">
+                    </div>
+                    <div class="col-sm-2">
+                      <label>Color</label>
+                        <div class="input-group colorpick">
+                          <input name="color" type="text" value="#00000" class="form-control "/>
+                          <span class="input-group-addon"><i></i></span>
+                        </div>
+                    </div>
+                  </div>
+                  <h4 class="title">Contact</h4>
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Contacts</label>
+                          <input name="sale_contact" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Contacts</label>
+                          <input name="service_contact" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Contacts</label>
+                          <input name="trade_contact" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Title</label>
+                          <input name="sale_title" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Title</label>
+                          <input name="service_title" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Title</label>
+                          <input name="trade_title" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Phone</label>
+                          <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-phone"></i></span>
+                          <input data-mask="999-999-9999" name="sale_phone" type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Phone</label>
+                          <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-phone"></i></span>
+                          <input data-mask="999-999-9999" name="service_phone" type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Phone</label>
+                          <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-phone"></i></span>
+                          <input data-mask="999-999-9999" name="trade_phone" type="text" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h4 class="title">Sales Hours</h4>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h4>Monday - Friday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                               <label>From</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='09:00 AM' name="sales_regular_hour_from" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>To</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='04:00 PM' name="sales_regular_hour_to" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <h4>Sunday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='09:00 AM' name="sales_sunday_hour_from" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>To</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='04:00 PM' name="sales_sunday_hour_to" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h4>Saturday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='09:00 AM' name="sales_saturday_hour_from" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <label>To</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='04:00 PM' name="sales_saturday_hour_to" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <h4 class="title">Services Hours</h4>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h4>Monday - Friday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='09:00 AM' name="service_regular_hour_from" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <label>To</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='04:00 PM' name="service_regular_hour_to" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <h4 class="clearfix">Sunday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='09:00 AM' name="service_sunday_hour_from" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>To</label>
+                                <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='04:00 PM' name="service_sunday_hour_to" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h4>Saturday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                              <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='09:00 AM' name="service_saturday_hour_from" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <label>To</label>
+                               <div class="input-group">
+                              	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                                <input value='04:00 PM' name="service_saturday_hour_to" type="text" class="form-control timepicker">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="box-transparent">
+	                  <h4 class="title">Forward Number</h4>
+	                  <div class="form-group">
+	                  	<div class="col-sm-4">
+	                  		<div class="input-group">
+	                  			<span class="input-group-addon"><i class="icon-phone"></i></span>
+	                  			<input type="text" data-mask="999 999-9999" class="form-control" name="forwardnumber" value="">
+	                  		</div>
+	                  	</div>
+	                  </div>
+                  </div> 
+                  <hr>
+                  <div class="box-transparent">
+	                  <h4 class="title">Tracking Number</h4>
+	                  <div id="trakingnumberid" class="box-ct">
+		                  <span id='tphonedisplay'></span>
+		                  <a id='addnumbermodalid' ng-click="addnumbermodal()" href="javascript:void(0)" class="btn btn-success">Add Number</a>
+		                  <input type="hidden" name="ftwilio" value="" id="twillioId"/>
+
+	                  </div>
+                  </div>
+                  <hr>
+                  <h4 class="title">CloudOne Setting</h4>
+                  <div class="row">
+                	<div class="col-sm-6">
+                		<div class="form-group">
+                		<div class="col-sm-4">
+                			<label>Ask For</label>
+                			<input type="text" class="form-control" name="cname" value="">
+                		</div>
+                		<div class="col-sm-4">
+                			<label>Phone</label>
+                			<div class="input-group">
+ 												<span class="input-group-addon"><i class="icon-phone"></i></span>
+                			<input type="text" data-mask="999 999-9999" class="form-control" name="phone" value="">
+                			</div>
+                		</div>
+                	</div>
+                	<div class="form-group">
+                		<div class="col-sm-4">
+                			<label>Gender</label>
+                			<select class="form-control" name="gender">
+                				<option value="M">Male</option>
+                				<option value="F" selected="">Female</option>
+                			</select>
+                		</div>
+                		<div class="col-sm-4">
+                			<label>Timezone</label>
+                			<select class="form-control" name="time_zone">
+                				<option value="GMT">GMT</option>
+                				<option value="UTC" selected="">UTC</option>
+                			</select>
+                		</div>
+                	</div>
+
+                	<div class="form-group">
+                		<div class="col-sm-4">
+                			<label>Dealer Pronunciation</label>
+                			<input type="text" class="form-control" name="pronunciation" value="">
+                		</div>
+                		<div class="col-sm-4">
+                			<label>Ask For Pronunciation</label>
+                			<input type="text" class="form-control" name="askfor" value="">
+                		</div>
+                	</div>
+                	<div class="form-group">
+                		<div class="col-sm-4">
+                			<label>Select Script</label>
+                			<select class="form-control" name="script">
+                				<option value="502">Short Credit App &amp; Appointment</option>
+								<option value="504">Refinance</option>
+								<option value="506">Vehicle Buy Back</option>
+								<option value="507">Bankruptcy Short Script</option>
+								<option value="515" selected="">Prize</option>
+                			</select>
+                		</div>
+                	</div>
+                	<div class="form-group">
+                		<div class="col-sm-12">
+                			<label>Call Center Notes</label>
+                			<textarea class="form-control" name="notes"></textarea>
+                		</div>
+                	</div>
+                	</div>
+                		<div class="col-sm-6">
+                		<table class="table table-hours table-bordered">
+                		<thead>
+                			<tr>
+                				<th>Day</th>
+                				<th>From</th>
+                				<th>To</th>
+                				<th>Hide?</th>
+                			</tr>
+                		</thead>
+                		<tbody>
+                			<tr>
+                				<td>Monday</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="09:00 AM" id="from_1" name="fd1">
+                						
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="04:00 PM" id="to_1" name="td1">
+                						
+                					</div>
+                				</td>
+                				<td><input type="checkbox" class="hide-row" onclick="selectday(1)"></td>
+                			</tr>
+                			<tr>
+                				<td>Tuesday</td>
+                				<td>
+                					<div class="input-group">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="09:00 AM" id="from_2" name="fd2">
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="04:00 PM" id="to_2" name="td2">
+                						
+                					</div>
+                				</td>
+                				<td><input type="checkbox" class="hide-row" onclick="selectday(2)"></td>
+                			</tr>
+                			<tr>
+                				<td>Wednesday</td>
+                				<td>
+                					<div class="input-group">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="09:00 AM" id="from_3" name="fd3">
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="04:00 PM" id="to_3" name="td3">
+                						
+                					</div>
+                				</td>
+                				<td><input type="checkbox" class="hide-row" onclick="selectday(3)"></td>
+                			</tr>
+                			<tr>
+                				<td>Thursday</td>
+                				<td>
+                					<div class="input-group">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="09:00 AM" id="from_4" name="fd4">
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="04:00 PM" id="to_4" name="td4">
+                						
+                					</div>
+                				</td>
+                				<td><input type="checkbox" class="hide-row" onclick="selectday(4)"></td>
+                			</tr>
+                			<tr>
+                				<td>Friday</td>
+                				<td>
+                					<div class="input-group">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="09:00 AM" id="from_5" name="fd5">
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="04:00 PM" id="to_5" name="td5">
+                						
+                					</div>
+                				</td>
+                				<td><input type="checkbox" class="hide-row" onclick="selectday(5)"></td>
+                			</tr>
+                			<tr>
+                				<td>Saturday</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="09:00 AM" id="from_6" name="fd6" disabled="">
+                						
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="04:00 PM" id="to_6" name="td6" disabled="">
+                						
+                					</div>
+                				</td>
+                				<td><input type="checkbox" class="hide-row" onclick="selectday(6)" checked=""></td>
+                			</tr>
+                			<tr>
+                				<td>Sunday</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="04:00 PM" id="from_7" name="fd7" disabled="">
+                						
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group"><span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                						<input type="text" class="form-control timepicker" value="04:00 PM" id="to_7" name="td7" disabled="">
+                						
+                					</div>
+                				</td>
+                				<td><input type="checkbox" class="hide-row" onclick="selectday(7)" checked=""></td>
+                			</tr>
+                		</tbody>
+                	</table>
+                	</div>
+                	<input type="hidden" value="1" id="cloudflag_1" name="id1">
+                	<input type="hidden" value="1" id="cloudflag_2" name="id2">
+                	<input type="hidden" value="1" id="cloudflag_3" name="id3">
+                	<input type="hidden" value="1" id="cloudflag_4" name="id4">
+                	<input type="hidden" value="1" id="cloudflag_5" name="id5">
+                	<input type="hidden" value="0" id="cloudflag_6" name="id6">
+                	<input type="hidden" value="0" id="cloudflag_7" name="id7">
+                </div>
+              </div>
+              
+              <div class="tab-pane" id="dealer-trigger">
+                
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Budget</label>
+                          <input required type="text" id="triggers_budget" name="triggers_budget" class="form-control" value="">
+                        </div>
+                        <div class="col-sm-4">
+                          <label># of Pieces</label>
+                          <input required type="text" name="triggers_pieces" class="form-control" value="">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Cost Per Piece</label>
+                          <input required type="text" name="trigger_cost_per_pieces" class="form-control" value="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="switcher-list">
+                    <div class="switch-item">
+                      <div  class="row main-switch tradecycle_main_id">
+                        <label class="col-sm-3 text-right">Trade Cycle</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                      <div  class="email_main_id sub-switch row hide">
+                        <label class="col-sm-3 text-right">Email</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div  class="birthday_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Birthday</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="newpurchase_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">New Purchase</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="equityposition_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Equity Position</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="fstservice_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">1st Service</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="warrantyexpiration_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Warranty Expiration</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="overdueservices_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Overdue Services</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="makeconquest_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Make Conquest</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="crossoverconquest_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Crossover Conquest</label>
+                        <div class="col-sm-6">
+                          <input  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                <input type="hidden" value="0" name="trigger_crossover_conquest" id="crossoverconquestid"/>
+                <input type="hidden" value="0" name="trigger_make_conquest" id="makeconquestid"/>
+                <input type="hidden" value="0" name="trigger_overdue_services" id="overdueservicesid"/>
+                <input type="hidden" value="0" name="trigger_warranty_expiration" id="warrantyexpirationid"/>
+                <input type="hidden" value="0" name="trigger_fst_service" id="fstserviceid"/>
+                <input type="hidden" value="0" name="trigger_equity_position" id="equitypositionid"/>
+                <input type="hidden" value="0" name="trigger_new_purchase" id="newpurchaseid"/>
+                <input type="hidden" value="0" name="trigger_birthday" id="birthdayid"/>
+                <input type="hidden" value="0" name="triggers_email" id="emailid"/>
+                <input type="hidden" value="0" name="trigger_trade_cycle" id="tradecycleid"/>
+                </form>
+              </div>
+              <div class="tab-pane" id="campaign-planner">
+                <div class="stats_bar campaign_planner_bars row">
+                  <div class="item-col-6">
+                    <div class="butpro butstyle" data-step="2" data-intro="<strong>Beautiful Elements</strong> <br/> If you are looking for a different UI, this is for you!.">
+                      <div class="sub"><h2>Campaigns</h2><span id="total_clientes">170</span></div>
+                      <div class="stat"><span class="spk1"><canvas style="display: inline-block; width: 74px; height: 16px; vertical-align: top;" width="74" height="16"></canvas></span></div>
+                    </div>
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Cost</h2><span>$7,611</span></div>
+                      <div class="stat"><span class="up"> 13,5%</span></div>
+                    </div>
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Car sold</h2><span>70</span></div>
+                      <div class="stat"><span class="down"> 20,7%</span></div>
+                    </div> 
+                  </div>
+                  <div class="item-col-6"> 
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Gross Profit</h2><span>$69,133.00</span></div>
+                      <div class="stat"><span class="equal"> 0%</span></div>
+                    </div>  
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>Repair Orders</h2><span>70</span></div>
+                      <div class="stat"><span class="down"> 21.3%</span></div>
+                    </div>
+                  </div>
+                  <div class="item-col-6">
+                    <div class="butpro butstyle">
+                      <div class="sub"><h2>RO Total</h2><span>$39,001.33</span></div>
+                      <div class="stat"><span class="up"> 6.7%</span></div>
+                    </div>  
+                  </div>
+                </div>
+                <hr>
+                
+              </div>
+            </div>
+            <p class="text-right">
+              <a onclick="saveform()" href="javascript:void(0)" class="btn btn-primary">Save</a>
+            </p>
+          </div>
+        </div>
+      </div>
+		
+
+		
+
+<div class="modal fade" id="twilionumbermodal">
+        <div id="modal_container" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Search Phone Number</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="row">
+            <label class="col-sm-4 control-label">Phone Number Type:</label>
+            <div class="col-sm-5">
+              
+              <select ng-model="twilionumbermodalfield.type" id="ptype" class="form-control">
+                <option selected value="1" >Toll Free</option>
+                <option value="2">Local</option>
+              </select>
+              
+              
+            </div>
+            
+          </div>
+          <div class="row">
+            <label class="col-sm-4 control-label">Matching This Pattern:</label>
+            <div class="col-sm-5">
+              <input ng-model="twilionumbermodalfield.match" id="pattern" type="text" class="form-control">
+            </div>
+            
+            
+          </div>
+          <div class="row">
+            <label class="col-sm-4 control-label">City</label>
+            <div class="col-sm-5">
+              <input ng-model="twilionumbermodalfield.city" id="searchcity" type="text" class="form-control">
+            </div>
+            
+            
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button ng-click="searchphonenumber()" type="button" class="btn btn-primary">Search Number</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div class="modal fade" id="twiliosearchresult">
+<div id="modal_container" class="modal-dialog">
+<div  class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Available Phone Numbers</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="tracking-number-list scroll">
+         <div ng-repeat="lead in twiliosearchresultdata" class="row phone-num-row">
+         	<div class="col-sm-8">
+         		<span>{[{lead.number}]}</span>
+         	</div>
+         	<div class="col-sm-4 text-right">
+         		<button ng-click="buynumber(lead.number,lead.rate_center,lead.region,lead.postal_code)" type="button" class="btn btn-sm btn-primary">Buy Number</button>
+         	</div>
+         </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+	</div>  
+		  </div>	  
+<script type="text/javascript">
+  	
+    function selectday(value)
+    {
+       var flag = $('#cloudflag_'+value).val();
+       if(flag == '1')
+       {
+           $('#from_'+value).attr('disabled','true');
+           $('#to_'+value).attr('disabled','true');
+           $('#cloudflag_'+value).val('0');  
+       }
+       else
+       {
+           $('#from_'+value).removeAttr('disabled');
+           $('#to_'+value).removeAttr('disabled');
+           $('#cloudflag_'+value).val('1');
+       }
+       
+    }
+  </script>
+	<script type="text/javascript">
+    var availablecity = {{local.city|safe}}
+    
+    $(document).ready(function () {
+      // $('.colorpick').ColorPicker();
+      $("#form1").validate();
+      
+    });
+    
+    function saveform()
+    {
+       $('#form1').submit();
+    }
+    $(document).ready(function(){
+        $('.bootstrap-switch').click(function(){
+          $(this).next().toggleClass('hide');
+        });
+        
+               
+        $('.tradecycle_main_id .bootstrap-switch-handle-off').click(function(){$('#tradecycleid').val(1); });
+        $('.tradecycle_main_id .bootstrap-switch-handle-on').click(function(){ $('#tradecycleid').val(0); });
+        $('.email_main_id .bootstrap-switch-handle-off').click(function(){ $('#emailid').val(1); });
+        $('.email_main_id .bootstrap-switch-handle-on').click(function(){ $('#emailid').val(0); });
+        $('.birthday_main_id .bootstrap-switch-handle-off').click(function(){ $('#birthdayid').val(1); });
+        $('.birthday_main_id .bootstrap-switch-handle-on').click(function(){ $('#birthdayid').val(0); });
+        $('.newpurchase_main_id .bootstrap-switch-handle-off').click(function(){ $('#newpurchaseid').val(1); });
+        $('.newpurchase_main_id .bootstrap-switch-handle-on').click(function(){ $('#newpurchaseid').val(0); });
+        $('.equityposition_main_id .bootstrap-switch-handle-off').click(function(){ $('#equitypositionid').val(1); });
+        $('.equityposition_main_id .bootstrap-switch-handle-on').click(function(){ $('#equitypositionid').val(0); });
+        $('.fstservice_main_id .bootstrap-switch-handle-off').click(function(){ $('#fstserviceid').val(1); });
+        $('.fstservice_main_id .bootstrap-switch-handle-on').click(function(){ $('#fstserviceid').val(0); });
+        $('.warrantyexpiration_main_id .bootstrap-switch-handle-off').click(function(){ $('#warrantyexpirationid').val(1); });
+        $('.warrantyexpiration_main_id .bootstrap-switch-handle-on').click(function(){ $('#warrantyexpirationid').val(0); });
+        $('.overdueservices_main_id .bootstrap-switch-handle-off').click(function(){ $('#overdueservicesid').val(1); });
+        $('.overdueservices_main_id .bootstrap-switch-handle-on').click(function(){ $('#overdueservicesid').val(0); });
+        $('.makeconquest_main_id .bootstrap-switch-handle-off').click(function(){ $('#makeconquestid').val(1); });
+        $('.makeconquest_main_id .bootstrap-switch-handle-on').click(function(){ $('#makeconquestid').val(0); });
+        $('.crossoverconquest_main_id .bootstrap-switch-handle-off').click(function(){ $('#crossoverconquestid').val(1); });
+        $('.crossoverconquest_main_id .bootstrap-switch-handle-on').click(function(){ $('#crossoverconquestid').val(0); });
+        $('.main-switch .bootstrap-switch-handle-off').click(function(){$('.main-switch').next().removeClass('hide')});
+        $('.main-switch .bootstrap-switch-handle-on').click(function(){$('.main-switch').next().addClass('hide')})
+
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+        $("[data-mask='date']").mask("99/99/9999");
+        $("[data-mask='zipcode']").mask("99999");
+        $("[data-mask='phone']").mask("(999) 999-9999");
+        
+        $('.datatable').DataTable( {
+        initComplete: function () {
+          var api = this.api();
+
+          api.columns().indexes().flatten().each( function ( i ) {
+            var column = api.column( i );
+            var select = $('<select><option value=""></option></select>')
+              .appendTo( $(column.footer()).empty() )
+              .on( 'change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                  $(this).val()
+                );
+
+                column
+                  .search( val ? '^'+val+'$' : '', true, false )
+                  .draw();
+              } );
+
+            column.data().unique().sort().each( function ( d, j ) {
+              select.append( '<option value="'+d+'">'+d+'</option>' )
+            } );
+          } );
+        }
+      } );
+        $('.dataTables_length,.dataTables_filter,.dataTables_info,.dataTables_paginate').addClass('hide');
+    });
+  </script>
+   <script>
+  var app = angular.module('editdealership',[]);
+  app.controller("editdealership_controller", function($scope,$http) {
+            
+        $scope.buynumber = function(number,city,state,zip)
+        {
+             number = number.substring(2,12); 
+             $http.get("/twilio/buynumber/",
+                {
+                  params:
+                     {
+                         "number":number,
+                         "city":city,
+                         "state":state,
+                         "zip":zip,
+                         "dealerid":''                       
+                                                  
+                      }
+                 }).then(function(response) 
+    			 {
+    			     $('#addnumbermodalid').css('display','none');
+    			     $('#tphonedisplay').html(response.data.result.number);
+    			     $('#twillioId').val(response.data.result.id);
+    			     $scope.twiliosearchresult.modal('hide');		
+    		     }); 
+        }
+        $scope.searchphonenumber = function()
+        {
+            $http.get("/twilio/searchnumber/",
+                {
+                  params:
+                     {
+                         "type":$scope.twilionumbermodalfield.type,
+                         "pattern":$scope.twilionumbermodalfield.match,
+                         "city":$scope.twilionumbermodalfield.city,                         
+                                                  
+                      }
+                 }).then(function(response) 
+    			 {
+    			     $scope.twiliosearchresultdata = response.data.result;
+    			     $scope.twilionumbermodal.modal('hide');
+    			     $scope.twiliosearchresult.modal();
+    			     		
+    		     }); 
+        }
+        $scope.addnumbermodal = function()
+        {
+            $scope.twilionumbermodalfield      = {};
+            $scope.twilionumbermodalfield.type = 1;
+            $scope.twilionumbermodalfield.match = '';
+            $scope.twilionumbermodalfield.city = '';
+            $scope.twilionumbermodal.modal();
+        }
+        $scope.getdealerinfo = function()
+        {
+                $http.get("/dealership/json/dealerinfo/",
+                {
+                  params:
+                     {
+                         "dealer_id":$scope.dealerid,
+                                                  
+                      }
+                 }).then(function(response) 
+    			 {
+    					$scope.twillio_id = response.data.dealer.ftwillio_id;
+    			 });
+        }  		
+        $scope.init     = function () {
+    	    $scope.twilionumbermodal  = $('#twilionumbermodal');	
+    	    $scope.twiliosearchresult = $('#twiliosearchresult');
+    	    $scope.twiliosearchresultdata = {};   
+    	};
+    		
+    	$scope.init();
+  });
+  app.config(function($interpolateProvider) {
+  			$interpolateProvider.startSymbol('{[{');
+  			$interpolateProvider.endSymbol('}]}');
+		 });
+         
+ $(document).ready(function(){
+      var panel = angular.element($("#pcont")).scope();
+      panel.$apply(function(){
+        panel.init();
+        
+      });
+      
+}); 
+  
+  </script>

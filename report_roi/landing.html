@@ -1,0 +1,55 @@
+<div id="pcont" class="container-fluid">
+      <div class="page-head ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>ROI Report</h2>
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li><a href="historical-report-page.html">Reports</a></li>
+              <li class="active">ROI</li>
+            </ol>
+        	</div>
+        </div>
+      </div>
+      <div class="row">
+				<div class="col-sm-6">
+					<div class="reportrange daterange-picker">
+				     <i class="icon-calender"></i>
+				     <span></span> 
+				     <i class="fa fa-caret-down"></i>
+				  </div>
+				</div>
+				  <div class="col-sm-6">
+				  	
+						<div class="header text-right no-border">
+			        <div class="btn-group no-margin">
+			          <button onclick="downloadcsv()" class="btn btn-default" type="button"><i class="fa fa-file-excel-o"></i></button>
+			          <button onclick="downloadpdf()" class="btn btn-default" type="button"><i class="fa fa-file-pdf-o"></i></button>
+			          <button class="btn btn-default" type="button"><i class="icon-printer"></i></button>
+			        </div>
+			      </div>
+				  </div>
+				</div>
+				
+      <hr style="border: 0">
+      <div id="ajaxcontainer" >
+      
+      </div>
+</div>
+<script>
+function dealer_ajax_loading()
+{
+   var dealerid = $('#selectedid').val();
+   $('#ajaxcontainer').showLoading(); 
+	  $.get('/reports/roi/ajax/',{dealerid:dealerid},function(data, status){
+         $('#ajaxcontainer').html(data);
+         $('#ajaxcontainer').hideLoading();
+      });
+}
+
+$(document).ready(function(){
+    dealer_ajax_loading();  
+});
+
+</script>    
+    

@@ -1,0 +1,936 @@
+{% load dealerfunnel_filters %}
+<div ng-app='editdealership' ng-controller='editdealership_controller' class="container-fluid" id="pcont">
+      <div class="page-head ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Dealership Setup</h2>
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Dealership</a></li>
+              <li class="active">Dealership Setup</li>
+            </ol>
+        </div>
+        </div>
+      </div>
+    <div class="cl-mcont">
+
+      <div class="campaign-dashboard-tbl">
+          <div class="dealership-setup">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dealer-info" data-toggle="tab">Dealer Info</a></li>
+              <li><a href="#dealer-trigger" data-toggle="tab">Triggers</a></li>
+              <li><a href="{% url 'campaign_setup' %}?id={{local.info.keyid }}">Campaign Builder</a></li>
+              <li><a href="{% url 'dealership_setup_campaign' %}?id={{local.info.keyid }}">Campaign Planner</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="dealer-info">
+                <form enctype="multipart/form-data" id="form1" method="post" action="/dealership/setup/edit/upload/" class="form-horizontal">
+                  {% csrf_token %}
+                  <div class="form-group">
+                  	<div class="col-sm-4">
+	                      <label>Name</label>
+	                      <input value="{{ local.info.name }}" name="name" type="text" class="form-control">
+	                  </div>
+	                </div>
+	                <div class="form-group">
+	                	<div class="col-sm-10">
+                      <label>Address</label>
+                      <input value="{{ local.info.address }}" name="address" type="text" class="form-control">
+                    </div>
+	                </div>
+                  <div class="form-group">
+                    <div class="col-sm-3">
+                        <label>City</label>
+                        <input value="{{ local.info.city }}" name="city" type="text" class="form-control">
+                     
+                    </div>
+                    <div class="col-sm-2">
+                        <label>State</label>
+                        <select name="state" class="form-control">
+                        {% for state in local.state %}
+                        	<option {% if local.info.state == state.state_abbreviation   %} selected {% endif %} value="{{ state.state_abbreviation }}" >{{ state.state_abbreviation }}</option>
+                        {% endfor %}	
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Zip</label>
+                        <input  value={{ local.info.fzip.code }} name="zip" type="text" class="form-control" data-mask="zipcode">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-3">
+                      {% if local.info.flogo.id != 1 %}
+                            <img width="50px" height="50px" src="{{ local.info.flogo.path }}"/>
+                        {% endif %}
+                        
+                        <label>Logo</label>
+                        <input name="rlogo" type="file" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                      {% if local.info.fmlogo.id != 1 %}
+                            <img width="50px" height="50px" src="{{ local.info.fmlogo.path }}"/>
+                        {% endif %}
+                        
+                        <label>Manufactor Logo</label>
+                        <input name="mlogo" type="file" class="form-control">
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Color</label>
+                        <div class="input-group colorpick">
+                          <input name="color" type="text" value="{{ local.info.color }}" class="form-control "/>
+                          <span class="input-group-addon"><i></i></span>
+                        </div>
+                    </div>
+                  </div>
+
+                  <h4 class="border-bottom title">Contact</h4>
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Contacts</label>
+                          <input value='{{ local.info.sale_contact }}' name="sale_contact" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Contacts</label>
+                          <input value='{{ local.info.service_contact }}' name="service_contact" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Contacts</label>
+                          <input value='{{ local.info.trade_contact }}' name="trade_contact" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Title</label>
+                          <input value='{{ local.info.sale_title }}' name="sale_title" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Title</label>
+                          <input value='{{ local.info.service_title }}' name="service_title" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Title</label>
+                          <input value='{{ local.info.trade_title }}' name="trade_title" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Sale Phone</label>
+                          <input data-mask="999-999-9999" value="{{ local.info.sale_phone|phone_formate:'2' }}" name="sale_phone" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Service Phone</label>
+                          <input data-mask="999-999-9999" value="{{ local.info.service_phone|phone_formate:'2' }}" name="service_phone" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Trade Cycle Phone</label>
+                          <input data-mask="999-999-9999" value="{{ local.info.trade_phone|phone_formate:'2' }}" name="trade_phone" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group">
+                  	<div class="col-sm-12">
+                      <h4 class="title">Sales Hours</h4>
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <h4>Monday - Friday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                              <div class="input-group">
+                                <input value='{{ local.info.sales_regular_hour_from }}' name="sales_regular_hour_from" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>To</label>
+                              <div class="input-group">
+                                <input value="{{ local.info.sales_regular_hour_to }}" name="sales_regular_hour_to" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <h4>Sunday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                              <div class="input-group">
+                                <input value="{{ local.info.sales_sunday_hour_from }}" name="sales_sunday_hour_from" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>To</label>
+                              <div class="input-group">
+                                <input value="{{ local.info.sales_sunday_hour_to }}" name="sales_sunday_hour_to" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <h4>Saturday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                               <label>From</label>
+                               <div class="input-group">
+                                <input value="{{ local.info.sales_saturday_hour_from }}" name="sales_saturday_hour_from" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <label>To</label>
+                               <div class="input-group">
+                                <input value="{{ local.info.sales_saturday_hour_to }}" name="sales_saturday_hour_to" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <h4 class="title">Services Hours</h4>
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <h4>Monday - Friday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                              <div class="input-group">
+                                <input value="{{ local.info.service_regular_hour_from }}" name="service_regular_hour_from" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>To</label>
+                              <div class="input-group">
+                                <input value="{{ local.info.service_regular_hour_to }}" name="service_regular_hour_to" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <h4>Sunday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                              <div class="input-group">
+                                <input value="{{ local.info.service_sunday_hour_from }}" name="service_sunday_hour_from" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>To</label>
+                              <div class="input-group">
+                                <input value="{{ local.info.service_sunday_hour_to }}" name="service_sunday_hour_to" type="text" class="form-control timepicker">
+                               	<span class="input-group-addon"><i class="icon-clock"></i></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <h4>Saturday</h4>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>From</label>
+                              <div class="input-group">
+                                <input value="{{ local.info.service_saturday_hour_from }}" name="service_saturday_hour_from" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>To</label>
+                              <div class="input-group">
+                                <input value="{{ local.info.service_saturday_hour_to }}" name="service_saturday_hour_to" type="text" class="form-control timepicker">
+                                <span class="input-group-addon"><i class="icon-clock"></i></span>
+                              </div>
+                            </div>
+                          </div>
+                        
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="box-transparent">
+                  <h4 class="title">Forward Number</h4>
+                  <div class="form-group">
+                  	<div class="col-sm-4">
+                  		<div class="input-group">
+                  			<span class="input-group-addon"><i class="icon-phone"></i></span>
+                  			<input type="text" data-mask="999 999-9999" class="form-control" name="forwardnumber" value="{{local.info.forwardnumber|phone_formate:'1'}}">
+                  		</div>
+                  	</div>
+                  </div>
+                  </div>
+                  <hr>
+                  <div class="box-transparent">
+                  <h4 class="title">Tracking Number</h4>
+                  
+                  
+                   <div {% if local.info.ftwillio != None %}  style="display:none" {% endif %}  id="twilioaddnumber" class="box-ct">
+                      <a ng-click="addnumbermodal()" href="javascript:void(0)" class="btn btn-success">Add Number</a>
+                  
+                   </div>
+                   <div {% if local.info.ftwillio == None %}  style="display:none" {% endif %}  id="twilioreleasenumber" class="box-ct">
+                   <div class="row">
+                    <div class="col-sm-12">
+                    {% if local.info.ftwillio != None %}
+                    	<span>{{local.info.ftwillio.number|phone_formate:'0'}}</span>
+                    {% endif %}
+                    {% if local.info.ftwillio == None %}
+                    	<span id='tphonedisplay'></span>
+                    {% endif %}
+                    </div>
+                  </div>
+                  <a ng-click="releasenumber()" href="javascript:void(0)" class="btn btn-inverse">Release Number</a>
+                  
+                </div>
+                </div>
+                <hr>
+                <h4 class="title">CloudOne Setup</h4>
+                <div class="row">
+                	<div class="col-sm-6">
+                		<div class="form-group">
+                		<div class="col-sm-4">
+                			<label>Ask For</label>
+                			<input value="{{local.cloudone.cname}}" name='cname' type="text" class="form-control">
+                		</div>
+                		<div class="col-sm-4">
+                			<label>Phone</label>
+                			<input value="{{local.cloudone.phone|phone_formate:'2'}}" name='phone' type="text" class="form-control" data-mask="999 999-9999">
+                		</div>
+                	</div>
+                	<div class="form-group">
+                		<div class="col-sm-4">
+                			<label>Gender</label>
+                			<select name='gender' class="form-control">
+                				<option {% if local.cloudone.gender == 'M' %} selected {% endif %} value='M'>Male</option>
+                				<option {% if local.cloudone.gender == 'F' %} selected {% endif %} value='F'>Female</option>
+                			</select>
+                		</div>
+                		<div class="col-sm-4">
+                			<label>Timezone</label>
+                			<select name='time_zone' class="form-control">
+                				<option {% if local.cloudone.time_zone == 'GMT' %} selected {% endif %} value='GMT'>GMT</option>
+                				<option {% if local.cloudone.time_zone == 'UTC' %} selected {% endif %} value='UTC'>UTC</option>
+                			</select>
+                		</div>
+                	</div>
+
+                	<div class="form-group">
+                		<div class="col-sm-4">
+                			<label>Dealer Pronunciation</label>
+                			<input value="{{local.cloudone.pronunciation}}" name='pronunciation' type="text" class="form-control">
+                		</div>
+                		<div class="col-sm-4">
+                			<label>Ask For Pronunciation</label>
+                			<input value="{{local.cloudone.askfor}}" name='askfor' type="text" class="form-control">
+                		</div>
+                	</div>
+                	<div class="form-group">
+                		<div class="col-sm-4">
+                			<label>Select Script</label>
+                			<select name='script' class="form-control">
+                				<option {% if local.cloudone.script == '502' %} selected {% endif %} value="502">Short Credit App & Appointment</option>
+								<option {% if local.cloudone.script == '504' %} selected {% endif %} value="504">Refinance</option>
+								<option {% if local.cloudone.script == '506' %} selected {% endif %} value="506">Vehicle Buy Back</option>
+								<option {% if local.cloudone.script == '507' %} selected {% endif %} value="507">Bankruptcy Short Script</option>
+								<option {% if local.cloudone.script == '515' %} selected {% endif %} value="515" selected="">Prize</option>
+                			</select>
+                		</div>
+                	</div>
+                	<div class="form-group">
+                		<div class="col-sm-12">
+                			<label>Call Center Notes</label>
+                			<textarea name='notes' class="form-control">{{local.cloudone.notes}}</textarea>
+                		</div>
+                	</div>
+                	</div>
+                		<div class="col-sm-6">
+                		<table class="table table-hours table-bordered">
+                		<thead>
+                			<tr>
+                				<th>Day</th>
+                				<th>From</th>
+                				<th>To</th>
+                				<th>Hide?</th>
+                			</tr>
+                		</thead>
+                		<tbody>
+                			<tr>
+                				<td>Monday</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id1 == '0' %} disabled {% endif %} name='fd1' id='from_1' value="{{local.cloudone.fd1}}" name="service_regular_hour_from" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id1 == '0' %} disabled {% endif %} name='td1' id='to_1' value="{{local.cloudone.td1}}" name="service_regular_hour_to" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td><input {% if local.cloudone.id1 == '0' %} checked {% endif %} onclick="selectday(1)" type="checkbox" class="hide-row"></td>
+                			</tr>
+                			<tr>
+                				<td>Tuesday</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id2 == '0' %} disabled {% endif %} name='fd2' id='from_2' value="{{local.cloudone.fd2}}" name="service_regular_hour_from" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id2 == '0' %} disabled {% endif %} name='td2' id='to_2' value="{{local.cloudone.td2}}" name="service_regular_hour_to" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td><input {% if local.cloudone.id2 == '0' %} checked {% endif %} onclick="selectday(2)" type="checkbox" class="hide-row"></td>
+                			</tr>
+                			<tr>
+                				<td>Wednesday</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id3 == '0' %} disabled {% endif %} name='fd3' id='from_3' value="{{local.cloudone.fd3}}" name="service_regular_hour_from" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id3 == '0' %} disabled {% endif %} name='td3' id='to_3' value="{{local.cloudone.td3}}" name="service_regular_hour_to" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td><input {% if local.cloudone.id3 == '0' %} checked {% endif %} onclick="selectday(3)" type="checkbox" class="hide-row"></td>
+                			</tr>
+                			<tr>
+                				<td>Thursday</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id4 == '0' %} disabled {% endif %} name='fd4' id='from_4' value="{{local.cloudone.fd4}}" name="service_regular_hour_from" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id4 == '0' %} disabled {% endif %} name='td4' id='to_4' value="{{local.cloudone.td4}}" name="service_regular_hour_to" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td><input {% if local.cloudone.id4 == '0' %} checked {% endif %} onclick="selectday(4)" type="checkbox" class="hide-row"></td>
+                			</tr>
+                			<tr>
+                				<td>Friday</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id5 == '0' %} disabled {% endif %} name='fd5' id='from_5' value="{{local.cloudone.fd5}}" name="service_regular_hour_from" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id5 == '0' %} disabled {% endif %} name='td5' id='to_5' value="{{local.cloudone.td5}}" name="service_regular_hour_to" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td><input {% if local.cloudone.id5 == '0' %} checked {% endif %} onclick="selectday(5)" type="checkbox" class="hide-row"></td>
+                			</tr>
+                			<tr>
+                				<td>Saturday</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id6 == '0' %} disabled {% endif %} name='fd6' id='from_6' value="{{local.cloudone.fd6}}" name="service_regular_hour_from" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id6 == '0' %} disabled {% endif %} name='td6' id='to_6' value="{{local.cloudone.td6}}" name="service_regular_hour_to" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td><input {% if local.cloudone.id6 == '0' %} checked {% endif %} onclick="selectday(6)" type="checkbox" class="hide-row"></td>
+                			</tr>
+                			<tr>
+                				<td>Sunday</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id7 == '0' %} disabled {% endif %} name='fd7' id='from_7' value="{{local.cloudone.td7}}" name="service_regular_hour_from" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td>
+                					<div class="input-group">
+                						<input {% if local.cloudone.id7 == '0' %} disabled {% endif %} name='td7' id='to_7' value="{{local.cloudone.td7}}" name="service_regular_hour_to" type="text" class="form-control timepicker">
+                						<span class="input-group-addon">
+                							<i class="icon-clock"></i>
+                						</span>
+                					</div>
+                				</td>
+                				<td><input {% if local.cloudone.id7 == '0' %} checked {% endif %} onclick="selectday(7)" type="checkbox" class="hide-row"></td>
+                			</tr>
+                		</tbody>
+                	</table>
+                	</div>
+                	<input type='hidden' name='id1' id='cloudflag_1' value='{{local.cloudone.id1}}'/>
+                	<input type='hidden' name='id2' id='cloudflag_2' value='{{local.cloudone.id2}}'/>
+                	<input type='hidden' name='id3' id='cloudflag_3' value='{{local.cloudone.id3}}'/>
+                	<input type='hidden' name='id4' id='cloudflag_4' value='{{local.cloudone.id4}}'/>
+                	<input type='hidden' name='id5' id='cloudflag_5' value='{{local.cloudone.id5}}'/>
+                	<input type='hidden' name='id6' id='cloudflag_6' value='{{local.cloudone.id6}}'/>
+                	<input type='hidden' name='id7' id='cloudflag_7' value='{{local.cloudone.id7}}'/>
+                </div>
+
+              </div>
+              <div class="tab-pane" id="dealer-trigger">
+                
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <label>Budget</label>
+                          <input value="{{ local.info.triggers_budget }}" type="text" name="triggers_budget" class="form-control" value="" placeholder="$1,000">
+                        </div>
+                        <div class="col-sm-4">
+                          <label># of Pieces</label>
+                          <input value="{{ local.info.triggers_pieces }}" type="text" name="triggers_pieces" class="form-control" value="" placeholder="4,500">
+                        </div>
+                        <div class="col-sm-4">
+                          <label>Cost Per Piece</label>
+                          <input value="{{ local.info.trigger_cost_per_pieces }}" type="text" name="trigger_cost_per_pieces" class="form-control" value="" placeholder=".95">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="switcher-list">
+                    <div class="switch-item">
+                      <div  class="row main-switch tradecycle_main_id">
+                        <label class="col-sm-3 text-right">Trade Cycle</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_trade_cycle  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                      {% if local.info.trigger_trade_cycle  %}
+                      	<div  class="email_main_id sub-switch row">
+                      {% endif %}
+                      {% if local.info.trigger_trade_cycle = 0  %}
+                      	<div  class="email_main_id sub-switch hide row">
+                      {% endif %}
+                        <label class="col-sm-3 text-right">Email</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.triggers_email  %} checked {% endif %}  class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div  class="birthday_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Birthday</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_birthday  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="newpurchase_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">New Purchase</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_new_purchase  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="equityposition_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Equity Position</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_equity_position  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="fstservice_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">1st Service</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_fst_service  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="warrantyexpiration_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Warranty Expiration</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_warranty_expiration  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="overdueservices_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Overdue Services</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_overdue_services  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="makeconquest_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Make Conquest</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_make_conquest  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="crossoverconquest_main_id switch-item">
+                      <div class="row">
+                        <label class="col-sm-3 text-right">Crossover Conquest</label>
+                        <div class="col-sm-6">
+                          <input {% if local.info.trigger_crossover_conquest  %} checked {% endif %} class="switch" data-size="small" type="checkbox">  
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                <input type="hidden" value="{{ local.info.trigger_crossover_conquest }}" name="trigger_crossover_conquest" id="crossoverconquestid"/>
+                <input type="hidden" value="{{ local.info.trigger_make_conquest }}" name="trigger_make_conquest" id="makeconquestid"/>
+                <input type="hidden" value="{{ local.info.trigger_overdue_services }}" name="trigger_overdue_services" id="overdueservicesid"/>
+                <input type="hidden" value="{{ local.info.trigger_warranty_expiration }}" name="trigger_warranty_expiration" id="warrantyexpirationid"/>
+                <input type="hidden" value="{{ local.info.trigger_fst_service }}" name="trigger_fst_service" id="fstserviceid"/>
+                <input type="hidden" value="{{ local.info.trigger_equity_position }}" name="trigger_equity_position" id="equitypositionid"/>
+                <input type="hidden" value="{{ local.info.trigger_new_purchase }}" name="trigger_new_purchase" id="newpurchaseid"/>
+                <input type="hidden" value="{{ local.info.trigger_birthday }}" name="trigger_birthday" id="birthdayid"/>
+                <input type="hidden" value="{{ local.info.triggers_email }}" name="triggers_email" id="emailid"/>
+                <input type="hidden" value="{{ local.info.trigger_trade_cycle }}" name="trigger_trade_cycle" id="tradecycleid"/>
+                
+                <input type="hidden" value="{{ local.info.fzip.id }}" name="fzip"/>
+                <input type="hidden" id="dealer_id" value="{{ local.info.id }}" name="dealerid"/>
+                
+                
+                </form>
+              </div>
+              
+                
+		
+		
+	<div class="modal fade" id="twilionumbermodal">
+        <div id="modal_container" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Search Phone Number</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="row">
+            <label class="col-sm-4 control-label">Phone Number Type:</label>
+            <div class="col-sm-5">
+              
+              <select ng-model="twilionumbermodalfield.type" id="ptype" class="form-control">
+                <option selected value="1" >Toll Free</option>
+                <option value="2">Local</option>
+              </select>
+              
+              
+            </div>
+            
+          </div>
+          <div class="row">
+            <label class="col-sm-4 control-label">Matching This Pattern:</label>
+            <div class="col-sm-5">
+              <input ng-model="twilionumbermodalfield.match" id="pattern" type="text" class="form-control">
+            </div>
+            
+            
+          </div>
+          <div class="row">
+            <label class="col-sm-4 control-label">City</label>
+            <div class="col-sm-5">
+              <input ng-model="twilionumbermodalfield.city" id="searchcity" type="text" class="form-control">
+            </div>
+            
+            
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button ng-click="searchphonenumber()" type="button" class="btn btn-primary">Search Number</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+ 
+<div class="modal fade" id="twiliosearchresult">
+<div id="modal_container" class="modal-dialog">
+<div  class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title clearfix">Available Phone Numbers</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="tracking-number-list scroll">
+         <div ng-repeat="lead in twiliosearchresultdata" class="row phone-num-row">
+         	<div class="col-sm-8">
+         		<span>{[{lead.number}]}</span>
+         	</div>
+         	<div class="col-sm-4 text-right">
+         		<button ng-click="buynumber(lead.number,lead.rate_center,lead.region,lead.postal_code)" type="button" class="btn btn-sm btn-primary">Buy Number</button>
+         	</div>
+         </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+    
+
+ </div>
+ </div> 
+ </div> 
+  
+ 
+</div>  
+	<input id="twillioId" type="hidden" value="">
+	<script type="text/javascript">
+    function saveform()
+    {
+       $('#form1').submit();
+    }
+    $(document).ready(function(){
+       $('#selectedid').val('{{local.info.id}}');
+       $('#selected_dealer_name').html('{{local.info.name}}');
+       $('#selectedkeyid').val('{{local.info.keyid}}');
+    });
+    //var availablecity = {{local.city|safe}}
+    function dealer_ajax_loading()
+    {
+       var keyid = $('#selectedkeyid').val();
+       location.href = "{{local.domain}}" + 'dealership/setup/edit/?id=' + keyid
+    }
+    
+    
+    
+    $(document).ready(function(){
+        $('.bootstrap-switch').click(function(){
+          $(this).next().toggleClass('hide');
+        });
+        
+               
+        $('.tradecycle_main_id .bootstrap-switch-handle-off').click(function(){ $('#tradecycleid').val(1); });
+        $('.tradecycle_main_id .bootstrap-switch-handle-on').click(function(){ $('#tradecycleid').val(0); });
+        $('.email_main_id .bootstrap-switch-handle-off').click(function(){ $('#emailid').val(1); });
+        $('.email_main_id .bootstrap-switch-handle-on').click(function(){ $('#emailid').val(0); });
+        $('.birthday_main_id .bootstrap-switch-handle-off').click(function(){ $('#birthdayid').val(1); });
+        $('.birthday_main_id .bootstrap-switch-handle-on').click(function(){ $('#birthdayid').val(0); });
+        $('.newpurchase_main_id .bootstrap-switch-handle-off').click(function(){ $('#newpurchaseid').val(1); });
+        $('.newpurchase_main_id .bootstrap-switch-handle-on').click(function(){ $('#newpurchaseid').val(0); });
+        $('.equityposition_main_id .bootstrap-switch-handle-off').click(function(){ $('#equitypositionid').val(1); });
+        $('.equityposition_main_id .bootstrap-switch-handle-on').click(function(){ $('#equitypositionid').val(0); });
+        $('.fstservice_main_id .bootstrap-switch-handle-off').click(function(){ $('#fstserviceid').val(1); });
+        $('.fstservice_main_id .bootstrap-switch-handle-on').click(function(){ $('#fstserviceid').val(0); });
+        $('.warrantyexpiration_main_id .bootstrap-switch-handle-off').click(function(){ $('#warrantyexpirationid').val(1); });
+        $('.warrantyexpiration_main_id .bootstrap-switch-handle-on').click(function(){ $('#warrantyexpirationid').val(0); });
+        $('.overdueservices_main_id .bootstrap-switch-handle-off').click(function(){ $('#overdueservicesid').val(1); });
+        $('.overdueservices_main_id .bootstrap-switch-handle-on').click(function(){ $('#overdueservicesid').val(0); });
+        $('.makeconquest_main_id .bootstrap-switch-handle-off').click(function(){ $('#makeconquestid').val(1); });
+        $('.makeconquest_main_id .bootstrap-switch-handle-on').click(function(){ $('#makeconquestid').val(0); });
+        $('.crossoverconquest_main_id .bootstrap-switch-handle-off').click(function(){ $('#crossoverconquestid').val(1); });
+        $('.crossoverconquest_main_id .bootstrap-switch-handle-on').click(function(){ $('#crossoverconquestid').val(0); });
+        $('.main-switch .bootstrap-switch-handle-off').click(function(){$('.main-switch').next().removeClass('hide')});
+        $('.main-switch .bootstrap-switch-handle-on').click(function(){$('.main-switch').next().addClass('hide')})
+        
+        
+        
+        
+        
+        // $('.colorpick').ColorPicker();
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+        $("[data-mask='date']").mask("99/99/9999");
+        $("[data-mask='zipcode']").mask("99999");
+        $("[data-mask='phone']").mask("(999) 999-9999");
+        
+        
+    });
+  </script>
+  <script type="text/javascript">
+  	
+    function selectday(value)
+    {
+       var flag = $('#cloudflag_'+value).val();
+       if(flag == '1')
+       {
+           $('#from_'+value).attr('disabled','true');
+           $('#to_'+value).attr('disabled','true');
+           $('#cloudflag_'+value).val('0');  
+       }
+       else
+       {
+           $('#from_'+value).removeAttr('disabled');
+           $('#to_'+value).removeAttr('disabled');
+           $('#cloudflag_'+value).val('1');
+       }
+       
+    }
+  </script>
+  <script>
+  var app = angular.module('editdealership',[]);
+  app.controller("editdealership_controller", function($scope,$http) {
+            
+        $scope.dealerid = '';
+        $scope.releasenumber =function()
+        {
+             $http.get("/twilio/releasenumber/",
+                {
+                  params:
+                     {
+                         "dealerid":$scope.dealerid                         
+                                                  
+                      }
+                 }).then(function(response) 
+    			 {
+    			     $('#twilioaddnumber').css('display','');
+    			     $('#twilioreleasenumber').css('display','none');
+    			     		
+    		     });
+        }
+        $scope.buynumber = function(number,city,state,zip)
+        {
+             number = number.substring(2,12); 
+             $http.get("/twilio/buynumber/",
+                {
+                  params:
+                     {
+                         "number":number,
+                         "city":city,
+                         "state":state,
+                         "zip":zip,
+                         "dealerid":$scope.dealerid                         
+                                                  
+                      }
+                 }).then(function(response) 
+    			 {
+    			     $('#twilioaddnumber').css('display','none');
+    			     $('#twilioreleasenumber').css('display','');
+    			     $('#tphonedisplay').html(response.data.result.number);
+    			     $scope.twiliosearchresult.modal('hide');		
+    		     }); 
+        }
+        $scope.searchphonenumber = function()
+        {
+            $http.get("/twilio/searchnumber/",
+                {
+                  params:
+                     {
+                         "type":$scope.twilionumbermodalfield.type,
+                         "pattern":$scope.twilionumbermodalfield.match,
+                         "city":$scope.twilionumbermodalfield.city,                         
+                                                  
+                      }
+                 }).then(function(response) 
+    			 {
+    			     $scope.twiliosearchresultdata = response.data.result;
+    			     $scope.twilionumbermodal.modal('hide');
+    			     $scope.twiliosearchresult.modal();
+    			     		
+    		     }); 
+        }
+        $scope.addnumbermodal = function()
+        {
+            $scope.twilionumbermodalfield      = {};
+            $scope.twilionumbermodalfield.type = 1;
+            $scope.twilionumbermodalfield.match = '';
+            $scope.twilionumbermodalfield.city = '';
+            $scope.twilionumbermodal.modal();
+        }
+        $scope.getdealerinfo = function()
+        {
+                $http.get("/dealership/json/dealerinfo/",
+                {
+                  params:
+                     {
+                         "dealer_id":$scope.dealerid,
+                                                  
+                      }
+                 }).then(function(response) 
+    			 {
+    					$scope.twillio_id = response.data.dealer.ftwillio_id;
+    			 });
+        }  		
+        $scope.init     = function () {
+    	    $scope.twilionumbermodal  = $('#twilionumbermodal');	
+    	    $scope.twiliosearchresult = $('#twiliosearchresult');
+    	    $scope.twiliosearchresultdata = {};   
+    	};
+    		
+    	$scope.init();
+  });
+  app.config(function($interpolateProvider) {
+  			$interpolateProvider.startSymbol('{[{');
+  			$interpolateProvider.endSymbol('}]}');
+		 });
+         
+ $(document).ready(function(){
+      var dealer_id = $('#dealer_id').val();
+      var panel = angular.element($("#pcont")).scope();
+      panel.$apply(function(){
+        panel.dealerid = dealer_id;
+        panel.getdealerinfo();
+      });
+      
+}); 
+  
+  </script>
