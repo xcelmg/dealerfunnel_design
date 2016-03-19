@@ -633,7 +633,7 @@ function setapp() {
                                         </tr>
                                     </tbody>
                                 </table>
-                              </audio>
+                            </div>
                             </div>
                             {% endif %}
                             <div class="tab-pane" id="note">
@@ -674,7 +674,6 @@ function setapp() {
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
             <div class="col-sm-4 col-md-4">
                 <ul class="cbp_tmtimeline">
@@ -868,7 +867,7 @@ function init() {
         zoom: 11,
 
         // The latitude and longitude to center the map (always required)
-        center: new google.maps.LatLng(40.6700, -73.9400), // New York
+        center: new google.maps.LatLng({{local.Basic.lat}},{{local.Basic.lng}}), // New York
         scrollwheel: false,
 
         // How you would like to style the map. 
@@ -1000,7 +999,7 @@ function init() {
 
     // Let's also add a marker while we're at it
     var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(40.6700, -73.9400),
+        position: new google.maps.LatLng({{local.Basic.lat}},{{local.Basic.lng}}),
         map: map,
         title: 'Snazzy!'
     });
