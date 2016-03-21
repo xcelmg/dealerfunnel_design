@@ -59,21 +59,37 @@
                   </div>
 
                   <div class="form-group">
+                     <div class="form-group">
                     <div class="col-sm-3">
-                      {% if local.info.flogo.id != 1 %}
-                            <img width="50px" height="50px" src="{{ local.info.flogo.path }}"/>
-                        {% endif %}
-                        
-                        <label>Logo</label>
-                        <input name="rlogo" type="file" class="form-control">
+                        <label>Logo</label><br>
+
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+												  <div class="fileinput-new thumbnail" style="width: 80px; height: 80px;">
+												  	{% if local.info.flogo.id != 1 %}
+												    <img src="{{ local.info.flogo.path }}" alt="...">
+												    {% endif %}
+												  </div>
+												  <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 80px; max-height: 80px;"></div>
+												  <div>
+												    <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="rlogo"></span>
+												    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+												  </div>
+												</div>
                     </div>
                     <div class="col-sm-3">
-                      {% if local.info.fmlogo.id != 1 %}
-                            <img width="50px" height="50px" src="{{ local.info.fmlogo.path }}"/>
-                        {% endif %}
-                        
-                        <label>Manufactor Logo</label>
-                        <input name="mlogo" type="file" class="form-control">
+                        <label>Manufactor Logo</label><br>
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+												  <div class="fileinput-new thumbnail" style="width: 80px; height: 80px;">
+												  	{% if local.info.fmlogo.id != 1 %}
+												    <img src="{{ local.info.fmlogo.path }}" alt="...">
+												    {% endif %}
+												  </div>
+												  <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 80px; max-height: 80px;"></div>
+												  <div>
+												    <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="mlogo"></span>
+												    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+												  </div>
+												</div>
                     </div>
                     <div class="col-sm-2">
                         <label>Color</label>
