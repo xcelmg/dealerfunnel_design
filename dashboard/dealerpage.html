@@ -43,7 +43,7 @@
 								</div>
 								<div class="col-sm-8">
 									<div class="stat-data">
-										<div class="stat-number media">
+										<div class="stat-number media stat-car-sold">
 											<i class="stat-icon flaticon-basic-car media-object pull-left"></i> 
 											<div class="media-body">
 												<span class="stat-title">Cars Sold</span>
@@ -51,8 +51,8 @@
 												<span class="stat-avg">${{ local.roi.cashprice|intcomma }}</span>
 											</div>
 										</div>
-										<div class="stat-number media">
-											<i class="stat-icon flaticon-service-2 media-object pull-left"></i> 
+										<div class="stat-number media stat-repair-order">
+											<i class="stat-icon icon-wrench media-object pull-left"></i> 
 											<div class="media-body">
 												<span class="stat-title">Repair Orders</span>
 												<h2 class="stat-counter">{{ local.roi.total_service|intcomma }}</h2>
@@ -283,10 +283,10 @@
               <tbody class="no-border-x no-border-y">
                 {% for n in local.cmp %}
                 <tr>
-                  <td><a href="campaign-detail-page.html">{{n.name}}</a></td>
+                  <td><a href="/campaign/detail/page/{{local.dealer.keyid}}/{{n.keyid}}">{{n.name}}</a></td>
                   {% if n.type == 1 %}
                           <td>
-                            <i class="fa fa-car"></i>
+                            <i class="flaticon-basic-car"></i>
                             
                           </td>
                           {% elif n.type == 2 %}
@@ -296,8 +296,8 @@
                           </td>
                           {% elif n.type == 3 %}
                           <td>
-                            <i class="fa fa-car"></i>
-                            <i class="fa fa-wrench"></i>
+                            <i class="flaticon-basic-car"></i>
+                            <i class="icon-wrench"></i>
                           </td>
                    {% endif %}
                   <td>{{n.totalmail|intcomma}}</td>

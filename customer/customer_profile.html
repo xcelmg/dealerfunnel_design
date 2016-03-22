@@ -412,7 +412,7 @@ function setapp() {
                         </ul>
                         <div class="tab-content">
                         	<div id="appointment" class="tab-pane">
-                        		<div class="clearfix">
+                        	<div class="clearfix">
                         			<button class="btn btn-success pull-right" type="button">Add Appointment</button>
                         		</div>
                         		<hr>
@@ -431,11 +431,9 @@ function setapp() {
 	                        					<td>Wednesday, March 30th</td>
 	                        					<td>15:00 PM</td>
 	                        					<td><span class="label label-primary">Pending</span></td>
-	                        					<td style="width: 150px">
-	                        						<div class="btn-group">
-	                        							<a href="#" class="btn btn-default btn-sm"><i class="icon-note"></i></a>
-	                        							<a href="#" class="btn btn-default btn-sm"><i class="icon-close"></i></a>
-	                        						</div>
+	                        					<td style="width: 200px">
+	                        						<a href="#" class="btn btn-primary btn-sm">Edit</a>
+	                        							<a href="#" class="btn btn-inverse btn-sm">Delete</a>
 	                        					</td>
 	                        				</tr>
 	                        			</tbody>
@@ -595,17 +593,17 @@ function setapp() {
                             <div class="tab-pane cont" id="campaigns">
                               <div class="row">
                                 <table class="table table-striped table-hover">
-                                    <thead>
+                                    <thead class="no-border">
                                         <tr>
                                             <th>Date</th>
                                             <th>Campaign</th>
-                                            <th>Type</th>
+                                            <th class="text-center">Type</th>
                                             <th>Mail</th>
                                             <th>Email</th>
                                             <th>Activity</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="no-border-x no-border-y">
                                         {% for r in local.Cmp %}
                                         <tr>
                                             <td>{{r.Ddate}}</td>
@@ -629,8 +627,8 @@ function setapp() {
                             {% endif %} {% if local.isCampaign %}
                             <div class="tab-pane" id="response">
                               <div class="row">
-                                <table class="table table-striped table-hover table-bordered ">
-                                    <thead>
+                                <table class="table table-striped table-hover">
+                                    <thead class="no-border">
                                         <tr>
                                             <th>Type</th>
                                             <th>Details</th>
@@ -638,7 +636,7 @@ function setapp() {
                                             <th>Time</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="no-border-x no-border-y">
                                     		<tr>
                                     			<td>
                                     				<span class="item-type-ico label label-primary"><i class="icon-clock"></i></span>
