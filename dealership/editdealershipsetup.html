@@ -19,10 +19,31 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#dealer-info" data-toggle="tab">Dealer Info</a></li>
               <li><a href="#dealer-trigger" data-toggle="tab">Triggers</a></li>
+              <li><a href="#dealer-zip" data-toggle="tab">Zip</a></li>
               <li><a href="{% url 'campaign_setup' %}?id={{local.info.keyid }}">Campaign Builder</a></li>
               <li><a href="{% url 'dealership_setup_campaign' %}?id={{local.info.keyid }}">Campaign Planner</a></li>
             </ul>
             <div class="tab-content">
+            	<!-- tab zip content -->
+            	<div class="tab-pane" id="dealer-zip">
+            		<table class="table table-stripe table-hovered">
+            			<thead class="no-border">
+            				<th>Zipcode</th>
+            				<th></th>
+            				<th></th>
+            				<th></th>
+            			</thead>
+            			<tbody class="no-border-x no-border-y">
+            				<tr>
+            					<td></td>
+            					<td></td>
+            					<td></td>
+            					<td></td>
+            				</tr>
+            			</tbody>
+            		</table>
+            	</div>
+            	<!-- // -->
               <div class="tab-pane active" id="dealer-info">
                 <form enctype="multipart/form-data" id="form1" method="post" action="/dealership/setup/edit/upload/" class="form-horizontal">
                   {% csrf_token %}
