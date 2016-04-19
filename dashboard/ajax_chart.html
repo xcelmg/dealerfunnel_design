@@ -1,0 +1,163 @@
+{% load humanize %}
+{% load static %}
+{% load dealerfunnel_filters %}
+<div  class="block">
+						<div class="header no-border">
+							<div class="row">
+								<div class="col-sm-4">
+									<h4 class="title">Dealership Activity</h4>
+								</div>
+								<div class="col-sm-8">
+									<div class="btn-group pull-right">
+										<button id='chartbutton' class="btn btn-default btn-sales active" type="button">Sales</button>
+										<button id='chartbutton2' class="btn btn-default btn-service" type="button">Service</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="chart-area">
+							<div>
+							<div class="chart-action">
+								<div class="btn-group btn-group-xs">
+									<a onclick='changechart(1)' href="javascript:void(0)" class="btn btn-default btn-xs {% if local.chart.maptype == 1 %} active {% endif %}">1m</a>
+									<a onclick='changechart(2)' href="javascript:void(0)" class="btn btn-default btn-xs {% if local.chart.maptype == 2 %} active {% endif %}">3m</a>
+									<a onclick='changechart(3)' href="javascript:void(0)" class="btn btn-default btn-xs {% if local.chart.maptype == 3 %} active {% endif %}">6m</a>
+									<a onclick='changechart(4)' href="javascript:void(0)" class="btn btn-default btn-xs {% if local.chart.maptype == 4 %} active {% endif %}">1y</a>
+									<a onclick='changechart(5)' href="javascript:void(0)" class="btn btn-default btn-xs {% if local.chart.maptype == 5 %} active {% endif %}">All</a>
+								</div>
+							</div>
+							<div id="sales-chart" style="height:200px;"></div>
+							<div id="services-chart" style="height:200px;"></div>
+							
+							<script type="text/javascript">
+	$(document).ready(function () {
+		// Sale chart
+ 		area1 = Morris.Area({
+		  element: 'sales-chart',
+		  data: [
+		    {% for n in local.chart.sales %}
+		    	{ y: '{{n.y}}', a: {{n.a}},x:'{{n.x}}'},
+		    {% endfor %}
+		    
+		  ],
+		  xkey: 'y',
+		  ykeys: ['a'],
+		  labels: ['2016', '2015'],
+		  xLabelAngle: 90,
+		  hoverCallback: function(index, options, content) {
+       var data = options.data[index];
+				 $(".morris-hover").html('<div>' + data.x + ':'+ data.a + ' Cars Sold ' + '</div>');
+	    },
+	    hideHover: 'auto',
+	    lineWidth: 1,
+	    behaveLikeLine: true,
+	    lineColors: ['#0066D4','#318FF6',"#565656"],
+	    resize: true,
+	    parseTime: false,
+		});
+
+ 		// Services chart
+		area3 = Morris.Area({
+		  element: 'services-chart',
+		  data: [
+		    {% for n in local.chart.service %}
+		    	{ y: '{{n.y}}', a: {{n.a}},x:'{{n.x}}'},
+		    {% endfor %}
+		  ],
+		  xkey: 'y',
+		  ykeys: ['a'],
+		  hoverCallback: function(index, options, content) {
+       var data = options.data[index];
+				 $(".morris-hover").html('<div>' + data.x + ':'+ data.a + ' Service ' + '</div>');
+	    },
+	    hideHover: 'auto',
+	    lineWidth: 1,
+	    behaveLikeLine: true,
+	    lineColors: ['#0066D4','#318FF6',"#565656"],
+	    resize: true,
+	    parseTime: false,
+		});
+
+		
+
+		// Toggle chart sale service
+ 		$('#services-chart').hide(); 	
+	 	$('.btn-sales').click(function(){
+	 		$('#sales-chart').show();
+	 		$('#services-chart').hide();
+	 		$(this).parents('.btn-group').find('.btn').removeClass('active');
+	 		$(this).addClass('active');
+
+	 	});
+	 	$('.btn-service').click(function(){
+	 		$('#sales-chart').hide();
+	 		$('#services-chart').show();
+	 		$(this).parents('.btn-group').find('.btn').removeClass('active');
+	 		$(this).addClass('active');
+	 	})
+
+ 		$(window).on('resize', function() { 
+ 			area1.redraw();
+ 			area3.redraw();
+ 		});
+
+ 	// Date picker
+ 	
+
+ 	// Show Tooltip
+ 	$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+							</div>
+						</div>
+						
+						<div class="content clearfix">
+							<div class="stat-data">
+								<div class="stat-number media stat-car-sold">
+									<i class="stat-icon flaticon-basic-car media-object pull-left"></i> 
+									<div class="media-body">
+										<span class="stat-title">Cars Sold</span>
+										<h2 class="stat-counter">{{ local.activity.totalcar|intcomma }}</h2>
+										<span class="stat-avg">Gross Profit: 
+										{% if local.activity.grossprofit %}
+										${{ local.activity.grossprofit|group }}
+										{% endif %}
+										</span>
+									</div>
+								</div>
+								<div class="stat-number media stat-repair-order">
+									<i class="stat-icon icon-wrench media-object pull-left"></i> 
+									<div class="media-body">
+										<span class="stat-title">Repair Orders</span>
+										<h2 class="stat-counter">{{ local.activity.totalservice|intcomma }}</h2>
+										
+										<span class="stat-avg">Revenue: 
+										{% if local.activity.invoiced %}
+										$ {{ local.activity.invoiced|group }}
+										{% endif %}
+										</span>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+            <div class="ds-stats-boxs">
+              <li>
+                <span class="number">{{ local.activity.New|intcomma }}</span>
+                <span class="desc">New</span>
+              </li>
+              <li>
+                <span class="number">{{ local.activity.Used|intcomma }}</span>
+                <span class="desc">Used</span>
+              </li>
+              <li>
+                <span class="number">{{ local.activity.Purchases|intcomma }}</span>
+                <span class="desc">Purchases</span>
+              </li>
+              <li>
+                <span class="number">{{ local.activity.Leases|intcomma }}</span>
+                <span class="desc">Leases</span>
+              </li>
+            </div>
+					</div>
